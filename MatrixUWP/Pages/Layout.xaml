@@ -1,0 +1,44 @@
+﻿<Page
+    x:Class="MatrixUWP.Pages.Layout"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MatrixUWP.Pages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ctl="using:MatrixUWP.Controls"
+    mc:Ignorable="d"
+    Background="{ThemeResource SystemControlAcrylicWindowMediumHighBrush}">
+
+    <Grid>
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{x:Bind NaviMenu.ExpandedModeThresholdWidth}"/>
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="NaviMenu.PaneDisplayMode" Value="Top"/>
+                        <Setter Target="NaviMenu.HeaderVisibility" Value="Collapsed"/>
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
+        <ctl:MyNavigationView x:Name="NaviMenu" PaneDisplayMode="Auto" AlwaysShowHeader="False" Header="{Binding ElementName=NaviMenu, Path=SelectedItem.Content}" ItemInvoked="NaviMenu_ItemInvoked" SelectionChanged="NaviMenu_SelectionChanged">
+            <ctl:MyNavigationView.MenuItems>
+                <NavigationViewItemHeader x:Uid="NaviMenu_Header_Generic"></NavigationViewItemHeader>
+                <NavigationViewItem x:Name="HomePage" Icon="Home" x:Uid="NaviMenu_Item_Home"></NavigationViewItem>
+                <NavigationViewItem Icon="Library" x:Uid="NaviMenu_Item_Homework"></NavigationViewItem>
+                <NavigationViewItem Icon="Message" x:Uid="NaviMenu_Item_Messages"></NavigationViewItem>
+                <NavigationViewItemSeparator/>
+                <NavigationViewItemHeader x:Uid="NaviMenu_Header_Account"></NavigationViewItemHeader>
+                <NavigationViewItem Icon="ContactInfo" x:Uid="NaviMenu_Item_Profile"></NavigationViewItem>
+                <NavigationViewItemSeparator/>
+                <NavigationViewItemHeader x:Uid="NaviMenu_Header_Help"></NavigationViewItemHeader>
+                <NavigationViewItem Icon="Help" x:Uid="NaviMenu_Item_Help"></NavigationViewItem>
+                <NavigationViewItem Icon="Send" x:Uid="NaviMenu_Item_Feedback"></NavigationViewItem>
+            </ctl:MyNavigationView.MenuItems>
+            <Frame x:Name="NaviContent"/>
+        </ctl:MyNavigationView>
+    </Grid>
+</Page>
