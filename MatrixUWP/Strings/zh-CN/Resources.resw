@@ -120,7 +120,7 @@
   <data name="NaviMenu_Header_Account.Content" xml:space="preserve">
     <value>账户</value>
   </data>
-  <data name="NaviMenu_Header_Generic.Content" xml:space="preserve">
+  <data name="NaviMenu_Header_General.Content" xml:space="preserve">
     <value>常用</value>
   </data>
   <data name="NaviMenu_Header_Help.Content" xml:space="preserve">

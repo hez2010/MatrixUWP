@@ -120,8 +120,8 @@
   <data name="NaviMenu_Header_Account.Content" xml:space="preserve">
     <value>Account</value>
   </data>
-  <data name="NaviMenu_Header_Generic.Content" xml:space="preserve">
-    <value>Generic</value>
+  <data name="NaviMenu_Header_General.Content" xml:space="preserve">
+    <value>General</value>
   </data>
   <data name="NaviMenu_Header_Help.Content" xml:space="preserve">
     <value>Help</value>

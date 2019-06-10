@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ctl="using:MatrixUWP.Controls"
     mc:Ignorable="d"
-    Background="{ThemeResource SystemControlAcrylicWindowMediumHighBrush}">
+    Background="{ThemeResource SystemControlChromeHighAcrylicWindowMediumBrush}">
 
     <Grid>
         <VisualStateManager.VisualStateGroups>
@@ -24,9 +24,9 @@
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
 
-        <ctl:MyNavigationView x:Name="NaviMenu" PaneDisplayMode="Auto" AlwaysShowHeader="False" Header="{Binding ElementName=NaviMenu, Path=SelectedItem.Content}" ItemInvoked="NaviMenu_ItemInvoked" SelectionChanged="NaviMenu_SelectionChanged">
+        <ctl:MyNavigationView BackRequested="NaviMenu_BackRequested" x:Name="NaviMenu" AlwaysShowHeader="False" Header="{Binding ElementName=NaviMenu, Path=SelectedItem.Content}" IsBackEnabled="{Binding ElementName=NaviContent, Path=CanGoBack}" ItemInvoked="NaviMenu_ItemInvoked">
             <ctl:MyNavigationView.MenuItems>
-                <NavigationViewItemHeader x:Uid="NaviMenu_Header_Generic"></NavigationViewItemHeader>
+                <NavigationViewItemHeader x:Uid="NaviMenu_Header_General"></NavigationViewItemHeader>
                 <NavigationViewItem x:Name="HomePage" Icon="Home" x:Uid="NaviMenu_Item_Home"></NavigationViewItem>
                 <NavigationViewItem Icon="Library" x:Uid="NaviMenu_Item_Homework"></NavigationViewItem>
                 <NavigationViewItem Icon="Message" x:Uid="NaviMenu_Item_Messages"></NavigationViewItem>

@@ -34,14 +34,17 @@ namespace MatrixUWP.Pages
             var titleBar = Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().TitleBar;
             titleBar.ButtonBackgroundColor = Colors.Transparent;
             titleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
+            Windows.UI.Core.SystemNavigationManager.GetForCurrentView().BackRequested += App_BackRequested;
 
-            NaviMenu.SelectedItem = HomePage;
+            NavigateToPage(HomePage, false, NaviMenu.PaneDisplayMode);
         }
 
-        private int lastSelectedItemIndex = 0;
-        private void NavigateToPage(object itemObject, bool isSettingsPage, NavigationViewPaneDisplayMode paneDisplayMode)
+
+        private int lastSelectedItemIndex = -1;
+        private readonly Stack<int> navimenuNaviHistory = new Stack<int>();
+        private void NavigateToPage(object naviItem, bool isSettingsPage, NavigationViewPaneDisplayMode paneDisplayMode)
         {
-            if (!(itemObject is NavigationViewItem item)) return;
+            if (!(naviItem is NavigationViewItem item)) return;
             var index = NaviMenu.MenuItems.IndexOf(item);
             if (isSettingsPage)
             {
@@ -58,23 +61,47 @@ namespace MatrixUWP.Pages
                 };
             }
             else transition = new DrillInNavigationTransitionInfo();
+            if (lastSelectedItemIndex != -1) navimenuNaviHistory.Push(lastSelectedItemIndex);
             lastSelectedItemIndex = index;
 
             NaviContent.Navigate((item.Name, isSettingsPage) switch
             {
                 (_, true) => typeof(Pages.Settings),
-                ("HomeNaviPage", _) => typeof(Pages.Generic.Home),
-                _ => typeof(Pages.Generic.Home)
+                ("HomeNaviPage", _) => typeof(Pages.General.Home),
+                _ => typeof(Pages.General.Home)
             }, null, transition);
+
+            NaviMenu.SelectedItem = naviItem;
         }
 
         private void NaviMenu_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
         {
-            NavigateToPage(args.InvokedItem, args.IsSettingsInvoked, sender.PaneDisplayMode);
+            NavigateToPage(args.InvokedItemContainer, args.IsSettingsInvoked, sender.PaneDisplayMode);
         }
-        private void NaviMenu_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
+
+        private bool NavigateBack()
         {
-            NavigateToPage(args.SelectedItem, args.IsSettingsSelected, sender.PaneDisplayMode);
+            if (NaviContent.CanGoBack)
+            {
+                NaviContent.GoBack();
+                if (navimenuNaviHistory.TryPop(out var index))
+                {
+                    if (index != NaviMenu.MenuItems.Count) NaviMenu.SelectedItem = NaviMenu.MenuItems[index];
+                    else NaviMenu.SelectedItem = NaviMenu.SettingsItem;
+                    lastSelectedItemIndex = index;
+                }
+                return true;
+            }
+            return false;
+        }
+        private void App_BackRequested(object sender, Windows.UI.Core.BackRequestedEventArgs e)
+        {
+            e.Handled = NavigateBack();
+        }
+
+        private void NaviMenu_BackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args)
+        {
+            NavigateBack();
         }
     }
 }
