@@ -7,15 +7,15 @@
   IgnorableNamespaces="uap mp">
 
   <Identity
-    Name="8436hez2010.MatrixUWP"
+    Name="8436Matrix.MatrixUWP"
     Publisher="CN=E6A45EF7-9CCA-47FC-94F6-10B7B6A7946A"
-    Version="1.0.2.0" />
+    Version="1.0.1.0" />
 
   <mp:PhoneIdentity PhoneProductId="87977596-4ca2-437a-9987-bb89197b94ae" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
-    <DisplayName>MatrixUWP</DisplayName>
-    <PublisherDisplayName>hez2010</PublisherDisplayName>
+    <DisplayName>Matrix UWP</DisplayName>
+    <PublisherDisplayName>Matrix</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 

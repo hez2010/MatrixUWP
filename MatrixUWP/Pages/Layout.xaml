@@ -10,9 +10,8 @@
     mc:Ignorable="d"
     RequestedTheme="{x:Bind root:App.AppConfiguration.AppThemeValue, Mode=OneWay}"
     Background="{ThemeResource SystemControlChromeHighAcrylicWindowMediumBrush}">
-    
-    <Grid>
 
+    <Grid>
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup>
                 <VisualState>
