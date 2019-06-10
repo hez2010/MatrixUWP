@@ -27,16 +27,16 @@
         <ctl:MyNavigationView BackRequested="NaviMenu_BackRequested" x:Name="NaviMenu" AlwaysShowHeader="False" Header="{Binding ElementName=NaviMenu, Path=SelectedItem.Content}" IsBackEnabled="{Binding ElementName=NaviContent, Path=CanGoBack}" ItemInvoked="NaviMenu_ItemInvoked">
             <ctl:MyNavigationView.MenuItems>
                 <NavigationViewItemHeader x:Uid="NaviMenu_Header_General"></NavigationViewItemHeader>
-                <NavigationViewItem x:Name="HomePage" Icon="Home" x:Uid="NaviMenu_Item_Home"></NavigationViewItem>
-                <NavigationViewItem Icon="Library" x:Uid="NaviMenu_Item_Homework"></NavigationViewItem>
-                <NavigationViewItem Icon="Message" x:Uid="NaviMenu_Item_Messages"></NavigationViewItem>
+                <NavigationViewItem x:Name="HomeNaviPage" Icon="Home" x:Uid="NaviMenu_Item_Home"></NavigationViewItem>
+                <NavigationViewItem x:Name="HomeworkNaviPage" Icon="Library" x:Uid="NaviMenu_Item_Homework"></NavigationViewItem>
+                <NavigationViewItem x:Name="MessagesNaviPage" Icon="Message" x:Uid="NaviMenu_Item_Messages"></NavigationViewItem>
                 <NavigationViewItemSeparator/>
                 <NavigationViewItemHeader x:Uid="NaviMenu_Header_Account"></NavigationViewItemHeader>
-                <NavigationViewItem Icon="ContactInfo" x:Uid="NaviMenu_Item_Profile"></NavigationViewItem>
+                <NavigationViewItem x:Name="ProfileNaviPage" Icon="ContactInfo" x:Uid="NaviMenu_Item_Profile"></NavigationViewItem>
                 <NavigationViewItemSeparator/>
                 <NavigationViewItemHeader x:Uid="NaviMenu_Header_Help"></NavigationViewItemHeader>
-                <NavigationViewItem Icon="Help" x:Uid="NaviMenu_Item_Help"></NavigationViewItem>
-                <NavigationViewItem Icon="Send" x:Uid="NaviMenu_Item_Feedback"></NavigationViewItem>
+                <NavigationViewItem x:Name="ManualNaviPage" Icon="Help" x:Uid="NaviMenu_Item_Manual"></NavigationViewItem>
+                <NavigationViewItem x:Name="FeedbackNaviPage" Icon="Send" x:Uid="NaviMenu_Item_Feedback"></NavigationViewItem>
             </ctl:MyNavigationView.MenuItems>
             <Frame x:Name="NaviContent"/>
         </ctl:MyNavigationView>

@@ -129,14 +129,14 @@
   <data name="NaviMenu_Item_Feedback.Content" xml:space="preserve">
     <value>Feedback</value>
   </data>
-  <data name="NaviMenu_Item_Help.Content" xml:space="preserve">
-    <value>Manual</value>
-  </data>
   <data name="NaviMenu_Item_Home.Content" xml:space="preserve">
     <value>Home</value>
   </data>
   <data name="NaviMenu_Item_Homework.Content" xml:space="preserve">
     <value>Homework</value>
+  </data>
+  <data name="NaviMenu_Item_Manual.Content" xml:space="preserve">
+    <value>Manual</value>
   </data>
   <data name="NaviMenu_Item_Messages.Content" xml:space="preserve">
     <value>Messages</value>

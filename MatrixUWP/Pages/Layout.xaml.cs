@@ -36,7 +36,7 @@ namespace MatrixUWP.Pages
             titleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
             Windows.UI.Core.SystemNavigationManager.GetForCurrentView().BackRequested += App_BackRequested;
 
-            NavigateToPage(HomePage, false, NaviMenu.PaneDisplayMode);
+            NavigateToPage(HomeNaviPage, false, NaviMenu.PaneDisplayMode);
         }
 
 
@@ -68,7 +68,12 @@ namespace MatrixUWP.Pages
             {
                 (_, true) => typeof(Pages.Settings),
                 ("HomeNaviPage", _) => typeof(Pages.General.Home),
-                _ => typeof(Pages.General.Home)
+                ("HomeworkNaviPage", _) => typeof(Pages.General.Homework),
+                ("MessagesNaviPage", _) => typeof(Pages.General.Messages),
+                ("ProfileNaviPage", _) => typeof(Pages.Account.Profile),
+                ("ManualNaviPage", _) => typeof(Pages.Help.Manual),
+                ("FeedbackNaviPage", _) => typeof(Pages.Help.Feedback),
+                _ => throw new InvalidOperationException("No such page")
             }, null, transition);
 
             NaviMenu.SelectedItem = naviItem;

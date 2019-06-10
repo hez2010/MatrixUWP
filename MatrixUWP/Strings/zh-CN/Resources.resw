@@ -129,14 +129,14 @@
   <data name="NaviMenu_Item_Feedback.Content" xml:space="preserve">
     <value>反馈</value>
   </data>
-  <data name="NaviMenu_Item_Help.Content" xml:space="preserve">
-    <value>手册</value>
-  </data>
   <data name="NaviMenu_Item_Home.Content" xml:space="preserve">
     <value>主页</value>
   </data>
   <data name="NaviMenu_Item_Homework.Content" xml:space="preserve">
     <value>作业</value>
+  </data>
+  <data name="NaviMenu_Item_Manual.Content" xml:space="preserve">
+    <value>手册</value>
   </data>
   <data name="NaviMenu_Item_Messages.Content" xml:space="preserve">
     <value>消息</value>
