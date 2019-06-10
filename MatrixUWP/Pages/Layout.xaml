@@ -24,7 +24,7 @@
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
 
-        <ctl:MyNavigationView BackRequested="NaviMenu_BackRequested" x:Name="NaviMenu" AlwaysShowHeader="False" Header="{Binding ElementName=NaviMenu, Path=SelectedItem.Content}" IsBackEnabled="{Binding ElementName=NaviContent, Path=CanGoBack}" ItemInvoked="NaviMenu_ItemInvoked">
+        <ctl:MyNavigationView BackRequested="NaviMenu_BackRequested" x:Name="NaviMenu" AlwaysShowHeader="False" Header="{x:Bind ((NavigationViewItem)NaviMenu.SelectedItem).Content, Mode=OneWay}" IsBackEnabled="{x:Bind NaviContent.CanGoBack, Mode=OneWay}" ItemInvoked="NaviMenu_ItemInvoked">
             <ctl:MyNavigationView.MenuItems>
                 <NavigationViewItemHeader x:Uid="NaviMenu_Header_General"></NavigationViewItemHeader>
                 <NavigationViewItem x:Name="HomeNaviPage" Icon="Home" x:Uid="NaviMenu_Item_Home"></NavigationViewItem>
