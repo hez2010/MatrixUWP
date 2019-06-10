@@ -26,5 +26,6 @@ namespace MatrixUWP.Pages
         {
             this.InitializeComponent();
         }
+
     }
 }

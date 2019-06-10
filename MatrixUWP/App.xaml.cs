@@ -1,4 +1,5 @@
-﻿using MatrixUWP.Pages;
+﻿using MatrixUWP.Models;
+using MatrixUWP.Pages;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -38,6 +39,8 @@ namespace MatrixUWP
         /// Culture strings resource
         /// </summary>
         public static readonly ResourceLoader CultureResource = ResourceLoader.GetForCurrentView();
+
+        public static readonly Configuration AppConfiguration = new Configuration();
 
         /// <summary>
         /// Invoked when the application is launched normally by the end user.  Other entry points
