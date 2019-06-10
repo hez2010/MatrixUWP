@@ -7,6 +7,8 @@
     <ProjectGuid>{F3677E0B-47E4-4EFD-A1A8-2003D70EE6CF}</ProjectGuid>
     <OutputType>AppContainerExe</OutputType>
     <LangVersion>8.0</LangVersion>
+    <NullableContextOptions>enable</NullableContextOptions>
+    <Nullable>enable</Nullable>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>MatrixUWP</RootNamespace>
     <AssemblyName>MatrixUWP</AssemblyName>
@@ -152,6 +154,7 @@
       <DependentUpon>Settings.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utils\RequestHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -263,6 +266,9 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.8</Version>
+    </PackageReference>
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>12.0.2</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
