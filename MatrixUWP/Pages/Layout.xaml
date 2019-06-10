@@ -6,7 +6,9 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ctl="using:MatrixUWP.Controls"
+    xmlns:root="using:MatrixUWP"
     mc:Ignorable="d"
+    RequestedTheme="{x:Bind root:App.AppConfiguration.AppThemeValue, Mode=OneWay}"
     Background="{ThemeResource SystemControlChromeHighAcrylicWindowMediumBrush}">
 
     <Grid>

@@ -162,4 +162,16 @@
   <data name="Settings_Item_Title_Theme.Text" xml:space="preserve">
     <value>主题</value>
   </data>
+  <data name="Settings_Item_Language_Default.Content" xml:space="preserve">
+    <value>默认</value>
+  </data>
+  <data name="Settings_Item_Theme_Default.Content" xml:space="preserve">
+    <value>默认</value>
+  </data>
+  <data name="Settings_Item_Theme_Light.Content" xml:space="preserve">
+    <value>亮色</value>
+  </data>
+  <data name="Settings_Item_Theme_Dark.Content" xml:space="preserve">
+    <value>暗色</value>
+  </data>
 </root>
