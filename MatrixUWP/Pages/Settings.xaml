@@ -13,14 +13,15 @@
     <Pivot>
         <PivotItem x:Uid="Settings_Header_Preference">
             <RelativePanel>
-                <TextBlock Margin="8" x:Name="LanguageTitle" FontSize="16" x:Uid="Settings_Item_Title_Language" />
+                <TextBlock Margin="8" x:Name="LanguageTitle" FontSize="20" x:Uid="Settings_Item_Title_Language" />
                 <ComboBox x:Name="LanguageBox" Margin="8" RelativePanel.RightOf="LanguageTitle" SelectedIndex="{x:Bind root:App.AppConfiguration.AppLanguage, Mode=TwoWay}">
                     <ComboBoxItem x:Uid="Settings_Item_Language_Default"/>
                     <ComboBoxItem Content="English"></ComboBoxItem>
                     <ComboBoxItem Content="简体中文"></ComboBoxItem>
                 </ComboBox>
-                <TextBlock Margin="8" x:Name="ThemeTitle" RelativePanel.Below="LanguageBox" FontSize="16" x:Uid="Settings_Item_Title_Theme" />
-                <ComboBox x:Name="ThemeBox" Margin="8" RelativePanel.RightOf="ThemeTitle" RelativePanel.Below="LanguageBox" SelectedIndex="{x:Bind root:App.AppConfiguration.AppTheme, Mode=TwoWay}">
+                <TextBlock Margin="8" x:Name="RestartPrompt" RelativePanel.Below="LanguageBox" Foreground="Gray" x:Uid="Settings_Item_Language_Restart"/>
+                <TextBlock Margin="8" x:Name="ThemeTitle" RelativePanel.Below="RestartPrompt" FontSize="20" x:Uid="Settings_Item_Title_Theme" />
+                <ComboBox x:Name="ThemeBox" Margin="8" RelativePanel.RightOf="ThemeTitle" RelativePanel.Below="RestartPrompt" SelectedIndex="{x:Bind root:App.AppConfiguration.AppTheme, Mode=TwoWay}">
                     <ComboBoxItem x:Uid="Settings_Item_Theme_Default"/>
                     <ComboBoxItem x:Uid="Settings_Item_Theme_Light"/>
                     <ComboBoxItem x:Uid="Settings_Item_Theme_Dark"/>

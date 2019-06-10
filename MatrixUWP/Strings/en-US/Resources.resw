@@ -174,4 +174,7 @@
   <data name="Settings_Item_Theme_Dark.Content" xml:space="preserve">
     <value>Dark</value>
   </data>
+  <data name="Settings_Item_Language_Restart.Text" xml:space="preserve">
+    <value>* Changing language needs restart app to take effect</value>
+  </data>
 </root>

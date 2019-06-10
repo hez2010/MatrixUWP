@@ -34,6 +34,9 @@ namespace MatrixUWP.Pages
             var titleBar = Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().TitleBar;
             titleBar.ButtonBackgroundColor = Colors.Transparent;
             titleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
+
+            Window.Current.SetTitleBar(MyTitleBar);
+
             Windows.UI.Core.SystemNavigationManager.GetForCurrentView().BackRequested += App_BackRequested;
 
             NavigateToPage(HomeNaviPage, false, NaviMenu.PaneDisplayMode);

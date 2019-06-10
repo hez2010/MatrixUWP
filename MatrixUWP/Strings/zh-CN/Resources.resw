@@ -174,4 +174,7 @@
   <data name="Settings_Item_Theme_Dark.Content" xml:space="preserve">
     <value>暗色</value>
   </data>
+  <data name="Settings_Item_Language_Restart.Text" xml:space="preserve">
+    <value>* 修改语言需要重启应用才能生效</value>
+  </data>
 </root>

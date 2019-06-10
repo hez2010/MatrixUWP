@@ -10,8 +10,9 @@
     mc:Ignorable="d"
     RequestedTheme="{x:Bind root:App.AppConfiguration.AppThemeValue, Mode=OneWay}"
     Background="{ThemeResource SystemControlChromeHighAcrylicWindowMediumBrush}">
-
+    
     <Grid>
+
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup>
                 <VisualState>
@@ -25,8 +26,20 @@
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
+        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
 
-        <ctl:MyNavigationView BackRequested="NaviMenu_BackRequested" x:Name="NaviMenu" AlwaysShowHeader="False" Header="{x:Bind ((NavigationViewItem)NaviMenu.SelectedItem).Content, Mode=OneWay}" IsBackEnabled="{x:Bind NaviContent.CanGoBack, Mode=OneWay}" ItemInvoked="NaviMenu_ItemInvoked">
+        <Grid Grid.Row="0" x:Name="MyTitleBar">
+            <Rectangle x:Name="BackgroundElement" Fill="Transparent" />
+            <Grid Height="32">
+                <TextBlock Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Text="Matrix UWP" />
+            </Grid>
+        </Grid>
+
+        <ctl:MyNavigationView Grid.Row="1" BackRequested="NaviMenu_BackRequested" x:Name="NaviMenu" AlwaysShowHeader="False" Header="{x:Bind ((NavigationViewItem)NaviMenu.SelectedItem).Content, Mode=OneWay}" IsBackEnabled="{x:Bind NaviContent.CanGoBack, Mode=OneWay}" ItemInvoked="NaviMenu_ItemInvoked">
             <ctl:MyNavigationView.MenuItems>
                 <NavigationViewItemHeader x:Uid="NaviMenu_Header_General"></NavigationViewItemHeader>
                 <NavigationViewItem x:Name="HomeNaviPage" Icon="Home" x:Uid="NaviMenu_Item_Home"></NavigationViewItem>
