@@ -132,9 +132,6 @@
   <data name="NaviMenu_Item_Home.Content" xml:space="preserve">
     <value>主页</value>
   </data>
-  <data name="NaviMenu_Item_Homework.Content" xml:space="preserve">
-    <value>作业</value>
-  </data>
   <data name="NaviMenu_Item_Manual.Content" xml:space="preserve">
     <value>手册</value>
   </data>
@@ -176,5 +173,20 @@
   </data>
   <data name="Settings_Item_Language_Restart.Text" xml:space="preserve">
     <value>* 修改语言需要重启应用才能生效</value>
+  </data>
+  <data name="NaviMenu_Item_Course.Content" xml:space="preserve">
+    <value>课程</value>
+  </data>
+  <data name="NaviMenu_Item_Exam.Content" xml:space="preserve">
+    <value>考试</value>
+  </data>
+  <data name="NaviMenu_Item_Library.Content" xml:space="preserve">
+    <value>题库</value>
+  </data>
+  <data name="Home_PasswordBox_Password.PlaceholderText" xml:space="preserve">
+    <value>密码</value>
+  </data>
+  <data name="Home_TextBox_UserName.PlaceholderText" xml:space="preserve">
+    <value>用户名</value>
   </data>
 </root>

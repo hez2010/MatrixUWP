@@ -1,8 +1,8 @@
 ﻿<Page
-    x:Class="MatrixUWP.Pages.Layout"
+    x:Class="MatrixUWP.Views.Layout"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:MatrixUWP.Pages"
+    xmlns:local="using:MatrixUWP.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ctl="using:MatrixUWP.Controls"
@@ -42,15 +42,17 @@
             <ctl:MyNavigationView.MenuItems>
                 <NavigationViewItemHeader x:Uid="NaviMenu_Header_General"></NavigationViewItemHeader>
                 <NavigationViewItem x:Name="HomeNaviPage" Icon="Home" x:Uid="NaviMenu_Item_Home"></NavigationViewItem>
-                <NavigationViewItem x:Name="HomeworkNaviPage" Icon="Library" x:Uid="NaviMenu_Item_Homework"></NavigationViewItem>
-                <NavigationViewItem x:Name="MessagesNaviPage" Icon="Message" x:Uid="NaviMenu_Item_Messages"></NavigationViewItem>
-                <NavigationViewItemSeparator/>
-                <NavigationViewItemHeader x:Uid="NaviMenu_Header_Account"></NavigationViewItemHeader>
-                <NavigationViewItem x:Name="ProfileNaviPage" Icon="ContactInfo" x:Uid="NaviMenu_Item_Profile"></NavigationViewItem>
+                <NavigationViewItem x:Name="CourseNaviPage" Icon="Edit" x:Uid="NaviMenu_Item_Course" Visibility="{x:Bind viewModel.NaviItemVisibility, Mode=OneWay}"></NavigationViewItem>
+                <NavigationViewItem x:Name="ExamNaviPage" Icon="Clock" x:Uid="NaviMenu_Item_Exam" Visibility="{x:Bind viewModel.NaviItemVisibility, Mode=OneWay}"></NavigationViewItem>
+                <NavigationViewItem x:Name="LibraryNaviPage" Icon="Library" x:Uid="NaviMenu_Item_Library" Visibility="{x:Bind viewModel.NaviItemVisibility, Mode=OneWay}"></NavigationViewItem>
+                <NavigationViewItem x:Name="MessagesNaviPage" Icon="Message" x:Uid="NaviMenu_Item_Messages" Visibility="{x:Bind viewModel.NaviItemVisibility, Mode=OneWay}"></NavigationViewItem>
+                <NavigationViewItemSeparator Visibility="{x:Bind viewModel.NaviItemVisibility, Mode=OneWay}"/>
+                <NavigationViewItemHeader x:Uid="NaviMenu_Header_Account" Visibility="{x:Bind viewModel.NaviItemVisibility, Mode=OneWay}"></NavigationViewItemHeader>
+                <NavigationViewItem x:Name="ProfileNaviPage" Icon="ContactInfo" x:Uid="NaviMenu_Item_Profile" Visibility="{x:Bind viewModel.NaviItemVisibility, Mode=OneWay}"></NavigationViewItem>
                 <NavigationViewItemSeparator/>
                 <NavigationViewItemHeader x:Uid="NaviMenu_Header_Help"></NavigationViewItemHeader>
                 <NavigationViewItem x:Name="ManualNaviPage" Icon="Help" x:Uid="NaviMenu_Item_Manual"></NavigationViewItem>
-                <NavigationViewItem x:Name="FeedbackNaviPage" Icon="Send" x:Uid="NaviMenu_Item_Feedback"></NavigationViewItem>
+                <NavigationViewItem x:Name="FeedbackNaviPage" Icon="Send" x:Uid="NaviMenu_Item_Feedback" Visibility="{x:Bind viewModel.NaviItemVisibility, Mode=OneWay}"></NavigationViewItem>
             </ctl:MyNavigationView.MenuItems>
             <Frame x:Name="NaviContent"/>
         </ctl:MyNavigationView>

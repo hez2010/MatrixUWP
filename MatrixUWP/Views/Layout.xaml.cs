@@ -1,4 +1,5 @@
 ﻿using MatrixUWP.Controls;
+using MatrixUWP.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -19,26 +20,29 @@ using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
-namespace MatrixUWP.Pages
+namespace MatrixUWP.Views
 {
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
     public sealed partial class Layout : Page
     {
+        private readonly LayoutViewModel viewModel = new LayoutViewModel();
         public Layout()
         {
             this.InitializeComponent();
 
+            // Setup title bar style
             Windows.ApplicationModel.Core.CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
             var titleBar = Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().TitleBar;
             titleBar.ButtonBackgroundColor = Colors.Transparent;
             titleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
-
             Window.Current.SetTitleBar(MyTitleBar);
 
+            // Register BackRequest handler
             Windows.UI.Core.SystemNavigationManager.GetForCurrentView().BackRequested += App_BackRequested;
 
+            // Navigate to Home
             NavigateToPage(HomeNaviPage, false, NaviMenu.PaneDisplayMode);
         }
 
@@ -69,13 +73,15 @@ namespace MatrixUWP.Pages
 
             NaviContent.Navigate((item.Name, isSettingsPage) switch
             {
-                (_, true) => typeof(Pages.Settings),
-                ("HomeNaviPage", _) => typeof(Pages.General.Home),
-                ("HomeworkNaviPage", _) => typeof(Pages.General.Homework),
-                ("MessagesNaviPage", _) => typeof(Pages.General.Messages),
-                ("ProfileNaviPage", _) => typeof(Pages.Account.Profile),
-                ("ManualNaviPage", _) => typeof(Pages.Help.Manual),
-                ("FeedbackNaviPage", _) => typeof(Pages.Help.Feedback),
+                (_, true) => typeof(Settings),
+                ("HomeNaviPage", _) => typeof(General.Home),
+                ("CourseNaviPage", _) => typeof(General.Course),
+                ("ExamNaviPage", _) => typeof(General.Exam),
+                ("LibraryNaviPage", _) => typeof(General.Library),
+                ("MessagesNaviPage", _) => typeof(General.Messages),
+                ("ProfileNaviPage", _) => typeof(Account.Profile),
+                ("ManualNaviPage", _) => typeof(Help.Manual),
+                ("FeedbackNaviPage", _) => typeof(Help.Feedback),
                 _ => throw new InvalidOperationException("No such page")
             }, null, transition);
 

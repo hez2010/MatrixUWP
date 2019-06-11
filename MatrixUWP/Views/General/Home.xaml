@@ -1,0 +1,29 @@
+﻿<Page
+    x:Class="MatrixUWP.Views.General.Home"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MatrixUWP.Views.General"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource SystemControlAcrylicWindowMediumHighBrush}">
+    
+    <Page.Resources>
+        <RevealBorderBrush x:Key="LightBorderBrush" TargetTheme="Light" Color="{ThemeResource SystemAccentColor}" FallbackColor="{ThemeResource SystemAccentColor}" />
+    </Page.Resources>
+    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+        <Image Height="100" Source="{ThemeResource MatrixLogo}"></Image>
+        <Border Margin="0,0,0,50" Background="{ThemeResource SystemControlAcrylicWindowBrush}" BorderBrush="LightGray" BorderThickness="2" CornerRadius="10">
+            <StackPanel>
+                <Ellipse Margin="48" Height="100" Width="100">
+                    <Ellipse.Fill>
+                        <ImageBrush ImageSource="/Assets/Home/user.png"/>
+                    </Ellipse.Fill>
+                </Ellipse>
+                <TextBox x:Name="UserName" Margin="48,8" x:Uid="Home_TextBox_UserName" CornerRadius="3"></TextBox>
+                <PasswordBox x:Name="Password" Margin="48,8" x:Uid="Home_PasswordBox_Password" CornerRadius="3"></PasswordBox>
+                <Button x:Name="SignIn" CornerRadius="3" HorizontalAlignment="Stretch" Margin="48,8,48,48" Style="{ThemeResource ButtonRevealStyle}" Click="SignIn_Click">登录</Button>
+            </StackPanel>
+        </Border>
+    </StackPanel>
+</Page>

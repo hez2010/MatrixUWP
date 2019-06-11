@@ -132,8 +132,8 @@
   <data name="NaviMenu_Item_Home.Content" xml:space="preserve">
     <value>Home</value>
   </data>
-  <data name="NaviMenu_Item_Homework.Content" xml:space="preserve">
-    <value>Homework</value>
+  <data name="NaviMenu_Item_Library.Content" xml:space="preserve">
+    <value>Library</value>
   </data>
   <data name="NaviMenu_Item_Manual.Content" xml:space="preserve">
     <value>Manual</value>
@@ -176,5 +176,17 @@
   </data>
   <data name="Settings_Item_Language_Restart.Text" xml:space="preserve">
     <value>* Changing language needs restart app to take effect</value>
+  </data>
+  <data name="NaviMenu_Item_Course.Content" xml:space="preserve">
+    <value>Course</value>
+  </data>
+  <data name="NaviMenu_Item_Exam.Content" xml:space="preserve">
+    <value>Exam</value>
+  </data>
+  <data name="Home_PasswordBox_Password.PlaceholderText" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="Home_TextBox_UserName.PlaceholderText" xml:space="preserve">
+    <value>User Name</value>
   </data>
 </root>

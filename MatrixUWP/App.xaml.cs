@@ -1,5 +1,5 @@
 ﻿using MatrixUWP.Models;
-using MatrixUWP.Pages;
+using MatrixUWP.Views;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -33,14 +33,15 @@ namespace MatrixUWP
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
+            this.FocusVisualKind = FocusVisualKind.Reveal;
         }
 
         /// <summary>
         /// Culture strings resource
         /// </summary>
-        public static readonly ResourceLoader CultureResource = ResourceLoader.GetForCurrentView();
+        internal static readonly ResourceLoader CultureResource = ResourceLoader.GetForCurrentView();
 
-        public static readonly Configuration AppConfiguration = new Configuration();
+        internal static readonly Configuration AppConfiguration = new Configuration();
 
         /// <summary>
         /// Invoked when the application is launched normally by the end user.  Other entry points

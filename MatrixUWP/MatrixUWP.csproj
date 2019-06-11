@@ -131,32 +131,39 @@
     <Compile Include="Controls\MyNavigationView.cs" />
     <Compile Include="Converters\EnumConverter.cs" />
     <Compile Include="Models\Configuration.cs" />
-    <Compile Include="Pages\Account\Profile.xaml.cs">
+    <Compile Include="ViewModels\LayoutViewModel.cs" />
+    <Compile Include="Views\Account\Profile.xaml.cs">
       <DependentUpon>Profile.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\General\Home.xaml.cs">
+    <Compile Include="Views\General\Exam.xaml.cs">
+      <DependentUpon>Exam.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\General\Home.xaml.cs">
       <DependentUpon>Home.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\General\Homework.xaml.cs">
-      <DependentUpon>Homework.xaml</DependentUpon>
+    <Compile Include="Views\General\Course.xaml.cs">
+      <DependentUpon>Course.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\General\Messages.xaml.cs">
+    <Compile Include="Views\General\Library.xaml.cs">
+      <DependentUpon>Library.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\General\Messages.xaml.cs">
       <DependentUpon>Messages.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Help\Feedback.xaml.cs">
+    <Compile Include="Views\Help\Feedback.xaml.cs">
       <DependentUpon>Feedback.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Help\Manual.xaml.cs">
+    <Compile Include="Views\Help\Manual.xaml.cs">
       <DependentUpon>Manual.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Layout.xaml.cs">
+    <Compile Include="Views\Layout.xaml.cs">
       <DependentUpon>Layout.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Settings.xaml.cs">
+    <Compile Include="Views\Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Utils\RequestHelper.cs" />
+    <Compile Include="Utils\HttpRequestHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -169,6 +176,9 @@
     <Content Include="Assets\BadgeLogo.scale-150.png" />
     <Content Include="Assets\BadgeLogo.scale-200.png" />
     <Content Include="Assets\BadgeLogo.scale-400.png" />
+    <Content Include="Assets\Home\logoblack.png" />
+    <Content Include="Assets\Home\logowhite.png" />
+    <Content Include="Assets\Home\user.png" />
     <Content Include="Assets\LargeTile.scale-100.png" />
     <Content Include="Assets\LargeTile.scale-125.png" />
     <Content Include="Assets\LargeTile.scale-150.png" />
@@ -228,35 +238,43 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="Pages\Account\Profile.xaml">
+    <Page Include="Views\Account\Profile.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\General\Home.xaml">
+    <Page Include="Views\General\Exam.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\General\Homework.xaml">
+    <Page Include="Views\General\Home.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\General\Messages.xaml">
+    <Page Include="Views\General\Course.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\Help\Feedback.xaml">
+    <Page Include="Views\General\Library.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\Help\Manual.xaml">
+    <Page Include="Views\General\Messages.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\Layout.xaml">
+    <Page Include="Views\Help\Feedback.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Help\Manual.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Layout.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Pages\Settings.xaml">
+    <Page Include="Views\Settings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

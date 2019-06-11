@@ -15,14 +15,14 @@ using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
-namespace MatrixUWP.Pages.Help
+namespace MatrixUWP.Views.General
 {
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class Feedback : Page
+    public sealed partial class Messages : Page
     {
-        public Feedback()
+        public Messages()
         {
             this.InitializeComponent();
         }

@@ -10,15 +10,15 @@ using Windows.UI.Xaml;
 
 namespace MatrixUWP.Models
 {
-    public enum Language : int
+    enum Language : int
     {
         Default, English, Chinese
     }
-    public enum Theme : int
+    enum Theme : int
     {
         Default, Light, Dark
     }
-    public class Configuration : INotifyPropertyChanged
+    class Configuration : INotifyPropertyChanged
     {
         private Language appLanguage = (Language)(ApplicationData.Current.LocalSettings.Values["AppLanguage"] ?? 0);
         private Theme appTheme = (Theme)(ApplicationData.Current.LocalSettings.Values["AppTheme"] ?? 0);
