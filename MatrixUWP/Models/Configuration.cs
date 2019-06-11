@@ -10,50 +10,52 @@ using Windows.UI.Xaml;
 
 namespace MatrixUWP.Models
 {
+    public enum Language : int
+    {
+        Default, English, Chinese
+    }
+    public enum Theme : int
+    {
+        Default, Light, Dark
+    }
     public class Configuration : INotifyPropertyChanged
     {
-        private int appLanguage = (int)(ApplicationData.Current.LocalSettings.Values["AppLanguage"] ?? 0);
-        private int appTheme = (int)(ApplicationData.Current.LocalSettings.Values["AppTheme"] ?? 0);
+        private Language appLanguage = (Language)(ApplicationData.Current.LocalSettings.Values["AppLanguage"] ?? 0);
+        private Theme appTheme = (Theme)(ApplicationData.Current.LocalSettings.Values["AppTheme"] ?? 0);
 
-        /// <summary>
-        /// Language: 0 - default, 1 - en-us, 2 - zh-cn
-        /// </summary>
-        public int AppLanguage
+        public Language AppLanguage
         {
             get => appLanguage;
             set
             {
-                if (value < 0 || value > 2) value = 0;
-                ApplicationData.Current.LocalSettings.Values["AppLanguage"] = appLanguage = value;
+                if (!Enum.IsDefined(typeof(Language), value)) value = Language.Default;
+                appLanguage = value;
+                ApplicationData.Current.LocalSettings.Values["AppLanguage"] = (int)value;
                 ApplicationLanguages.PrimaryLanguageOverride = value switch
                 {
-                    1 => "en-us",
-                    2 => "zh-cn",
+                    Language.English => "en-us",
+                    Language.Chinese => "zh-cn",
                     _ => ""
                 };
             }
         }
 
-        /// <summary>
-        /// Theme: 0 - default, 1 - light, 2 - dark
-        /// </summary>
-        public int AppTheme
+        public Theme AppTheme
         {
             get => appTheme;
             set
             {
-                if (value < 0 || value > 2) value = 0;
-                ApplicationData.Current.LocalSettings.Values["AppTheme"] = appTheme = value;
+                if (!Enum.IsDefined(typeof(Theme), value)) value = Theme.Default;
+                appTheme = value;
+                ApplicationData.Current.LocalSettings.Values["AppTheme"] = (int)value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AppThemeValue)));
-
-
             }
         }
 
         /// <summary>
         /// Binding value for RequestTheme
         /// </summary>
-        public ElementTheme AppThemeValue => (ElementTheme)AppTheme;
+        public ElementTheme AppThemeValue => (ElementTheme)(int)AppTheme;
 
         public event PropertyChangedEventHandler PropertyChanged;
     }
