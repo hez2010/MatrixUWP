@@ -13,24 +13,19 @@ variables:
   solution: '**/*.sln'
   buildPlatform: 'x86|x64|ARM'
   buildConfiguration: 'Release'
-  appxPackageDir: '$(build.artifactStagingDirectory)\AppxPackages\\'
+  appxPackageDir: '$(Build.ArtifactStagingDirectory)\\AppxPackages\\'
 
 steps:
-- task: NuGetToolInstaller@0
-
-- task: NuGetCommand@2
-  inputs:
-    restoreSolution: '$(solution)'
-
 - task: Powershell@2
   inputs:
     filePath: 'install-windows-sdk.ps1'
     arguments: 18362
 
-- task: VSBuild@1
+- task: NuGetToolInstaller@0
+
+- task: NuGetCommand@2
   inputs:
-    solution: '$(solution)'
-    msbuildArgs: '/t:restore'
+    restoreSolution: '$(solution)'
 
 - task: VSBuild@1
   inputs:
@@ -38,3 +33,9 @@ steps:
     solution: '$(solution)'
     configuration: '$(buildConfiguration)'
     msbuildArgs: '/p:AppxBundlePlatforms="$(buildPlatform)" /p:AppxPackageDir="$(appxPackageDir)" /p:AppxPackageSigningEnabled=false'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'MatrixUWP-Feed'
+    publishLocation: 'Container'
