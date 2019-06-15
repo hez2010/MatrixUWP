@@ -29,13 +29,14 @@ steps:
 
 - task: VSBuild@1
   inputs:
-    platform: 'x64'
     solution: '$(solution)'
     configuration: '$(buildConfiguration)'
-    msbuildArgs: '/p:AppxBundlePlatforms="$(buildPlatform)" /p:AppxPackageDir="$(appxPackageDir)" /p:AppxPackageSigningEnabled=false'
+    msbuildArgs: '/p:Platforms="x86|x64|ARM" /p:AppxBundlePlatforms="$(buildPlatform)" /p:AppxPackageDir="$(appxPackageDir)" /p:AppxPackageSigningEnabled=false /p:AppxBundle=Always /p:UapAppxPackageBuildMode=StoreUpload'
 
-- task: PublishBuildArtifacts@1
+- task: UniversalPackages@0
   inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'MatrixUWP-Feed'
-    publishLocation: 'Container'
+    command: 'publish'
+    publishDirectory: '$(Build.ArtifactStagingDirectory)'
+    feedsToUsePublish: 'internal'
+    vstsFeedPublish: 'eb49d739-bee6-41c5-994d-331bc5ee5377'
+    versionOption: 'patch'
