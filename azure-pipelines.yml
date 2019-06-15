@@ -22,6 +22,11 @@ steps:
   inputs:
     restoreSolution: '$(solution)'
 
+- task: Powershell@2
+  inputs:
+    filePath: 'install-windows-sdk.ps1'
+    arguments: 18362
+
 - task: VSBuild@1
   inputs:
     solution: '$(solution)'
