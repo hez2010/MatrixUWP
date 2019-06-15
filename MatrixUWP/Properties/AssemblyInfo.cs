@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("UWP Client for Matrix")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Matrix")]
-[assembly: AssemblyProduct("MatrixUWP")]
+[assembly: AssemblyProduct("Matrix UWP")]
 [assembly: AssemblyCopyright("Copyright ©  2019")]
 [assembly: AssemblyTrademark("Matrix")]
 [assembly: AssemblyCulture("")]
