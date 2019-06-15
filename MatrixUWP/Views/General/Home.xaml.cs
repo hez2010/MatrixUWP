@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MatrixUWP.Models;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -27,9 +28,9 @@ namespace MatrixUWP.Views.General
             this.InitializeComponent();
         }
 
-        private void SignIn_Click(object sender, RoutedEventArgs e)
+        private async void SignIn_Click(object sender, RoutedEventArgs e)
         {
-
+            var result = await UserModel.SignInAsync(UserName.Text, Password.Password);
         }
     }
 }

@@ -12,14 +12,6 @@ namespace MatrixUWP.Test.Utils
     [TestClass]
     public class RequestHelperTest
     {
-        [TestMethod]
-        public async Task GetAsyncTest()
-        {
-            var stream = new InMemoryRandomAccessStream();
-            var result = await RequestHelper.GetAsync("/", null, stream);
-            Assert.IsTrue(result);
 
-            return;
-        }
     }
 }

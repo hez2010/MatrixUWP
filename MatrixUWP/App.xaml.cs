@@ -1,10 +1,12 @@
 ﻿using MatrixUWP.Models;
+using MatrixUWP.Utils;
 using MatrixUWP.Views;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Resources;
@@ -34,6 +36,8 @@ namespace MatrixUWP
             this.InitializeComponent();
             this.Suspending += OnSuspending;
             this.FocusVisualKind = FocusVisualKind.Reveal;
+
+            Task.Run(async () => await MatrixHttpClient.InitAsync());
         }
 
         /// <summary>
@@ -42,6 +46,8 @@ namespace MatrixUWP
         internal static readonly ResourceLoader CultureResource = ResourceLoader.GetForCurrentView();
 
         internal static readonly Configuration AppConfiguration = new Configuration();
+
+        internal static readonly MatrixJsonHttpRequest MatrixHttpClient = new MatrixJsonHttpRequest();
 
         /// <summary>
         /// Invoked when the application is launched normally by the end user.  Other entry points
