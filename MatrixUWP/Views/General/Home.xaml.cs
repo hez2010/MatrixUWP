@@ -1,9 +1,11 @@
 ﻿using MatrixUWP.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Text.Json.Serialization;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -31,6 +33,7 @@ namespace MatrixUWP.Views.General
         private async void SignIn_Click(object sender, RoutedEventArgs e)
         {
             var result = await UserModel.SignInAsync(UserName.Text, Password.Password);
+            Debug.WriteLine(JsonSerializer.ToString(result));
         }
     }
 }

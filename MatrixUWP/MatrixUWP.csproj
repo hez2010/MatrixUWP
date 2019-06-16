@@ -133,6 +133,7 @@
     <Compile Include="Extensions\ResponseExtensions.cs" />
     <Compile Include="Extensions\TaskExtensions.cs" />
     <Compile Include="Models\Configuration.cs" />
+    <Compile Include="Models\ResponseModel.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Utils\HttpJsonContent.cs" />
     <Compile Include="ViewModels\HomeViewModel.cs" />
