@@ -1,5 +1,8 @@
 ﻿using MatrixUWP.Controls;
+using MatrixUWP.Extensions;
+using MatrixUWP.Models;
 using MatrixUWP.ViewModels;
+using MatrixUWP.Views.Parameters;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -28,6 +31,7 @@ namespace MatrixUWP.Views
     public sealed partial class Layout : Page
     {
         private readonly LayoutViewModel viewModel = new LayoutViewModel();
+
         public Layout()
         {
             this.InitializeComponent();
@@ -83,9 +87,25 @@ namespace MatrixUWP.Views
                 ("ManualNaviPage", _) => typeof(Help.Manual),
                 ("FeedbackNaviPage", _) => typeof(Help.Feedback),
                 _ => throw new InvalidOperationException("No such page")
-            }, null, transition);
+            },
+            (item.Name, isSettingsPage) switch
+            {
+                ("HomeNaviPage", _) => new HomeParameters { UpdateUserData = UpdateUserData, UserData = viewModel.UserData, ShowMessage = ShowMessage },
+                _ => null
+            }, transition);
 
             NaviMenu.SelectedItem = naviItem;
+        }
+
+        private void UpdateUserData(UserDataModel userData)
+        {
+            userData.CopyTo(this.viewModel.UserData);
+        }
+
+        private void ShowMessage(string message)
+        {
+            this.viewModel.Message = message;
+            this.viewModel.ShowMessage = true;
         }
 
         private void NaviMenu_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)

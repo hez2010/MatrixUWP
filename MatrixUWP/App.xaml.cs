@@ -36,8 +36,6 @@ namespace MatrixUWP
             this.InitializeComponent();
             this.Suspending += OnSuspending;
             this.FocusVisualKind = FocusVisualKind.Reveal;
-
-            Task.Run(async () => await MatrixHttpClient.InitAsync());
         }
 
         /// <summary>
@@ -47,14 +45,14 @@ namespace MatrixUWP
 
         internal static readonly Configuration AppConfiguration = new Configuration();
 
-        internal static readonly MatrixJsonHttpRequest MatrixHttpClient = new MatrixJsonHttpRequest();
-
+        private static readonly MatrixJsonHttpRequestBuilder MatrixHttpClientBuilder = new MatrixJsonHttpRequestBuilder();
+        internal static MatrixJsonHttpRequestClient? MatrixHttpClient = null;
         /// <summary>
         /// Invoked when the application is launched normally by the end user.  Other entry points
         /// will be used such as when the application is launched to open a specific file.
         /// </summary>
         /// <param name="e">Details about the launch request and process.</param>
-        protected override void OnLaunched(LaunchActivatedEventArgs e)
+        protected override async void OnLaunched(LaunchActivatedEventArgs e)
         {
             // Do not repeat app initialization when the Window already has content,
             // just ensure that the window is active
@@ -86,6 +84,8 @@ namespace MatrixUWP
                 // Ensure the current window is active
                 Window.Current.Activate();
             }
+
+            MatrixHttpClient = await MatrixHttpClientBuilder.BuildAsync();
         }
 
         /// <summary>

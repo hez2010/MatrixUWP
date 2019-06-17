@@ -25,7 +25,7 @@
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
-        
+
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
@@ -37,24 +37,30 @@
                 <TextBlock Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Text="Matrix UWP" />
             </Grid>
         </Grid>
-
-        <ctl:MyNavigationView Grid.Row="1" BackRequested="NaviMenu_BackRequested" x:Name="NaviMenu" AlwaysShowHeader="False" Header="{x:Bind ((NavigationViewItem)NaviMenu.SelectedItem).Content, Mode=OneWay}" IsBackEnabled="{x:Bind NaviContent.CanGoBack, Mode=OneWay}" ItemInvoked="NaviMenu_ItemInvoked">
-            <ctl:MyNavigationView.MenuItems>
-                <NavigationViewItemHeader x:Uid="NaviMenu_Header_General"></NavigationViewItemHeader>
-                <NavigationViewItem x:Name="HomeNaviPage" Icon="Home" x:Uid="NaviMenu_Item_Home"></NavigationViewItem>
-                <NavigationViewItem x:Name="CourseNaviPage" Icon="Edit" x:Uid="NaviMenu_Item_Course" Visibility="{x:Bind viewModel.NaviItemVisibility, Mode=OneWay}"></NavigationViewItem>
-                <NavigationViewItem x:Name="ExamNaviPage" Icon="Clock" x:Uid="NaviMenu_Item_Exam" Visibility="{x:Bind viewModel.NaviItemVisibility, Mode=OneWay}"></NavigationViewItem>
-                <NavigationViewItem x:Name="LibraryNaviPage" Icon="Library" x:Uid="NaviMenu_Item_Library" Visibility="{x:Bind viewModel.NaviItemVisibility, Mode=OneWay}"></NavigationViewItem>
-                <NavigationViewItem x:Name="MessagesNaviPage" Icon="Message" x:Uid="NaviMenu_Item_Messages" Visibility="{x:Bind viewModel.NaviItemVisibility, Mode=OneWay}"></NavigationViewItem>
-                <NavigationViewItemSeparator Visibility="{x:Bind viewModel.NaviItemVisibility, Mode=OneWay}"/>
-                <NavigationViewItemHeader x:Uid="NaviMenu_Header_Account" Visibility="{x:Bind viewModel.NaviItemVisibility, Mode=OneWay}"></NavigationViewItemHeader>
-                <NavigationViewItem x:Name="ProfileNaviPage" Icon="ContactInfo" x:Uid="NaviMenu_Item_Profile" Visibility="{x:Bind viewModel.NaviItemVisibility, Mode=OneWay}"></NavigationViewItem>
-                <NavigationViewItemSeparator/>
-                <NavigationViewItemHeader x:Uid="NaviMenu_Header_Help"></NavigationViewItemHeader>
-                <NavigationViewItem x:Name="ManualNaviPage" Icon="Help" x:Uid="NaviMenu_Item_Manual"></NavigationViewItem>
-                <NavigationViewItem x:Name="FeedbackNaviPage" Icon="Send" x:Uid="NaviMenu_Item_Feedback" Visibility="{x:Bind viewModel.NaviItemVisibility, Mode=OneWay}"></NavigationViewItem>
-            </ctl:MyNavigationView.MenuItems>
-            <Frame x:Name="NaviContent"/>
-        </ctl:MyNavigationView>
+        <Grid Grid.Row="1">
+            <ctl:MyNavigationView BackRequested="NaviMenu_BackRequested" x:Name="NaviMenu" AlwaysShowHeader="False" Header="{x:Bind ((NavigationViewItem)NaviMenu.SelectedItem).Content, Mode=OneWay}" IsBackEnabled="{x:Bind NaviContent.CanGoBack, Mode=OneWay}" ItemInvoked="NaviMenu_ItemInvoked">
+                <ctl:MyNavigationView.MenuItems>
+                    <NavigationViewItemHeader x:Uid="NaviMenu_Header_General"></NavigationViewItemHeader>
+                    <NavigationViewItem x:Name="HomeNaviPage" Icon="Home" x:Uid="NaviMenu_Item_Home"></NavigationViewItem>
+                    <NavigationViewItem x:Name="CourseNaviPage" Icon="Edit" x:Uid="NaviMenu_Item_Course" Visibility="{x:Bind viewModel.UserData.SignedIn, Mode=OneWay}"></NavigationViewItem>
+                    <NavigationViewItem x:Name="ExamNaviPage" Icon="Clock" x:Uid="NaviMenu_Item_Exam" Visibility="{x:Bind viewModel.UserData.SignedIn, Mode=OneWay}"></NavigationViewItem>
+                    <NavigationViewItem x:Name="LibraryNaviPage" Icon="Library" x:Uid="NaviMenu_Item_Library" Visibility="{x:Bind viewModel.UserData.SignedIn, Mode=OneWay}"></NavigationViewItem>
+                    <NavigationViewItem x:Name="MessagesNaviPage" Icon="Message" x:Uid="NaviMenu_Item_Messages" Visibility="{x:Bind viewModel.UserData.SignedIn, Mode=OneWay}"></NavigationViewItem>
+                    <NavigationViewItemSeparator Visibility="{x:Bind viewModel.UserData.SignedIn, Mode=OneWay}"/>
+                    <NavigationViewItemHeader x:Uid="NaviMenu_Header_Account" Visibility="{x:Bind viewModel.UserData.SignedIn, Mode=OneWay}"></NavigationViewItemHeader>
+                    <NavigationViewItem x:Name="ProfileNaviPage" Icon="ContactInfo" x:Uid="NaviMenu_Item_Profile" Visibility="{x:Bind viewModel.UserData.SignedIn, Mode=OneWay}"></NavigationViewItem>
+                    <NavigationViewItemSeparator/>
+                    <NavigationViewItemHeader x:Uid="NaviMenu_Header_Help"></NavigationViewItemHeader>
+                    <NavigationViewItem x:Name="ManualNaviPage" Icon="Help" x:Uid="NaviMenu_Item_Manual"></NavigationViewItem>
+                    <NavigationViewItem x:Name="FeedbackNaviPage" Icon="Send" x:Uid="NaviMenu_Item_Feedback" Visibility="{x:Bind viewModel.UserData.SignedIn, Mode=OneWay}"></NavigationViewItem>
+                </ctl:MyNavigationView.MenuItems>
+                <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <Frame VerticalContentAlignment="Stretch" x:Name="NaviContent"/>
+                    <Border Visibility="{x:Bind viewModel.ShowMessage, Mode=OneWay}" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="100" Background="{ThemeResource SystemControlAccentAcrylicElementAccentMediumHighBrush}" Padding="15,5" CornerRadius="5" Opacity="50">
+                        <TextBlock Foreground="White" Text="{x:Bind viewModel.Message, Mode=OneWay}"/>
+                    </Border>
+                </Grid>
+            </ctl:MyNavigationView>
+        </Grid>
     </Grid>
 </Page>

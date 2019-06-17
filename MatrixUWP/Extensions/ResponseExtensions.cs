@@ -8,11 +8,17 @@ namespace MatrixUWP.Extensions
 {
     static class ResponseExtensions
     {
+        private static readonly JsonSerializerOptions options = new JsonSerializerOptions
+        {
+            AllowTrailingCommas = true,
+            IgnoreReadOnlyProperties = true,
+        };
+
         public static async Task<T> JsonAsync<T>(this Task<HttpResponseMessage> response)
         {
             var result = await response;
             var json = await result.Content.ReadAsStringAsync();
-            return JsonSerializer.Parse<T>(json);
+            return JsonSerializer.Parse<T>(json, options);
         }
 
         public static async Task<string> TextAsync(this Task<HttpResponseMessage> response)

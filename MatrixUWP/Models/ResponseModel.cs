@@ -17,7 +17,5 @@ namespace MatrixUWP.Models
         public T Data { get; set; }
         [JsonPropertyName("time")]
         public DateTime Time { get; set; }
-        [JsonPropertyName("paramData")]
-        public dynamic? ParamData { get; set; }
     }
 }

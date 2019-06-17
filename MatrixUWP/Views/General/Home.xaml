@@ -7,11 +7,12 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Background="{ThemeResource SystemControlAcrylicWindowMediumHighBrush}">
-    
+
     <Page.Resources>
         <RevealBorderBrush x:Key="LightBorderBrush" TargetTheme="Light" Color="{ThemeResource SystemAccentColor}" FallbackColor="{ThemeResource SystemAccentColor}" />
     </Page.Resources>
-    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+
+    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="{x:Bind parameters.UserData.SignedIn, Mode=OneWay, Converter={StaticResource NotVisibilityConverter}}">
         <Image Height="100" Source="{ThemeResource MatrixLogo}"></Image>
         <Border Margin="0,0,0,50" Background="{ThemeResource SystemControlAcrylicWindowBrush}" BorderBrush="LightGray" BorderThickness="2" CornerRadius="10">
             <StackPanel>
@@ -20,9 +21,18 @@
                         <ImageBrush ImageSource="/Assets/Home/user.png"/>
                     </Ellipse.Fill>
                 </Ellipse>
-                <TextBox x:Name="UserName" Margin="48,8" x:Uid="Home_TextBox_UserName" CornerRadius="3"></TextBox>
-                <PasswordBox x:Name="Password" Margin="48,8" x:Uid="Home_PasswordBox_Password" CornerRadius="3"></PasswordBox>
-                <Button x:Name="SignIn" CornerRadius="3" HorizontalAlignment="Stretch" Margin="48,8,48,48" Style="{ThemeResource ButtonRevealStyle}" Click="SignIn_Click">登录</Button>
+                <TextBox Margin="48,8" Width="200" x:Uid="Home_TextBox_UserName" CornerRadius="3" Text="{x:Bind viewModel.UserName, Mode=TwoWay}"></TextBox>
+                <PasswordBox Margin="48,8" Width="200" x:Uid="Home_PasswordBox_Password" CornerRadius="3" Password="{x:Bind viewModel.Password, Mode=TwoWay}"></PasswordBox>
+                <RelativePanel Width="200" Visibility="{x:Bind parameters.UserData.Captcha, Mode=OneWay}" Margin="48,8">
+                    <TextBox x:Name="Captcha" Width="100" HorizontalAlignment="Left" x:Uid="Home_TextBox_Captcha" CornerRadius="3" Text="{x:Bind viewModel.Captcha, Mode=TwoWay}"></TextBox>
+                    <Image RelativePanel.RightOf="Captcha" Width="100" Height="30" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stretch="Uniform" x:Name="CaptchaImage" Source="{x:Bind viewModel.CaptchaData, Mode=OneWay}"/>
+                </RelativePanel>
+                <Button IsEnabled="{x:Bind viewModel.SignInButtonEnabled, Mode=OneWay}" CornerRadius="3" HorizontalAlignment="Stretch" Margin="48,8,48,48" Style="{ThemeResource ButtonRevealStyle}" Click="SignIn_Click">
+                    <Grid>
+                        <TextBlock x:Uid="Home_TextBlock_SignIn"/>
+                        <ProgressRing Visibility="{x:Bind viewModel.Loading, Mode=OneWay}" IsActive="True"/>
+                    </Grid>
+                </Button>
             </StackPanel>
         </Border>
     </StackPanel>

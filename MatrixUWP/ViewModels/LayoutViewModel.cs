@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MatrixUWP.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -10,19 +11,40 @@ namespace MatrixUWP.ViewModels
 {
     class LayoutViewModel : INotifyPropertyChanged
     {
-        private bool isSignedIn;
-
-        public bool IsSignedIn
+        public LayoutViewModel()
         {
-            get => isSignedIn;
+            this.messageTimer.Tick += Timer_Tick;
+        }
+
+        private bool showMessage;
+        private string message;
+        private readonly DispatcherTimer messageTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(3) };
+
+        public UserDataModel UserData { get; } = new UserDataModel();
+        public bool ShowMessage
+        {
+            get => showMessage;
             set
             {
-                isSignedIn = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(NaviItemVisibility)));
+                showMessage = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ShowMessage)));
+                if (showMessage) messageTimer.Start();
+            }
+        }
+        public string Message
+        {
+            get => message;
+            set
+            {
+                message = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Message)));
             }
         }
 
-        public Visibility NaviItemVisibility => IsSignedIn ? Visibility.Visible : Visibility.Collapsed;
+        private void Timer_Tick(object sender, object e)
+        {
+            this.ShowMessage = false;
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
     }
