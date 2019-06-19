@@ -82,5 +82,28 @@ namespace MatrixUWP.Views.General
                 viewModel.Loading = false;
             }
         }
+
+        private async void SignOut_Click(object sender, RoutedEventArgs e)
+        {
+            viewModel.Loading = true;
+            await Dispatcher.Yield();
+            try
+            {
+                var result = await UserModel.SignOutAsync();
+
+                Debug.WriteLine(result.SerializeJson());
+                this.parameters.ShowMessage?.Invoke(result.Message);
+
+                this.parameters.UpdateUserData?.Invoke(new UserDataModel());
+            }
+            catch (Exception ex)
+            {
+                this.parameters.ShowMessage?.Invoke(ex.Message);
+            }
+            finally
+            {
+                viewModel.Loading = false;
+            }
+        }
     }
 }

@@ -210,5 +210,7 @@ namespace MatrixUWP.Models
         public static ValueTask<ResponseModel<CaptchaDataModel>> FetchCaptchaAsync() => App.MatrixHttpClient.GetAsync(
                 "/api/captcha"
             ).JsonAsync<ResponseModel<CaptchaDataModel>>();
+
+        public static ValueTask<ResponseModel> SignOutAsync() => App.MatrixHttpClient.PostAsync("/api/users/logout", new { }).JsonAsync<ResponseModel>();
     }
 }

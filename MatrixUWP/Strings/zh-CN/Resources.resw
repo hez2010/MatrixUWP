@@ -195,4 +195,7 @@
   <data name="Home_TextBlock_SignIn.Text" xml:space="preserve">
     <value>登录</value>
   </data>
+  <data name="Home_TextBlock_SignOut.Text" xml:space="preserve">
+    <value>退出</value>
+  </data>
 </root>
