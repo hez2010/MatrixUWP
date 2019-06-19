@@ -1,5 +1,6 @@
 ﻿using MatrixUWP.Extensions;
 using MatrixUWP.Models;
+using MatrixUWP.Utils;
 using MatrixUWP.ViewModels;
 using MatrixUWP.Views.Parameters;
 using System;
@@ -9,7 +10,6 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
-using System.Text.Json.Serialization;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Storage.Streams;
@@ -55,10 +55,10 @@ namespace MatrixUWP.Views.General
                 var result = await (string.IsNullOrEmpty(viewModel.Captcha) ? UserModel.SignInAsync(viewModel.UserName, viewModel.Password)
                     : UserModel.SignInAsync(viewModel.UserName, viewModel.Password, viewModel.Captcha));
 
-                Debug.WriteLine(JsonSerializer.ToString(result));
-                this.parameters.ShowMessage(result.Message);
+                Debug.WriteLine(result.SerializeJson());
+                this.parameters.ShowMessage?.Invoke(result.Message);
 
-                this.parameters.UpdateUserData(result.Data);
+                this.parameters.UpdateUserData?.Invoke(result.Data);
 
                 if (!result.Data.Captcha) return;
                 var captcha = await UserModel.FetchCaptchaAsync();
@@ -75,7 +75,7 @@ namespace MatrixUWP.Views.General
             }
             catch (Exception ex)
             {
-                this.parameters.ShowMessage(ex.Message);
+                this.parameters.ShowMessage?.Invoke(ex.Message);
             }
             finally
             {

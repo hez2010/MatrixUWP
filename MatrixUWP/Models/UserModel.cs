@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
-using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 using System.Threading.Tasks;
 
 namespace MatrixUWP.Models
@@ -14,7 +14,7 @@ namespace MatrixUWP.Models
     {
         private string captcha = "";
 
-        [JsonPropertyName("captcha")]
+        [JsonProperty("captcha")]
         public string Captcha
         {
             get => captcha;
@@ -38,14 +38,14 @@ namespace MatrixUWP.Models
         private string homePage = "";
         private string phone = "";
         private string email = "";
-        private dynamic userAddition;
+        private dynamic? userAddition;
         private string studentId = "";
         private string academy = "";
         private string specialty = "";
         private bool isInLib;
         private bool canCreateLib;
 
-        [JsonPropertyName("captcha")]
+        [JsonProperty("captcha")]
         public bool Captcha
         {
             get => captcha;
@@ -55,7 +55,7 @@ namespace MatrixUWP.Models
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Captcha)));
             }
         }
-        [JsonPropertyName("user_id")]
+        [JsonProperty("user_id")]
         public int UserId
         {
             get => userId;
@@ -66,7 +66,7 @@ namespace MatrixUWP.Models
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SignedIn)));
             }
         }
-        [JsonPropertyName("nickname")]
+        [JsonProperty("nickname")]
         public string NickName
         {
             get => nickName;
@@ -76,7 +76,7 @@ namespace MatrixUWP.Models
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(NickName)));
             }
         }
-        [JsonPropertyName("realname")]
+        [JsonProperty("realname")]
         public string RealName
         {
             get => realName;
@@ -86,7 +86,7 @@ namespace MatrixUWP.Models
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(RealName)));
             }
         }
-        [JsonPropertyName("username")]
+        [JsonProperty("username")]
         public string UserName
         {
             get => userName;
@@ -96,7 +96,7 @@ namespace MatrixUWP.Models
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(UserName)));
             }
         }
-        [JsonPropertyName("is_valid")]
+        [JsonProperty("is_valid")]
         public int IsValid
         {
             get => isValid; set
@@ -105,7 +105,7 @@ namespace MatrixUWP.Models
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsValid)));
             }
         }
-        [JsonPropertyName("homepage")]
+        [JsonProperty("homepage")]
         public string HomePage
         {
             get => homePage; set
@@ -114,7 +114,7 @@ namespace MatrixUWP.Models
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(HomePage)));
             }
         }
-        [JsonPropertyName("phone")]
+        [JsonProperty("phone")]
         public string Phone
         {
             get => phone; set
@@ -123,7 +123,7 @@ namespace MatrixUWP.Models
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Phone)));
             }
         }
-        [JsonPropertyName("email")]
+        [JsonProperty("email")]
         public string Email
         {
             get => email;
@@ -133,7 +133,7 @@ namespace MatrixUWP.Models
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Email)));
             }
         }
-        [JsonPropertyName("user_addition")]
+        [JsonProperty("user_addition")]
         public dynamic? UserAddition
         {
             get => userAddition;
@@ -143,7 +143,7 @@ namespace MatrixUWP.Models
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(UserAddition)));
             }
         }
-        [JsonPropertyName("student_id")]
+        [JsonProperty("student_id")]
         public string StudentId
         {
             get => studentId;
@@ -153,7 +153,7 @@ namespace MatrixUWP.Models
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(StudentId)));
             }
         }
-        [JsonPropertyName("academy")]
+        [JsonProperty("academy")]
         public string Academy
         {
             get => academy;
@@ -163,7 +163,7 @@ namespace MatrixUWP.Models
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Academy)));
             }
         }
-        [JsonPropertyName("specialty")]
+        [JsonProperty("specialty")]
         public string Specialty
         {
             get => specialty;
@@ -173,7 +173,7 @@ namespace MatrixUWP.Models
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Specialty)));
             }
         }
-        [JsonPropertyName("isInLib")]
+        [JsonProperty("isInLib")]
         public bool IsInLib
         {
             get => isInLib;
@@ -183,7 +183,7 @@ namespace MatrixUWP.Models
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsInLib)));
             }
         }
-        [JsonPropertyName("canCreateLib")]
+        [JsonProperty("canCreateLib")]
         public bool CanCreateLib
         {
             get => canCreateLib;
@@ -201,13 +201,13 @@ namespace MatrixUWP.Models
 
     class UserModel
     {
-        public static Task<ResponseModel<UserDataModel>> SignInAsync(string userName, string password, string captcha = "")
+        public static ValueTask<ResponseModel<UserDataModel>> SignInAsync(string userName, string password, string captcha = "")
             => (string.IsNullOrEmpty(captcha) ?
                 App.MatrixHttpClient.PostAsync("/api/users/login", new { username = userName, password = password })
                 : App.MatrixHttpClient.PostAsync("/api/users/login", new { username = userName, password = password, captcha = captcha }))
             .JsonAsync<ResponseModel<UserDataModel>>();
 
-        public static Task<ResponseModel<CaptchaDataModel>> FetchCaptchaAsync() => App.MatrixHttpClient.GetAsync(
+        public static ValueTask<ResponseModel<CaptchaDataModel>> FetchCaptchaAsync() => App.MatrixHttpClient.GetAsync(
                 "/api/captcha"
             ).JsonAsync<ResponseModel<CaptchaDataModel>>();
     }

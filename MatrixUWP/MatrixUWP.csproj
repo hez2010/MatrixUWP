@@ -139,6 +139,7 @@
     <Compile Include="Models\Configuration.cs" />
     <Compile Include="Models\ResponseModel.cs" />
     <Compile Include="Models\UserModel.cs" />
+    <Compile Include="Extensions\JsonExtensions.cs" />
     <Compile Include="Views\Parameters\CommonParameters.cs" />
     <Compile Include="Utils\HttpJsonContent.cs" />
     <Compile Include="Utils\MatrixJsonHttpRequestBuilder.cs" />
@@ -300,6 +301,9 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.8</Version>
+    </PackageReference>
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>12.0.2</Version>
     </PackageReference>
     <PackageReference Include="System.Text.Json">
       <Version>4.6.0-preview6.19303.8</Version>

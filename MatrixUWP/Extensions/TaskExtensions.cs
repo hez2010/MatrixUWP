@@ -13,5 +13,11 @@ namespace MatrixUWP.Extensions
             var result = await task;
             return await then(result);
         }
+
+        public static async ValueTask<U> Then<T, U>(this ValueTask<T> task, Func<T, ValueTask<U>> then)
+        {
+            var result = await task;
+            return await then(result);
+        }
     }
 }

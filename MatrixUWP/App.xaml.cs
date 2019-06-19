@@ -46,8 +46,13 @@ namespace MatrixUWP
         internal static readonly Configuration AppConfiguration = new Configuration();
 
         private static readonly MatrixJsonHttpRequestBuilder MatrixHttpClientBuilder = new MatrixJsonHttpRequestBuilder();
-        internal static MatrixJsonHttpRequestClient? MatrixHttpClient = null;
-        /// <summary>
+
+        private static MatrixJsonHttpRequestClient? matrixHttpClient;
+        internal static MatrixJsonHttpRequestClient MatrixHttpClient
+        {
+            get => matrixHttpClient ?? throw new InvalidOperationException("Http client hasn't initialized yet.");
+            set => matrixHttpClient = value;
+        }
         /// Invoked when the application is launched normally by the end user.  Other entry points
         /// will be used such as when the application is launched to open a specific file.
         /// </summary>

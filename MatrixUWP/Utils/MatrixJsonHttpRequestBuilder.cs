@@ -32,7 +32,7 @@ namespace MatrixUWP.Utils
             this.httpClient.DefaultRequestHeaders.IfModifiedSince = DateTimeOffset.Now;
         }
 
-        public async Task<MatrixJsonHttpRequestClient> BuildAsync()
+        public async ValueTask<MatrixJsonHttpRequestClient> BuildAsync()
         {
             var uri = new Uri(baseUri, "/api/users/login");
             Debug.WriteLine($"Initial Requesting: GET {uri}");

@@ -1,6 +1,6 @@
-﻿using System;
+﻿using MatrixUWP.Extensions;
+using System;
 using System.Runtime.InteropServices.WindowsRuntime;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Storage.Streams;
@@ -13,7 +13,7 @@ namespace MatrixUWP.Utils
     {
         private readonly T json;
         private string serializedJson = "";
-        private string SerializedJson => string.IsNullOrEmpty(serializedJson) ? serializedJson = JsonSerializer.ToString(json) : serializedJson;
+        private string SerializedJson => string.IsNullOrEmpty(serializedJson) ? serializedJson = json.SerializeJson() : serializedJson;
 
         public HttpContentHeaderCollection Headers { get; }
 

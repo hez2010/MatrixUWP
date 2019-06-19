@@ -14,20 +14,20 @@ namespace MatrixUWP.Extensions
             IgnoreReadOnlyProperties = true,
         };
 
-        public static async Task<T> JsonAsync<T>(this Task<HttpResponseMessage> response)
+        public static async ValueTask<T> JsonAsync<T>(this ValueTask<HttpResponseMessage> response)
         {
             var result = await response;
             var json = await result.Content.ReadAsStringAsync();
             return JsonSerializer.Parse<T>(json, options);
         }
 
-        public static async Task<string> TextAsync(this Task<HttpResponseMessage> response)
+        public static async ValueTask<string> TextAsync(this ValueTask<HttpResponseMessage> response)
         {
             var result = await response;
             return await result.Content.ReadAsStringAsync();
         }
 
-        public static async Task<IBuffer> BlobAsync(this Task<HttpResponseMessage> response)
+        public static async ValueTask<IBuffer> BlobAsync(this ValueTask<HttpResponseMessage> response)
         {
             var result = await response;
             var buffer = await result.Content.ReadAsBufferAsync();

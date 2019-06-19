@@ -17,7 +17,7 @@ namespace MatrixUWP.ViewModels
         }
 
         private bool showMessage;
-        private string message;
+        private string message = "";
         private readonly DispatcherTimer messageTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(3) };
 
         public UserDataModel UserData { get; } = new UserDataModel();
