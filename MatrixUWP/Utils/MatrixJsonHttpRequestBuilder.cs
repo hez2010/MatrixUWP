@@ -10,9 +10,9 @@ namespace MatrixUWP.Utils
     {
         private readonly HttpClient httpClient;
 #if DEBUG
-        private readonly Uri baseUri = new Uri("http://test.vmatrix.org.cn/");
+        internal static readonly Uri baseUri = new Uri("http://test.vmatrix.org.cn/");
 #else
-        private readonly Uri baseUri = new Uri("https://vmatrix.org.cn/");
+        internal static readonly Uri baseUri = new Uri("https://vmatrix.org.cn/");
 #endif
 
         public MatrixJsonHttpRequestBuilder()

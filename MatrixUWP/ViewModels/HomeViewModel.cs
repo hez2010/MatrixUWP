@@ -1,10 +1,12 @@
 ﻿using MatrixUWP.Models;
+using MatrixUWP.Utils;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 
 namespace MatrixUWP.ViewModels
@@ -34,6 +36,7 @@ namespace MatrixUWP.ViewModels
             {
                 userName = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(UserName)));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Avatar)));
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SignInButtonEnabled)));
             }
         }
@@ -56,6 +59,28 @@ namespace MatrixUWP.ViewModels
             {
                 captcha = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Captcha)));
+            }
+        }
+
+        public ImageSource Avatar
+        {
+            get
+            {
+                var bitmap = new BitmapImage();
+                if (string.IsNullOrEmpty(userName)) bitmap.UriSource = new Uri("ms-appx:///Assets/Home/user.png");
+                else
+                {
+                    try
+                    {
+                        bitmap.UriSource = new Uri(MatrixJsonHttpRequestBuilder.baseUri, $"/api/users/profile/avatar?username={userName}");
+                    }
+                    catch
+                    {
+                        bitmap.UriSource = new Uri("ms-appx:///Assets/Home/user.png");
+                    }
+                }
+
+                return bitmap;
             }
         }
 

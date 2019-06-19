@@ -18,7 +18,7 @@
                 <StackPanel>
                     <Ellipse Margin="48" Height="100" Width="100">
                         <Ellipse.Fill>
-                            <ImageBrush ImageSource="/Assets/Home/user.png"/>
+                            <ImageBrush ImageSource="{x:Bind viewModel.Avatar, Mode=OneWay}"/>
                         </Ellipse.Fill>
                     </Ellipse>
                     <TextBox Margin="48,8" Width="200" x:Uid="Home_TextBox_UserName" CornerRadius="3" Text="{x:Bind viewModel.UserName, Mode=TwoWay}"></TextBox>
