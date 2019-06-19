@@ -47,17 +47,12 @@ namespace MatrixUWP
 
         private static readonly MatrixJsonHttpRequestBuilder MatrixHttpClientBuilder = new MatrixJsonHttpRequestBuilder();
 
-        private static MatrixJsonHttpRequestClient? matrixHttpClient;
-        internal static MatrixJsonHttpRequestClient MatrixHttpClient
-        {
-            get => matrixHttpClient ?? throw new InvalidOperationException("Http client hasn't initialized yet.");
-            set => matrixHttpClient = value;
-        }
+        internal static MatrixJsonHttpRequestClient MatrixHttpClient = MatrixHttpClientBuilder.Build();
         /// Invoked when the application is launched normally by the end user.  Other entry points
         /// will be used such as when the application is launched to open a specific file.
         /// </summary>
         /// <param name="e">Details about the launch request and process.</param>
-        protected override async void OnLaunched(LaunchActivatedEventArgs e)
+        protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
             // Do not repeat app initialization when the Window already has content,
             // just ensure that the window is active
@@ -89,8 +84,6 @@ namespace MatrixUWP
                 // Ensure the current window is active
                 Window.Current.Activate();
             }
-
-            MatrixHttpClient = await MatrixHttpClientBuilder.BuildAsync();
         }
 
         /// <summary>

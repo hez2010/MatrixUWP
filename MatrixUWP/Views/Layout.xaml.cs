@@ -48,6 +48,8 @@ namespace MatrixUWP.Views
 
             // Navigate to Home
             NavigateToPage(HomeNaviPage, false, NaviMenu.PaneDisplayMode);
+
+
         }
 
 

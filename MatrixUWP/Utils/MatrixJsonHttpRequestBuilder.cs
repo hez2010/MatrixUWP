@@ -32,13 +32,6 @@ namespace MatrixUWP.Utils
             this.httpClient.DefaultRequestHeaders.IfModifiedSince = DateTimeOffset.Now;
         }
 
-        public async ValueTask<MatrixJsonHttpRequestClient> BuildAsync()
-        {
-            var uri = new Uri(baseUri, "/api/users/login");
-            Debug.WriteLine($"Initial Requesting: GET {uri}");
-            await httpClient.GetAsync(uri);
-
-            return new MatrixJsonHttpRequestClient(httpClient, baseUri);
-        }
+        public MatrixJsonHttpRequestClient Build() => new MatrixJsonHttpRequestClient(httpClient, baseUri);
     }
 }

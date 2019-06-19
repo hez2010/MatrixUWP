@@ -10,14 +10,32 @@ namespace MatrixUWP.Utils
     {
         private readonly HttpClient httpClient;
         private readonly Uri baseUri;
+        private bool tokenSaved = false;
+
         public MatrixJsonHttpRequestClient(HttpClient httpClient, Uri baseUri)
         {
             this.httpClient = httpClient;
             this.baseUri = baseUri;
         }
 
+        private async ValueTask EnsureTokenSavedAsync()
+        {
+            if (tokenSaved) return;
+            try
+            {
+                var uri = new Uri(baseUri, "/api/users/login");
+                await httpClient.GetAsync(uri);
+            }
+            catch
+            {
+                return;
+            }
+            this.tokenSaved = true;
+        }
+
         public async ValueTask<HttpResponseMessage> GetAsync(string path)
         {
+            await EnsureTokenSavedAsync();
             var uri = new Uri(baseUri, path);
             var meta = $"GET {uri}";
             Debug.WriteLine($"Requesting: {meta}");
@@ -26,6 +44,7 @@ namespace MatrixUWP.Utils
 
         public async ValueTask<HttpResponseMessage> PostAsync<T>(string path, T body)
         {
+            await EnsureTokenSavedAsync();
             var uri = new Uri(baseUri, path);
             var jsonContent = new HttpJsonContent<T>(body);
             var meta = $"POST {uri}";
@@ -35,6 +54,7 @@ namespace MatrixUWP.Utils
 
         public async ValueTask<HttpResponseMessage> PutAsync<T>(string path, T body)
         {
+            await EnsureTokenSavedAsync();
             var uri = new Uri(baseUri, path);
             var jsonContent = new HttpJsonContent<T>(body);
             var meta = $"PUT {uri}";
@@ -44,6 +64,7 @@ namespace MatrixUWP.Utils
 
         public async ValueTask<HttpResponseMessage> DeleteAsync(string path)
         {
+            await EnsureTokenSavedAsync();
             var uri = new Uri(baseUri, path);
             string meta = $"DELETE {uri}";
             Debug.WriteLine($"Requesting: {meta}");
