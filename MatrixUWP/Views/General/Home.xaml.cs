@@ -43,7 +43,11 @@ namespace MatrixUWP.Views.General
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            this.parameters = (HomeParameters)e.Parameter;
+            if (e.Parameter is HomeParameters parameters)
+            {
+                this.parameters = parameters;
+                this.parameters.UserData.Captcha = false;
+            }
         }
 
         private async void SignIn_Click(object sender, RoutedEventArgs e)
