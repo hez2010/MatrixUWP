@@ -52,12 +52,40 @@ namespace MatrixUWP.Views
 
         }
 
+        private (Type? Page, object? Parameter) GetTargetNaviInfo(string naviPageName, bool isSettingsPage)
+        {
+            var page = (naviPageName, isSettingsPage) switch
+            {
+                (_, true) => typeof(Settings),
+                ("HomeNaviPage", _) => typeof(General.Home),
+                ("CourseNaviPage", _) => typeof(General.Course),
+                ("ExamNaviPage", _) => typeof(General.Exam),
+                ("LibraryNaviPage", _) => typeof(General.Library),
+                ("MessagesNaviPage", _) => typeof(General.Messages),
+                ("ProfileNaviPage", _) => typeof(Account.Profile),
+                ("ManualNaviPage", _) => typeof(Help.Manual),
+                ("FeedbackNaviPage", _) => typeof(Help.Feedback),
+                _ => null
+            };
+
+            var parameter = (naviPageName, isSettingsPage) switch
+            {
+                ("HomeNaviPage", _) => new HomeParameters { UpdateUserData = UpdateUserData, UserData = viewModel.UserData, ShowMessage = ShowMessage },
+                _ => null
+            };
+
+            return (page, parameter);
+        }
 
         private int lastSelectedItemIndex = -1;
         private readonly Stack<int> navimenuNaviHistory = new Stack<int>();
         private void NavigateToPage(object naviItem, bool isSettingsPage, NavigationViewPaneDisplayMode paneDisplayMode)
         {
             if (!(naviItem is NavigationViewItem item)) return;
+
+            var targetInfo = GetTargetNaviInfo(item.Name, isSettingsPage);
+            if (targetInfo.Page == null || targetInfo.Page == NaviContent.Content?.GetType()) return;
+
             var index = NaviMenu.MenuItems.IndexOf(item);
             if (isSettingsPage)
             {
@@ -77,24 +105,7 @@ namespace MatrixUWP.Views
             if (lastSelectedItemIndex != -1) navimenuNaviHistory.Push(lastSelectedItemIndex);
             lastSelectedItemIndex = index;
 
-            NaviContent.Navigate((item.Name, isSettingsPage) switch
-            {
-                (_, true) => typeof(Settings),
-                ("HomeNaviPage", _) => typeof(General.Home),
-                ("CourseNaviPage", _) => typeof(General.Course),
-                ("ExamNaviPage", _) => typeof(General.Exam),
-                ("LibraryNaviPage", _) => typeof(General.Library),
-                ("MessagesNaviPage", _) => typeof(General.Messages),
-                ("ProfileNaviPage", _) => typeof(Account.Profile),
-                ("ManualNaviPage", _) => typeof(Help.Manual),
-                ("FeedbackNaviPage", _) => typeof(Help.Feedback),
-                _ => throw new InvalidOperationException("No such page")
-            },
-            (item.Name, isSettingsPage) switch
-            {
-                ("HomeNaviPage", _) => new HomeParameters { UpdateUserData = UpdateUserData, UserData = viewModel.UserData, ShowMessage = ShowMessage },
-                _ => null
-            }, transition);
+            NaviContent.Navigate(targetInfo.Page, targetInfo.Parameter, transition);
 
             NaviMenu.SelectedItem = naviItem;
         }
