@@ -56,26 +56,29 @@ namespace MatrixUWP.Views.General
             await Dispatcher.Yield();
             try
             {
-                var result = await (string.IsNullOrEmpty(viewModel.Captcha) ? UserModel.SignInAsync(viewModel.UserName, viewModel.Password)
+                await TryHelper.TryAsync(async () =>
+                {
+                    var result = await (string.IsNullOrEmpty(viewModel.Captcha) ? UserModel.SignInAsync(viewModel.UserName, viewModel.Password)
                     : UserModel.SignInAsync(viewModel.UserName, viewModel.Password, viewModel.Captcha));
 
-                Debug.WriteLine(result.SerializeJson());
-                this.parameters.ShowMessage?.Invoke(result.Message);
+                    Debug.WriteLine(result.SerializeJson());
+                    this.parameters.ShowMessage?.Invoke(result.Message);
 
-                this.parameters.UpdateUserData?.Invoke(result.Data);
+                    this.parameters.UpdateUserData?.Invoke(result.Data);
 
-                if (!result.Data.Captcha) return;
-                var captcha = await UserModel.FetchCaptchaAsync();
+                    if (!result.Data.Captcha) return;
+                    var captcha = await UserModel.FetchCaptchaAsync();
 
-                var stream = new MemoryStream();
-                using var writer = new StreamWriter(stream);
-                await writer.WriteAsync(captcha.Data.Captcha);
-                await writer.FlushAsync();
-                stream.Position = 0;
+                    var stream = new MemoryStream();
+                    using var writer = new StreamWriter(stream);
+                    await writer.WriteAsync(captcha.Data.Captcha);
+                    await writer.FlushAsync();
+                    stream.Position = 0;
 
-                var svg = new SvgImageSource { RasterizePixelWidth = 150, RasterizePixelHeight = 50 };
-                await svg.SetSourceAsync(stream.AsRandomAccessStream());
-                viewModel.CaptchaData = svg;
+                    var svg = new SvgImageSource { RasterizePixelWidth = 150, RasterizePixelHeight = 50 };
+                    await svg.SetSourceAsync(stream.AsRandomAccessStream());
+                    viewModel.CaptchaData = svg;
+                });
             }
             catch (Exception ex)
             {
@@ -93,12 +96,15 @@ namespace MatrixUWP.Views.General
             await Dispatcher.Yield();
             try
             {
-                var result = await UserModel.SignOutAsync();
+                await TryHelper.Try(async () =>
+                {
+                    var result = await UserModel.SignOutAsync();
 
-                Debug.WriteLine(result.SerializeJson());
-                this.parameters.ShowMessage?.Invoke(result.Message);
+                    Debug.WriteLine(result.SerializeJson());
+                    this.parameters.ShowMessage?.Invoke(result.Message);
 
-                this.parameters.UpdateUserData?.Invoke(new UserDataModel());
+                    this.parameters.UpdateUserData?.Invoke(new UserDataModel());
+                });
             }
             catch (Exception ex)
             {

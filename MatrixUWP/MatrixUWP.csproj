@@ -140,6 +140,8 @@
     <Compile Include="Models\ResponseModel.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Extensions\JsonExtensions.cs" />
+    <Compile Include="Utils\LogHelper.cs" />
+    <Compile Include="Utils\TryHelper.cs" />
     <Compile Include="Views\Parameters\CommonParameters.cs" />
     <Compile Include="Utils\HttpJsonContent.cs" />
     <Compile Include="Utils\MatrixJsonHttpRequestBuilder.cs" />

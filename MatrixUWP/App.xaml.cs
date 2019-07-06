@@ -35,7 +35,7 @@ namespace MatrixUWP
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
-            this.FocusVisualKind = FocusVisualKind.Reveal;
+            this.UnhandledException += OnUnhandledException;
         }
 
         /// <summary>
@@ -108,6 +108,11 @@ namespace MatrixUWP
             var deferral = e.SuspendingOperation.GetDeferral();
             //TODO: Save application state and stop any background activity
             deferral.Complete();
+        }
+
+        private void OnUnhandledException(object sender, Windows.UI.Xaml.UnhandledExceptionEventArgs e)
+        {
+            throw e.Exception;
         }
     }
 }
