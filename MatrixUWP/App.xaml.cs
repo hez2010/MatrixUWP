@@ -82,6 +82,7 @@ namespace MatrixUWP
                     rootFrame.Navigate(typeof(Layout), e.Arguments);
                 }
                 // Ensure the current window is active
+
                 Window.Current.Activate();
             }
         }

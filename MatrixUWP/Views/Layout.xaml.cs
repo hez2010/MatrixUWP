@@ -21,8 +21,6 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
 
-// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
-
 namespace MatrixUWP.Views
 {
     /// <summary>
@@ -36,7 +34,7 @@ namespace MatrixUWP.Views
         {
             this.InitializeComponent();
 
-            // Setup title bar style
+            // Set up title bar style
             Windows.ApplicationModel.Core.CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
             var titleBar = Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().TitleBar;
             titleBar.ButtonBackgroundColor = Colors.Transparent;
@@ -48,12 +46,17 @@ namespace MatrixUWP.Views
 
             // Navigate to Home
             NavigateToPage(HomeNaviPage, false, NaviMenu.PaneDisplayMode);
-
-
         }
 
+        /// <summary>
+        /// Get target navi page and parameter
+        /// </summary>
+        /// <param name="naviPageName"></param>
+        /// <param name="isSettingsPage"></param>
+        /// <returns></returns>
         private (Type? Page, object? Parameter) GetTargetNaviInfo(string naviPageName, bool isSettingsPage)
         {
+            // Get target page
             var page = (naviPageName, isSettingsPage) switch
             {
                 (_, true) => typeof(Settings),
@@ -68,16 +71,24 @@ namespace MatrixUWP.Views
                 _ => null
             };
 
+            // Get parameters needed
             var parameter = (naviPageName, isSettingsPage) switch
             {
                 ("HomeNaviPage", _) => new HomeParameters { UpdateUserData = UpdateUserData, UserData = viewModel.UserData, ShowMessage = ShowMessage },
-                _ => null
+                ("ProfileNaviPage", _) => new ProfileParameters {  UpdateUserData = UpdateUserData, UserData = viewModel.UserData, ShowMessage = ShowMessage },
+                _ => new object()
             };
 
             return (page, parameter);
         }
 
+        /// <summary>
+        /// The last selected index of navimenu
+        /// </summary>
         private int lastSelectedItemIndex = -1;
+        /// <summary>
+        /// Page navi history
+        /// </summary>
         private readonly Stack<int> navimenuNaviHistory = new Stack<int>();
         private void NavigateToPage(object naviItem, bool isSettingsPage, NavigationViewPaneDisplayMode paneDisplayMode)
         {
@@ -86,6 +97,7 @@ namespace MatrixUWP.Views
             var targetInfo = GetTargetNaviInfo(item.Name, isSettingsPage);
             if (targetInfo.Page == null || targetInfo.Page == NaviContent.Content?.GetType()) return;
 
+            // Get current selected index of navimenu
             var index = NaviMenu.MenuItems.IndexOf(item);
             if (isSettingsPage)
             {
@@ -93,6 +105,7 @@ namespace MatrixUWP.Views
                 index = NaviMenu.MenuItems.Count;
             }
 
+            // Set up page transition effect base on pane display mode
             NavigationTransitionInfo transition;
             if (paneDisplayMode == NavigationViewPaneDisplayMode.Top)
             {
@@ -102,17 +115,26 @@ namespace MatrixUWP.Views
                 };
             }
             else transition = new DrillInNavigationTransitionInfo();
+
+            // Update navi history and last selected index of navimenu
             if (lastSelectedItemIndex != -1) navimenuNaviHistory.Push(lastSelectedItemIndex);
             lastSelectedItemIndex = index;
 
+            // Navigate to page
             NaviContent.Navigate(targetInfo.Page, targetInfo.Parameter, transition);
 
+            // Set current selected item for navimenu
             NaviMenu.SelectedItem = naviItem;
         }
 
         private void UpdateUserData(UserDataModel userData)
         {
             userData.CopyTo(this.viewModel.UserData);
+            if (!(userData?.SignedIn ?? false))
+            {
+                navimenuNaviHistory.Clear();
+                NavigateToPage(HomeNaviPage, false, NaviMenu.PaneDisplayMode);
+            }
         }
 
         private void ShowMessage(string message)

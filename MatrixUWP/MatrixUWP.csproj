@@ -14,7 +14,7 @@
     <AssemblyName>MatrixUWP</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
-    <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.18362.0</TargetPlatformVersion>
+    <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.17763.0</TargetPlatformVersion>
     <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
@@ -142,6 +142,7 @@
     <Compile Include="Extensions\JsonExtensions.cs" />
     <Compile Include="Utils\LogHelper.cs" />
     <Compile Include="Utils\TryHelper.cs" />
+    <Compile Include="ViewModels\ProfileViewModel.cs" />
     <Compile Include="Views\Parameters\CommonParameters.cs" />
     <Compile Include="Utils\HttpJsonContent.cs" />
     <Compile Include="Utils\MatrixJsonHttpRequestBuilder.cs" />
@@ -176,6 +177,7 @@
     <Compile Include="Views\Layout.xaml.cs">
       <DependentUpon>Layout.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Parameters\ProfileParameters.cs" />
     <Compile Include="Views\Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
     </Compile>

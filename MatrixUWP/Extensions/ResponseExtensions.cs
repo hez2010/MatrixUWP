@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using System.Threading.Tasks;
 using Windows.Storage.Streams;
 using Windows.Web.Http;
+using System.Diagnostics;
 
 namespace MatrixUWP.Extensions
 {
@@ -24,6 +25,7 @@ namespace MatrixUWP.Extensions
         {
             var result = await response;
             var json = await result.Content.ReadAsStringAsync();
+            Debug.WriteLine($"Get response: {json}");
             return JsonConvert.DeserializeObject<T>(json);
         }
 #endif
@@ -31,13 +33,16 @@ namespace MatrixUWP.Extensions
         public static async ValueTask<string> TextAsync(this ValueTask<HttpResponseMessage> response)
         {
             var result = await response;
-            return await result.Content.ReadAsStringAsync();
+            var text = await result.Content.ReadAsStringAsync();
+            Debug.WriteLine($"Get response: {text}");
+            return text;
         }
 
         public static async ValueTask<IBuffer> BlobAsync(this ValueTask<HttpResponseMessage> response)
         {
             var result = await response;
             var buffer = await result.Content.ReadAsBufferAsync();
+            Debug.WriteLine($"Get response: [Blob]");
             return buffer;
         }
     }

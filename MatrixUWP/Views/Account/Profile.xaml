@@ -8,7 +8,78 @@
     mc:Ignorable="d"
     Background="{ThemeResource SystemControlAcrylicWindowMediumHighBrush}">
 
+    <!-- TODO: language resource -->
     <Grid>
+        <StackPanel  HorizontalAlignment="Right" VerticalAlignment="Top" x:Name="UserAvatar" Margin="88,128">
 
+            <Button x:Name="ChangeAvatar" Margin="8" HorizontalAlignment="Center" Click="ChangeAvatar_Click">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <ContentPresenter Content="{TemplateBinding Content}"></ContentPresenter>
+                    </ControlTemplate>
+                </Button.Template>
+                <Ellipse Height="150" Width="150">
+                    <Ellipse.Fill>
+                        <ImageBrush ImageSource="{x:Bind viewModel.Avatar}"/>
+                    </Ellipse.Fill>
+                </Ellipse>
+            </Button>
+        </StackPanel>
+        <StackPanel>
+            <StackPanel Margin="48,24,48,8">
+                <RelativePanel HorizontalAlignment="Center" Margin="8">
+                    <TextBlock FontSize="24" x:Name="HelloTextBlock" Text="你好，"></TextBlock>
+                    <TextBlock FontSize="24" x:Name="UserNameTextBlock" RelativePanel.RightOf="HelloTextBlock" Text="{x:Bind viewModel.UserData.UserName, Mode=OneWay}"></TextBlock>
+                    <TextBlock FontSize="24" RelativePanel.RightOf="UserNameTextBlock" Text="！"></TextBlock>
+                </RelativePanel>
+                <TextBlock Margin="8" FontSize="16" Text="基本信息" HorizontalAlignment="Left"></TextBlock>
+                <Border BorderThickness="1" BorderBrush="Gray"></Border>
+            </StackPanel>
+            <RelativePanel Margin="0,8">
+                <TextBlock x:Name="NameTextBlock" TextAlignment="Right" Margin="16,8" Width="100" Text="姓名"></TextBlock>
+                <TextBox IsReadOnly="True" RelativePanel.RightOf="NameTextBlock" Margin="0,4" CornerRadius="3" Width="200" Text="{x:Bind viewModel.UserData.UserName, Mode=OneWay}"></TextBox>
+            </RelativePanel>
+            <RelativePanel Margin="0,8">
+                <TextBlock x:Name="SchoolTextBlock" TextAlignment="Right" Margin="16,8" Width="100" Text="学院"></TextBlock>
+                <TextBox IsReadOnly="True" RelativePanel.RightOf="SchoolTextBlock" Margin="0,4" CornerRadius="3" Width="200" Text="{x:Bind viewModel.UserData.Academy, Mode=OneWay}"></TextBox>
+            </RelativePanel>
+            <RelativePanel Margin="0,8">
+                <TextBlock x:Name="MajorTextBlock" TextAlignment="Right" Margin="16,8" Width="100" Text="专业"></TextBlock>
+                <TextBox IsReadOnly="True" RelativePanel.RightOf="MajorTextBlock" Margin="0,4" CornerRadius="3" Width="200" Text="{x:Bind viewModel.UserData.Specialty, Mode=OneWay}"></TextBox>
+            </RelativePanel>
+            <RelativePanel Margin="0,8">
+                <TextBlock x:Name="NumberTextBlock" TextAlignment="Right" Margin="16,8" Width="100" Text="学号"></TextBlock>
+                <TextBox IsReadOnly="True" RelativePanel.RightOf="NumberTextBlock" Margin="0,4" CornerRadius="3" Width="200" Text="{x:Bind viewModel.UserData.StudentId, Mode=OneWay}"></TextBox>
+            </RelativePanel>
+            <RelativePanel Margin="0,8">
+                <TextBlock x:Name="NickNameTextBlock" TextAlignment="Right" Margin="16,8" Width="100" Text="昵称"></TextBlock>
+                <TextBox RelativePanel.RightOf="NickNameTextBlock" Margin="0,4" CornerRadius="3" Width="200" Text="{x:Bind viewModel.UserData.NickName, Mode=TwoWay}"></TextBox>
+            </RelativePanel>
+            <RelativePanel Margin="0,8">
+                <TextBlock x:Name="EmailTextBlock" TextAlignment="Right" Margin="16,8" Width="100" Text="邮箱"></TextBlock>
+                <TextBox RelativePanel.RightOf="EmailTextBlock" InputScope="EmailNameOrAddress" Margin="0,4" CornerRadius="3" Width="200" Text="{x:Bind viewModel.UserData.Email, Mode=TwoWay}"></TextBox>
+            </RelativePanel>
+            <RelativePanel Margin="0,8">
+                <TextBlock x:Name="PhoneTextBlock" TextAlignment="Right" Margin="16,8" Width="100" Text="电话"></TextBlock>
+                <TextBox RelativePanel.RightOf="PhoneTextBlock" InputScope="EmailNameOrAddress" Margin="0,4" CornerRadius="3" Width="200" Text="{x:Bind viewModel.UserData.Phone, Mode=TwoWay}"></TextBox>
+            </RelativePanel>
+            <RelativePanel Margin="0,8">
+                <TextBlock x:Name="WebsiteTextBlock" TextAlignment="Right" Margin="16,8" Width="100" Text="网站"></TextBlock>
+                <TextBox RelativePanel.RightOf="WebsiteTextBlock" InputScope="EmailNameOrAddress" Margin="0,4" CornerRadius="3" Width="200" Text="{x:Bind viewModel.UserData.HomePage, Mode=TwoWay}"></TextBox>
+            </RelativePanel>
+        </StackPanel>
+
+        <Button IsEnabled="{x:Bind viewModel.Loading, Mode=OneWay, Converter={StaticResource NotConverter}}" Margin="160,48" HorizontalAlignment="Right" VerticalAlignment="Bottom" Style="{ThemeResource ButtonRevealStyle}" Width="100" CornerRadius="3" Click="Save_Click">
+            <Grid>
+                <TextBlock Text="保存"/>
+                <ProgressRing Visibility="{x:Bind viewModel.Loading, Mode=OneWay}" IsActive="True"/>
+            </Grid>
+        </Button>
+        <Button IsEnabled="{x:Bind viewModel.Loading, Mode=OneWay, Converter={StaticResource NotConverter}}" Margin="48" HorizontalAlignment="Right" VerticalAlignment="Bottom" Style="{ThemeResource ButtonRevealStyle}" Width="100" CornerRadius="3" Click="SignOut_Click">
+            <Grid>
+                <TextBlock x:Uid="Home_TextBlock_SignOut"/>
+                <ProgressRing Visibility="{x:Bind viewModel.Loading, Mode=OneWay}" IsActive="True"/>
+            </Grid>
+        </Button>
     </Grid>
 </Page>

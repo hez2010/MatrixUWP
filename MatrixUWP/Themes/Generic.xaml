@@ -506,7 +506,8 @@
                                     </NavigationViewList>
                                     <Button x:Name="TopNavOverflowButton" Content="More" Grid.Column="4" Style="{StaticResource NavigationViewOverflowButtonStyleWhenPaneOnTop}" Visibility="{Binding TemplateSettings.OverflowButtonVisibility, RelativeSource={RelativeSource Mode=TemplatedParent}}">
                                         <Button.Flyout>
-                                            <Flyout Placement="Bottom" Windows10version1903:ShouldConstrainToRootBounds="False">
+                                            <!-- TODO: Append Windows10version1903:ShouldConstrainToRootBounds="False" on 1903 target -->
+                                            <Flyout Placement="Bottom">
                                                 <Flyout.FlyoutPresenterStyle>
                                                     <Style TargetType="FlyoutPresenter">
                                                         <Setter Property="Padding" Value="0,8"/>

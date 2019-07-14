@@ -203,16 +203,29 @@ namespace MatrixUWP.Models
 
     class UserModel
     {
-        public static ValueTask<ResponseModel<UserDataModel>> SignInAsync(string userName, string password, string captcha = "")
-            => (string.IsNullOrEmpty(captcha) ?
+        public static async ValueTask<ResponseModel<UserDataModel>> SignInAsync(string userName, string password, string captcha = "")
+        {
+            var result = await (string.IsNullOrEmpty(captcha) ?
                 App.MatrixHttpClient.PostAsync("/api/users/login", new { username = userName, password = password })
                 : App.MatrixHttpClient.PostAsync("/api/users/login", new { username = userName, password = password, captcha = captcha }))
             .JsonAsync<ResponseModel<UserDataModel>>();
+            if (result?.Data?.SignedIn ?? false)
+            {
+                App.AppConfiguration.SavedUserName = userName;
+                App.AppConfiguration.SavedPassword = password;
+            }
+            return result;
+        }
 
         public static ValueTask<ResponseModel<CaptchaDataModel>> FetchCaptchaAsync() => App.MatrixHttpClient.GetAsync(
                 "/api/captcha"
             ).JsonAsync<ResponseModel<CaptchaDataModel>>();
 
-        public static ValueTask<ResponseModel> SignOutAsync() => App.MatrixHttpClient.PostAsync("/api/users/logout", new { }).JsonAsync<ResponseModel>();
+        public static ValueTask<ResponseModel> SignOutAsync()
+        {
+            App.AppConfiguration.SavedUserName = "";
+            App.AppConfiguration.SavedPassword = "";
+            return App.MatrixHttpClient.PostAsync("/api/users/logout", new { }).JsonAsync<ResponseModel>();
+        }
     }
 }

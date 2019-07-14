@@ -38,6 +38,15 @@ namespace MatrixUWP.Views.General
         public Home()
         {
             this.InitializeComponent();
+            if (!(parameters.UserData?.SignedIn ?? false))
+            {
+                viewModel.UserName = App.AppConfiguration.SavedUserName;
+                viewModel.Password = App.AppConfiguration.SavedPassword;
+                if (!string.IsNullOrEmpty(viewModel.UserName))
+                {
+                    SignIn_Click(this, null);
+                }
+            }
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -78,32 +87,6 @@ namespace MatrixUWP.Views.General
                     var svg = new SvgImageSource { RasterizePixelWidth = 150, RasterizePixelHeight = 50 };
                     await svg.SetSourceAsync(stream.AsRandomAccessStream());
                     viewModel.CaptchaData = svg;
-                });
-            }
-            catch (Exception ex)
-            {
-                this.parameters.ShowMessage?.Invoke(ex.Message);
-            }
-            finally
-            {
-                viewModel.Loading = false;
-            }
-        }
-
-        private async void SignOut_Click(object sender, RoutedEventArgs e)
-        {
-            viewModel.Loading = true;
-            await Dispatcher.Yield();
-            try
-            {
-                await TryHelper.Try(async () =>
-                {
-                    var result = await UserModel.SignOutAsync();
-
-                    Debug.WriteLine(result.SerializeJson());
-                    this.parameters.ShowMessage?.Invoke(result.Message);
-
-                    this.parameters.UpdateUserData?.Invoke(new UserDataModel());
                 });
             }
             catch (Exception ex)

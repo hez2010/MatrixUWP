@@ -22,6 +22,27 @@ namespace MatrixUWP.Models
     {
         private Language appLanguage = (Language)(ApplicationData.Current.LocalSettings.Values["AppLanguage"] ?? 0);
         private Theme appTheme = (Theme)(ApplicationData.Current.LocalSettings.Values["AppTheme"] ?? 0);
+        private string savedUserName = (string)ApplicationData.Current.LocalSettings.Values["SavedUserName"];
+        private string savedPassword = (string)ApplicationData.Current.LocalSettings.Values["SavedPassword"];
+
+        public string SavedUserName
+        {
+            get => savedUserName;
+            set
+            {
+                savedUserName = value;
+                ApplicationData.Current.LocalSettings.Values["SavedUserName"] = value;
+            }
+        }
+        public string SavedPassword
+        {
+            get => savedPassword;
+            set
+            {
+                savedPassword = value;
+                ApplicationData.Current.LocalSettings.Values["SavedPassword"] = value;
+            }
+        }
 
         public Language AppLanguage
         {
