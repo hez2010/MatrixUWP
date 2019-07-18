@@ -46,6 +46,7 @@ namespace MatrixUWP.Models
         private string specialty = "";
         private bool isInLib;
         private bool canCreateLib;
+        private dynamic mailConfig;
 
         [JsonProperty("captcha")]
         public bool Captcha
@@ -193,6 +194,17 @@ namespace MatrixUWP.Models
             {
                 canCreateLib = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CanCreateLib)));
+            }
+        }
+
+        [JsonProperty("mail_config")]
+        public dynamic MailConfig
+        {
+            get => mailConfig;
+            set
+            {
+                mailConfig = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(MailConfig)));
             }
         }
 
