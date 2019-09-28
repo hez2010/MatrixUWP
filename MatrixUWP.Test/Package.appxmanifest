@@ -6,14 +6,14 @@
   IgnorableNamespaces="uap mp">
 
   <Identity Name="c24eec0f-419c-4076-b6cc-b819f52fcf4c"
-            Publisher="CN=hez20"
+            Publisher="CN=E6A45EF7-9CCA-47FC-94F6-10B7B6A7946A"
             Version="1.0.0.0" />
 
   <mp:PhoneIdentity PhoneProductId="c24eec0f-419c-4076-b6cc-b819f52fcf4c" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
     <DisplayName>MatrixUWP.Test</DisplayName>
-    <PublisherDisplayName>hez20</PublisherDisplayName>
+    <PublisherDisplayName>hez2010</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 

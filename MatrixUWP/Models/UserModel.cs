@@ -218,8 +218,8 @@ namespace MatrixUWP.Models
         public static async ValueTask<ResponseModel<UserDataModel>> SignInAsync(string userName, string password, string captcha = "")
         {
             var result = await (string.IsNullOrEmpty(captcha) ?
-                App.MatrixHttpClient.PostAsync("/api/users/login", new { username = userName, password = password })
-                : App.MatrixHttpClient.PostAsync("/api/users/login", new { username = userName, password = password, captcha = captcha }))
+                App.MatrixHttpClient.PostAsync("/api/users/login", (username: userName, password))
+                : App.MatrixHttpClient.PostAsync("/api/users/login", (username: userName, password, captcha)))
             .JsonAsync<ResponseModel<UserDataModel>>();
             if (result?.Data?.SignedIn ?? false)
             {

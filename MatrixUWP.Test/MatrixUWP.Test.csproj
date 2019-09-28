@@ -8,7 +8,6 @@
     <OutputType>AppContainerExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <LangVersion>8.0</LangVersion>
-    <NullableContextOptions>enable</NullableContextOptions>
     <Nullable>enable</Nullable>
     <RootNamespace>MatrixUWP.Test</RootNamespace>
     <AssemblyName>MatrixUWP.Test</AssemblyName>
@@ -20,6 +19,9 @@
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <UnitTestPlatformVersion Condition="'$(UnitTestPlatformVersion)' == ''">$(VisualStudioVersion)</UnitTestPlatformVersion>
+    <PackageCertificateThumbprint>1A95B1E5F7A4739356EAC26761421E6165CD87B6</PackageCertificateThumbprint>
+    <PackageCertificateKeyFile />
+    <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -140,13 +142,13 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
-      <Version>6.2.8</Version>
+      <Version>6.2.9</Version>
     </PackageReference>
     <PackageReference Include="MSTest.TestAdapter">
-      <Version>1.4.0</Version>
+      <Version>2.0.0</Version>
     </PackageReference>
     <PackageReference Include="MSTest.TestFramework">
-      <Version>1.4.0</Version>
+      <Version>2.0.0</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

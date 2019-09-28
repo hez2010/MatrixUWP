@@ -125,7 +125,7 @@ namespace MatrixUWP.Utils
 
         private ulong GetLength()
         {
-            var writer = new DataWriter();
+            using var writer = new DataWriter();
             writer.WriteString(SerializedJson);
 
             var buffer = writer.DetachBuffer();
