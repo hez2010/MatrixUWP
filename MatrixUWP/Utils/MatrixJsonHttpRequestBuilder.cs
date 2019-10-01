@@ -19,16 +19,14 @@ namespace MatrixUWP.Utils
         {
             // HttpClient functionality can be extended by plugging multiple filters together and providing
             // HttpClient with the configured filter pipeline.
-            var filter = new MatrixHttpFilter(new HttpBaseProtocolFilter()); // Adds a custom header to every request and response message.
+            var filter = new MatrixHttpFilter(new HttpBaseProtocolFilter { CookieUsageBehavior = HttpCookieUsageBehavior.Default }); // Adds a custom header to every request and response message.
             this.httpClient = new HttpClient(filter);
 
             // 使用谷歌浏览器的用户代理
-            var userAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.81 Safari/537.36";
-            if (!this.httpClient.DefaultRequestHeaders.UserAgent.TryParseAdd(userAgent))
-            {
-                Debug.Fail("Failed to use Chrome User Agent");
-            }
+            var userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3907.0 Safari/537.36 Edg/79.0.279.0";
 
+            this.httpClient.DefaultRequestHeaders.UserAgent.ParseAdd(userAgent);
+            this.httpClient.DefaultRequestHeaders.Referer = baseUri;
             this.httpClient.DefaultRequestHeaders.IfModifiedSince = DateTimeOffset.Now;
         }
 

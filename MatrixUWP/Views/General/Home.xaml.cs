@@ -42,7 +42,7 @@ namespace MatrixUWP.Views.General
             {
                 viewModel.UserName = App.AppConfiguration.SavedUserName;
                 viewModel.Password = App.AppConfiguration.SavedPassword;
-                if (!string.IsNullOrEmpty(viewModel.UserName))
+                if (!string.IsNullOrEmpty(viewModel.UserName) && !string.IsNullOrEmpty(viewModel.Password))
                 {
                     SignIn_Click(this, null);
                 }
@@ -52,9 +52,9 @@ namespace MatrixUWP.Views.General
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            if (e.Parameter is HomeParameters parameters)
+            if (e.Parameter is HomeParameters param)
             {
-                this.parameters = parameters;
+                this.parameters = param;
                 this.parameters.UserData.Captcha = false;
             }
         }
@@ -70,7 +70,6 @@ namespace MatrixUWP.Views.General
                     var result = await (string.IsNullOrEmpty(viewModel.Captcha) ? UserModel.SignInAsync(viewModel.UserName, viewModel.Password)
                     : UserModel.SignInAsync(viewModel.UserName, viewModel.Password, viewModel.Captcha));
 
-                    Debug.WriteLine(result.SerializeJson());
                     this.parameters.ShowMessage?.Invoke(result.Message);
 
                     this.parameters.UpdateUserData?.Invoke(result.Data);
@@ -91,6 +90,8 @@ namespace MatrixUWP.Views.General
             }
             catch (Exception ex)
             {
+                App.AppConfiguration.SavedUserName = "";
+                App.AppConfiguration.SavedPassword = "";
                 this.parameters.ShowMessage?.Invoke(ex.Message);
             }
             finally

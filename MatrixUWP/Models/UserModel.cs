@@ -215,6 +215,7 @@ namespace MatrixUWP.Models
 
     class UserModel
     {
+        public static UserDataModel? CurrentUser { get; set; }
         public static async ValueTask<ResponseModel<UserDataModel>> SignInAsync(string userName, string password, string captcha = "")
         {
             var result = await (string.IsNullOrEmpty(captcha) ?
@@ -225,6 +226,7 @@ namespace MatrixUWP.Models
             {
                 App.AppConfiguration.SavedUserName = userName;
                 App.AppConfiguration.SavedPassword = password;
+                CurrentUser = result.Data;
             }
             return result;
         }
@@ -237,6 +239,7 @@ namespace MatrixUWP.Models
         {
             App.AppConfiguration.SavedUserName = "";
             App.AppConfiguration.SavedPassword = "";
+            CurrentUser = null;
             return App.MatrixHttpClient.PostAsync("/api/users/logout", new { }).JsonAsync<ResponseModel>();
         }
     }

@@ -25,7 +25,7 @@ namespace MatrixUWP.Extensions
         {
             var result = await response;
             var json = await result.Content.ReadAsStringAsync();
-            Debug.WriteLine($"Get response: {json}");
+            Debug.WriteLine($"Got response: {response.Result.StatusCode}, with data: {json}, with headers: {response.Result.Headers.SerializeJson()}");
             return JsonConvert.DeserializeObject<T>(json);
         }
 #endif
@@ -34,7 +34,7 @@ namespace MatrixUWP.Extensions
         {
             var result = await response;
             var text = await result.Content.ReadAsStringAsync();
-            Debug.WriteLine($"Get response: {text}");
+            Debug.WriteLine($"Got response: {response.Result.StatusCode}, with data: {text}, with headers: {response.Result.Headers.SerializeJson()}");
             return text;
         }
 
@@ -42,7 +42,7 @@ namespace MatrixUWP.Extensions
         {
             var result = await response;
             var buffer = await result.Content.ReadAsBufferAsync();
-            Debug.WriteLine($"Get response: [Blob]");
+            Debug.WriteLine($"Got response: {response.Result.StatusCode}, with data: [Blob], with headers: {response.Result.Headers.SerializeJson()}");
             return buffer;
         }
     }

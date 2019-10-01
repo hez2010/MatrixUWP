@@ -37,8 +37,6 @@ namespace MatrixUWP.Utils
         {
             await EnsureTokenSavedAsync();
             var uri = new Uri(baseUri, path);
-            var meta = $"GET {uri}";
-            Debug.WriteLine($"Requesting: {meta}");
             return await httpClient.GetAsync(uri);
         }
 
@@ -47,8 +45,6 @@ namespace MatrixUWP.Utils
             await EnsureTokenSavedAsync();
             var uri = new Uri(baseUri, path);
             var jsonContent = new HttpJsonContent<T>(body);
-            var meta = $"POST {uri}";
-            Debug.WriteLine($"Requesting: {meta}, with data {body.SerializeJson()}");
             return await httpClient.PostAsync(uri, jsonContent);
         }
 
@@ -57,8 +53,6 @@ namespace MatrixUWP.Utils
             await EnsureTokenSavedAsync();
             var uri = new Uri(baseUri, path);
             var jsonContent = new HttpJsonContent<T>(body);
-            var meta = $"PUT {uri}";
-            Debug.WriteLine($"Requesting: {meta}, with data {body.SerializeJson()}");
             return await httpClient.PutAsync(uri, jsonContent);
         }
 
@@ -66,8 +60,6 @@ namespace MatrixUWP.Utils
         {
             await EnsureTokenSavedAsync();
             var uri = new Uri(baseUri, path);
-            string meta = $"DELETE {uri}";
-            Debug.WriteLine($"Requesting: {meta}");
             return await httpClient.DeleteAsync(uri);
         }
     }

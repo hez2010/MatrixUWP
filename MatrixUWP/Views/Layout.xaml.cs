@@ -1,6 +1,7 @@
 ﻿using MatrixUWP.Controls;
 using MatrixUWP.Extensions;
 using MatrixUWP.Models;
+using MatrixUWP.Utils;
 using MatrixUWP.ViewModels;
 using MatrixUWP.Views.Parameters;
 using System;
@@ -75,7 +76,7 @@ namespace MatrixUWP.Views
             var parameter = (naviPageName, isSettingsPage) switch
             {
                 ("HomeNaviPage", _) => new HomeParameters { UpdateUserData = UpdateUserData, UserData = viewModel.UserData, ShowMessage = ShowMessage },
-                ("ProfileNaviPage", _) => new ProfileParameters {  UpdateUserData = UpdateUserData, UserData = viewModel.UserData, ShowMessage = ShowMessage },
+                ("ProfileNaviPage", _) => new ProfileParameters { UpdateUserData = UpdateUserData, UserData = viewModel.UserData, ShowMessage = ShowMessage },
                 _ => new object()
             };
 

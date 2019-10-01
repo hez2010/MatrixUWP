@@ -8,7 +8,7 @@ namespace MatrixUWP.Extensions
 {
     static class CopyExtensions
     {
-        public static void CopyTo<T>(this T source, T target, string[]? surpass = null)
+        public static void CopyTo<T>(this T source, T target, params string[] surpass)
         {
             var props = typeof(T).GetProperties();
             foreach (var i in props)
