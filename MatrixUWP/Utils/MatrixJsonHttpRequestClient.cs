@@ -1,6 +1,4 @@
-﻿using MatrixUWP.Extensions;
-using System;
-using System.Diagnostics;
+﻿using System;
 using System.Threading.Tasks;
 using Windows.Web.Http;
 

@@ -1,26 +1,14 @@
-﻿using MatrixUWP.Controls;
-using MatrixUWP.Extensions;
+﻿using MatrixUWP.Extensions;
 using MatrixUWP.Models;
-using MatrixUWP.Utils;
 using MatrixUWP.ViewModels;
 using MatrixUWP.Views.Parameters;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.ApplicationModel.Resources;
 using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
-using Windows.UI.Xaml.Navigation;
 
 namespace MatrixUWP.Views
 {
@@ -35,14 +23,7 @@ namespace MatrixUWP.Views
         {
             this.InitializeComponent();
 
-            // Set up title bar style
-            Windows.ApplicationModel.Core.CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
-            var titleBar = Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().TitleBar;
-            titleBar.ButtonBackgroundColor = Colors.Transparent;
-            titleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
             Window.Current.SetTitleBar(MyTitleBar);
-
-            // Register BackRequest handler
             Windows.UI.Core.SystemNavigationManager.GetForCurrentView().BackRequested += App_BackRequested;
 
             // Navigate to Home

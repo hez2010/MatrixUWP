@@ -380,11 +380,6 @@
                             </VisualStateGroup>
                             <VisualStateGroup x:Name="HeaderGroup">
                                 <VisualState x:Name="HeaderVisible"/>
-                                <VisualState x:Name="HeaderCollapsed">
-                                    <VisualState.Setters>
-                                        <Setter Target="HeaderContent.Visibility" Value="Collapsed"/>
-                                    </VisualState.Setters>
-                                </VisualState>
                             </VisualStateGroup>
                             <VisualStateGroup x:Name="SettingsGroup">
                                 <VisualState x:Name="SettingsVisible"/>

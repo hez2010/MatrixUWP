@@ -6,12 +6,13 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
+    xmlns:tookit="using:Microsoft.Toolkit.Uwp.UI.Controls"
     Background="{ThemeResource SystemControlAcrylicWindowMediumHighBrush}">
 
     <Grid>
         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="{x:Bind parameters.UserData.SignedIn, Mode=OneWay, Converter={StaticResource NotVisibilityConverter}}">
             <Image Height="100" Source="{ThemeResource MatrixLogo}"></Image>
-            <Border Margin="0,0,0,50" Background="{ThemeResource SystemControlAcrylicWindowBrush}" BorderBrush="LightGray" BorderThickness="2" CornerRadius="10">
+            <Border Margin="0,0,0,50" Background="{ThemeResource SystemControlAcrylicWindowBrush}" BorderBrush="LightGray" BorderThickness="1" CornerRadius="10">
                 <StackPanel>
                     <Ellipse Margin="48" Height="100" Width="100">
                         <Ellipse.Fill>

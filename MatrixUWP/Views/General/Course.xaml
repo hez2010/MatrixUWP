@@ -6,9 +6,59 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     Background="{ThemeResource SystemControlAcrylicWindowMediumHighBrush}">
 
     <Grid>
-
+        <GridView Margin="20">
+            <GridView.ItemTemplate>
+                <DataTemplate>
+                    <RelativePanel Height="140" Width="300" Margin="8" Padding="8">
+                        <TextBlock x:Name="CourseTitle" Foreground="CadetBlue" FontSize="20" Text="2016年初级实训测试1"></TextBlock>
+                        <RelativePanel Margin="0,8,0,0" RelativePanel.Below="CourseTitle">
+                            <Ellipse Margin="0,2" Height="18" Width="18" x:Name="Avatar">
+                                <Ellipse.Fill>
+                                    <ImageBrush ImageSource="https://test.vmatrix.org.cn/api/users/profile/avatar?username=matrix"/>
+                                </Ellipse.Fill>
+                            </Ellipse>
+                            <TextBlock RelativePanel.RightOf="Avatar" Margin="8,0" Text="贾同学"></TextBlock>
+                        </RelativePanel>
+                        <RelativePanel Margin="0,8,0,0" RelativePanel.Below="CourseTitle" RelativePanel.AlignRightWithPanel="True">
+                            <Ellipse Margin="0,2" Height="12" Width="12" x:Name="StatusIcon">
+                                <Ellipse.Fill>
+                                    <SolidColorBrush Color="Green" />
+                                </Ellipse.Fill>
+                            </Ellipse>
+                            <TextBlock RelativePanel.RightOf="StatusIcon" Margin="8,0" FontSize="12" Text="进行中"></TextBlock>
+                        </RelativePanel>
+                        <Grid RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignLeftWithPanel="True">
+                            <RelativePanel>
+                                <SymbolIcon Symbol="People" x:Name="CapacityIcon">
+                                    <SymbolIcon.RenderTransform>
+                                        <CompositeTransform ScaleX="0.8" ScaleY="0.8"></CompositeTransform>
+                                    </SymbolIcon.RenderTransform>
+                                </SymbolIcon>
+                                <TextBlock FontSize="12" Margin="8,0" Text="450" RelativePanel.RightOf="CapacityIcon" x:Name="Capacity"></TextBlock>
+                                <SymbolIcon Symbol="Find" x:Name="IdentityIcon" RelativePanel.RightOf="Capacity">
+                                    <SymbolIcon.RenderTransform>
+                                        <CompositeTransform ScaleX="0.8" ScaleY="0.8"></CompositeTransform>
+                                    </SymbolIcon.RenderTransform>
+                                </SymbolIcon>
+                                <TextBlock FontSize="12" Margin="8,0" Text="TA" RelativePanel.RightOf="IdentityIcon"></TextBlock>
+                            </RelativePanel>
+                        </Grid>
+                        <Grid RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignRightWithPanel="True">
+                            <RelativePanel RelativePanel.AlignRightWithPanel="True">
+                                <TextBlock FontSize="12" x:Name="SchoolYear" Margin="2,4">2018-2019</TextBlock>
+                                <TextBlock FontSize="12" RelativePanel.RightOf="SchoolYear" Margin="2,4">春季学期</TextBlock>
+                            </RelativePanel>
+                        </Grid>
+                    </RelativePanel>
+                </DataTemplate>
+            </GridView.ItemTemplate>
+        </GridView>
+        <StackPanel Margin="0,-50,0,0" HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal">
+            <ProgressRing Width="60" Height="60" IsActive="True"></ProgressRing>
+        </StackPanel>
     </Grid>
 </Page>

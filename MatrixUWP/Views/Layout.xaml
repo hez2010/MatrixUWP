@@ -9,9 +9,7 @@
     xmlns:root="using:MatrixUWP"
     mc:Ignorable="d"
     RequestedTheme="{x:Bind root:App.AppConfiguration.AppThemeValue, Mode=OneWay}"
-    Background="{ThemeResource SystemControlChromeHighAcrylicWindowMediumBrush}"
-    MinWidth="600"
-    MinHeight="680">
+    Background="{ThemeResource SystemControlChromeHighAcrylicWindowMediumBrush}">
 
     <Grid>
         <VisualStateManager.VisualStateGroups>

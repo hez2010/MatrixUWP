@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Newtonsoft.Json;
-using System.Threading.Tasks;
 
 namespace MatrixUWP.Models
 {
@@ -13,10 +9,8 @@ namespace MatrixUWP.Models
         public string Status { get; set; } = "";
         [JsonProperty("msg")]
         public string Message { get; set; } = "";
-#nullable disable
         [JsonProperty("data")]
         public T Data { get; set; }
-#nullable enable
         [JsonProperty("time")]
         public DateTime Time { get; set; }
     }

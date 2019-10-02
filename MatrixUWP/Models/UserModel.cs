@@ -1,14 +1,9 @@
 ﻿using MatrixUWP.Extensions;
-using MatrixUWP.Utils;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
+using System.Runtime.CompilerServices;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Media.Imaging;
+using MatrixUWP.Annotations;
 
 namespace MatrixUWP.Models
 {
@@ -29,6 +24,66 @@ namespace MatrixUWP.Models
 
         public event PropertyChangedEventHandler PropertyChanged;
     }
+
+    class MailConfig : INotifyPropertyChanged
+    {
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private bool exam;
+        private bool course;
+        private bool library;
+        private bool assignment;
+
+        [JsonProperty("exam")]
+        public bool Exam
+        {
+            get => exam;
+            set
+            {
+                exam = value;
+                OnPropertyChanged();
+            }
+        }
+
+        [JsonProperty("course")]
+        public bool Course
+        {
+            get => course;
+            set
+            {
+                course = value;
+                OnPropertyChanged();
+            }
+        }
+
+        [JsonProperty("library")]
+        public bool Library
+        {
+            get => library;
+            set
+            {
+                library = value;
+                OnPropertyChanged();
+            }
+        }
+
+        [JsonProperty("course_assignment")]
+        public bool Assignment
+        {
+            get => assignment;
+            set
+            {
+                assignment = value;
+                OnPropertyChanged();
+            }
+        }
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+    }
     class UserDataModel : INotifyPropertyChanged
     {
         private bool captcha;
@@ -41,12 +96,9 @@ namespace MatrixUWP.Models
         private string phone = "";
         private string email = "";
         private dynamic? userAddition;
-        private string studentId = "";
-        private string academy = "";
-        private string specialty = "";
+        private MailConfig mailConfig;
         private bool isInLib;
         private bool canCreateLib;
-        private dynamic mailConfig;
 
         [JsonProperty("captcha")]
         public bool Captcha
@@ -55,7 +107,7 @@ namespace MatrixUWP.Models
             set
             {
                 captcha = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Captcha)));
+                OnPropertyChanged();
             }
         }
         [JsonProperty("user_id")]
@@ -65,8 +117,8 @@ namespace MatrixUWP.Models
             set
             {
                 userId = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(UserId)));
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SignedIn)));
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(SignedIn));
             }
         }
         [JsonProperty("nickname")]
@@ -76,7 +128,7 @@ namespace MatrixUWP.Models
             set
             {
                 nickName = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(NickName)));
+                OnPropertyChanged();
             }
         }
         [JsonProperty("realname")]
@@ -86,7 +138,7 @@ namespace MatrixUWP.Models
             set
             {
                 realName = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(RealName)));
+                OnPropertyChanged();
             }
         }
         [JsonProperty("username")]
@@ -96,34 +148,37 @@ namespace MatrixUWP.Models
             set
             {
                 userName = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(UserName)));
+                OnPropertyChanged();
             }
         }
         [JsonProperty("is_valid")]
         public int IsValid
         {
-            get => isValid; set
+            get => isValid;
+            set
             {
                 isValid = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsValid)));
+                OnPropertyChanged();
             }
         }
         [JsonProperty("homepage")]
         public string HomePage
         {
-            get => homePage; set
+            get => homePage;
+            set
             {
                 homePage = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(HomePage)));
+                OnPropertyChanged();
             }
         }
         [JsonProperty("phone")]
         public string Phone
         {
-            get => phone; set
+            get => phone;
+            set
             {
                 phone = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Phone)));
+                OnPropertyChanged();
             }
         }
         [JsonProperty("email")]
@@ -133,7 +188,7 @@ namespace MatrixUWP.Models
             set
             {
                 email = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Email)));
+                OnPropertyChanged();
             }
         }
         [JsonProperty("user_addition")]
@@ -143,37 +198,7 @@ namespace MatrixUWP.Models
             set
             {
                 userAddition = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(UserAddition)));
-            }
-        }
-        [JsonProperty("student_id")]
-        public string StudentId
-        {
-            get => studentId;
-            set
-            {
-                studentId = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(StudentId)));
-            }
-        }
-        [JsonProperty("academy")]
-        public string Academy
-        {
-            get => academy;
-            set
-            {
-                academy = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Academy)));
-            }
-        }
-        [JsonProperty("specialty")]
-        public string Specialty
-        {
-            get => specialty;
-            set
-            {
-                specialty = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Specialty)));
+                OnPropertyChanged();
             }
         }
         [JsonProperty("isInLib")]
@@ -183,7 +208,7 @@ namespace MatrixUWP.Models
             set
             {
                 isInLib = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsInLib)));
+                OnPropertyChanged();
             }
         }
         [JsonProperty("canCreateLib")]
@@ -193,40 +218,51 @@ namespace MatrixUWP.Models
             set
             {
                 canCreateLib = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CanCreateLib)));
+                OnPropertyChanged();
             }
         }
 
         [JsonProperty("mail_config")]
-        public dynamic MailConfig
+        public MailConfig MailConfig
         {
             get => mailConfig;
             set
             {
                 mailConfig = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(MailConfig)));
+                OnPropertyChanged();
             }
         }
 
         public bool SignedIn => this.UserId != 0;
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 
     class UserModel
     {
         public static UserDataModel? CurrentUser { get; set; }
-        public static async ValueTask<ResponseModel<UserDataModel>> SignInAsync(string userName, string password, string captcha = "")
+        public static async ValueTask<ResponseModel<UserDataModel?>> SignInAsync(string userName, string password, string captcha = "")
         {
             var result = await (string.IsNullOrEmpty(captcha) ?
                 App.MatrixHttpClient.PostAsync("/api/users/login", new { username = userName, password })
                 : App.MatrixHttpClient.PostAsync("/api/users/login", new { username = userName, password, captcha }))
-            .JsonAsync<ResponseModel<UserDataModel>>();
+            .JsonAsync<ResponseModel<UserDataModel?>>();
             if (result?.Data?.SignedIn ?? false)
             {
                 App.AppConfiguration.SavedUserName = userName;
                 App.AppConfiguration.SavedPassword = password;
                 CurrentUser = result.Data;
+            }
+            else
+            {
+                App.AppConfiguration.SavedUserName = "";
+                App.AppConfiguration.SavedPassword = "";
             }
             return result;
         }

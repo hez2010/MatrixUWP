@@ -2,22 +2,14 @@
 using MatrixUWP.Utils;
 using MatrixUWP.Views;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Threading.Tasks;
+using System.Diagnostics;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Resources;
 using Windows.Foundation;
-using Windows.Foundation.Collections;
+using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 namespace MatrixUWP
@@ -83,6 +75,14 @@ namespace MatrixUWP
                 }
                 // Ensure the current window is active
 
+                var coreView = Windows.ApplicationModel.Core.CoreApplication.GetCurrentView();
+                coreView.TitleBar.ExtendViewIntoTitleBar = true;
+
+                var appView = Windows.UI.ViewManagement.ApplicationView.GetForCurrentView();
+                var titleBar = appView.TitleBar;
+                titleBar.ButtonBackgroundColor = Colors.Transparent;
+                titleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
+
                 Window.Current.Activate();
             }
         }
@@ -113,7 +113,9 @@ namespace MatrixUWP
 
         private void OnUnhandledException(object sender, Windows.UI.Xaml.UnhandledExceptionEventArgs e)
         {
-            throw e.Exception;
+            Debug.WriteLine(e.Message);
+            Debugger.Break();
+            e.Handled = true;
         }
     }
 }

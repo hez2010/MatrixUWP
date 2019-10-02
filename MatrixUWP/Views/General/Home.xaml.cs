@@ -4,21 +4,11 @@ using MatrixUWP.Utils;
 using MatrixUWP.ViewModels;
 using MatrixUWP.Views.Parameters;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Text;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.Storage.Streams;
+using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 
@@ -38,6 +28,16 @@ namespace MatrixUWP.Views.General
         public Home()
         {
             this.InitializeComponent();
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            if (e.Parameter is HomeParameters param)
+            {
+                this.parameters = param;
+                this.parameters.UserData.Captcha = false;
+            }
             if (!(parameters.UserData?.SignedIn ?? false))
             {
                 viewModel.UserName = App.AppConfiguration.SavedUserName;
@@ -49,44 +49,32 @@ namespace MatrixUWP.Views.General
             }
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
-        {
-            base.OnNavigatedTo(e);
-            if (e.Parameter is HomeParameters param)
-            {
-                this.parameters = param;
-                this.parameters.UserData.Captcha = false;
-            }
-        }
-
         private async void SignIn_Click(object sender, RoutedEventArgs e)
         {
             viewModel.Loading = true;
             await Dispatcher.Yield();
             try
             {
-                await TryHelper.TryAsync(async () =>
-                {
-                    var result = await (string.IsNullOrEmpty(viewModel.Captcha) ? UserModel.SignInAsync(viewModel.UserName, viewModel.Password)
-                    : UserModel.SignInAsync(viewModel.UserName, viewModel.Password, viewModel.Captcha));
+                var result = await (string.IsNullOrEmpty(viewModel.Captcha) ? UserModel.SignInAsync(viewModel.UserName, viewModel.Password)
+                : UserModel.SignInAsync(viewModel.UserName, viewModel.Password, viewModel.Captcha));
 
-                    this.parameters.ShowMessage?.Invoke(result.Message);
+                if (result?.Data == null) throw new InvalidOperationException("Network Error");
 
-                    this.parameters.UpdateUserData?.Invoke(result.Data);
+                this.parameters.ShowMessage?.Invoke(result.Message);
+                this.parameters.UpdateUserData?.Invoke(result.Data);
 
-                    if (!result.Data.Captcha) return;
-                    var captcha = await UserModel.FetchCaptchaAsync();
+                if (!result.Data.Captcha) return;
+                var captcha = await UserModel.FetchCaptchaAsync();
 
-                    var stream = new MemoryStream();
-                    using var writer = new StreamWriter(stream);
-                    await writer.WriteAsync(captcha.Data.Captcha);
-                    await writer.FlushAsync();
-                    stream.Position = 0;
+                var stream = new MemoryStream();
+                using var writer = new StreamWriter(stream);
+                await writer.WriteAsync(captcha.Data.Captcha);
+                await writer.FlushAsync();
+                stream.Position = 0;
 
-                    var svg = new SvgImageSource { RasterizePixelWidth = 150, RasterizePixelHeight = 50 };
-                    await svg.SetSourceAsync(stream.AsRandomAccessStream());
-                    viewModel.CaptchaData = svg;
-                });
+                var svg = new SvgImageSource { RasterizePixelWidth = 150, RasterizePixelHeight = 50 };
+                await svg.SetSourceAsync(stream.AsRandomAccessStream());
+                viewModel.CaptchaData = svg;
             }
             catch (Exception ex)
             {
@@ -98,6 +86,13 @@ namespace MatrixUWP.Views.General
             {
                 viewModel.Loading = false;
             }
+        }
+
+        private void Editor_TextChanging(RichEditBox sender, RichEditBoxTextChangingEventArgs args)
+        {
+            var position = sender.Document.Selection.StartPosition;
+            var range = sender.Document.GetRange(Math.Max(0, position - 10), position);
+            range.CharacterFormat.ForegroundColor = Colors.Red;
         }
     }
 }

@@ -4,19 +4,9 @@ using MatrixUWP.Utils;
 using MatrixUWP.ViewModels;
 using MatrixUWP.Views.Parameters;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 namespace MatrixUWP.Views.Account
@@ -49,15 +39,10 @@ namespace MatrixUWP.Views.Account
             await Dispatcher.Yield();
             try
             {
-                await TryHelper.Try(async () =>
-                {
-                    var result = await UserModel.SignOutAsync();
+                var result = await UserModel.SignOutAsync();
 
-                    Debug.WriteLine(result.SerializeJson());
-                    this.parameters.ShowMessage?.Invoke(result.Message);
-
-                    this.parameters.UpdateUserData?.Invoke(new UserDataModel());
-                });
+                this.parameters.ShowMessage?.Invoke(result.Message);
+                this.parameters.UpdateUserData?.Invoke(new UserDataModel());
             }
             catch (Exception ex)
             {
@@ -72,13 +57,11 @@ namespace MatrixUWP.Views.Account
         private void ChangeAvatar_Click(object sender, RoutedEventArgs e)
         {
             // TODO
-            Debugger.Break();
         }
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
             // TODO
-            throw new NotImplementedException();
         }
     }
 }

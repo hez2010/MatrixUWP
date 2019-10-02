@@ -1,11 +1,7 @@
 ﻿using MatrixUWP.Models;
 using MatrixUWP.Utils;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 
@@ -47,7 +43,7 @@ namespace MatrixUWP.ViewModels
                 {
                     try
                     {
-                        bitmap.UriSource = new Uri(MatrixJsonHttpRequestBuilder.baseUri, $"/api/users/profile/avatar?username={userData.UserName}");
+                        bitmap.UriSource = new Uri(MatrixJsonHttpRequestBuilder.BaseUri, $"/api/users/profile/avatar?username={userData.UserName}");
                     }
                     catch
                     {
