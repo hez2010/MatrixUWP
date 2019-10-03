@@ -23,7 +23,7 @@ namespace MatrixUWP.Views.General
     public sealed partial class Home : Page
     {
         private readonly HomeViewModel viewModel = new HomeViewModel();
-        private HomeParameters parameters = new HomeParameters();
+        private HomeParameters? parameters;
 
         public Home()
         {
@@ -38,7 +38,7 @@ namespace MatrixUWP.Views.General
                 this.parameters = param;
                 this.parameters.UserData.Captcha = false;
             }
-            if (!(parameters.UserData?.SignedIn ?? false))
+            if (!(parameters?.UserData?.SignedIn ?? false))
             {
                 viewModel.UserName = App.AppConfiguration.SavedUserName;
                 viewModel.Password = App.AppConfiguration.SavedPassword;
@@ -60,15 +60,15 @@ namespace MatrixUWP.Views.General
 
                 if (result?.Data == null) throw new InvalidOperationException("Network Error");
 
-                this.parameters.ShowMessage?.Invoke(result.Message);
-                this.parameters.UpdateUserData?.Invoke(result.Data);
+                this.parameters?.ShowMessage?.Invoke(result.Message);
+                this.parameters?.UpdateUserData?.Invoke(result.Data);
 
                 if (!result.Data.Captcha) return;
                 var captcha = await UserModel.FetchCaptchaAsync();
 
                 var stream = new MemoryStream();
                 using var writer = new StreamWriter(stream);
-                await writer.WriteAsync(captcha.Data.Captcha);
+                await writer.WriteAsync(captcha.Data?.Captcha);
                 await writer.FlushAsync();
                 stream.Position = 0;
 
@@ -80,7 +80,7 @@ namespace MatrixUWP.Views.General
             {
                 App.AppConfiguration.SavedUserName = "";
                 App.AppConfiguration.SavedPassword = "";
-                this.parameters.ShowMessage?.Invoke(ex.Message);
+                this.parameters?.ShowMessage?.Invoke(ex.Message);
             }
             finally
             {

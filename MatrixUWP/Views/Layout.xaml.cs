@@ -53,12 +53,16 @@ namespace MatrixUWP.Views
                 _ => null
             };
 
+            var commonParameter =
+                new CommonParameters(UpdateUserData, viewModel.UserData, ShowMessage, NaviContent);
+
             // Get parameters needed
             var parameter = (naviPageName, isSettingsPage) switch
             {
-                ("HomeNaviPage", _) => new HomeParameters { UpdateUserData = UpdateUserData, UserData = viewModel.UserData, ShowMessage = ShowMessage },
-                ("ProfileNaviPage", _) => new ProfileParameters { UpdateUserData = UpdateUserData, UserData = viewModel.UserData, ShowMessage = ShowMessage },
-                _ => new object()
+                ("HomeNaviPage", _) => new HomeParameters(commonParameter),
+                ("ProfileNaviPage", _) => new ProfileParameters(commonParameter),
+                ("CourseNaviPage", _) => new CourseParameters(commonParameter),
+                _ => commonParameter
             };
 
             return (page, parameter);

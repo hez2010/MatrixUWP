@@ -137,12 +137,17 @@
     <Compile Include="Extensions\ResponseExtensions.cs" />
     <Compile Include="Extensions\TaskExtensions.cs" />
     <Compile Include="Models\Configuration.cs" />
+    <Compile Include="Models\CourseModel.cs" />
     <Compile Include="Models\ResponseModel.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Extensions\JsonExtensions.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Utils\LogHelper.cs" />
+    <Compile Include="ViewModels\CourseViewModel.cs" />
     <Compile Include="ViewModels\ProfileViewModel.cs" />
+    <Compile Include="Views\General\CourseDetails.xaml.cs">
+      <DependentUpon>CourseDetails.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Parameters\CommonParameters.cs" />
     <Compile Include="Utils\HttpJsonContent.cs" />
     <Compile Include="Utils\MatrixJsonHttpRequestBuilder.cs" />
@@ -161,6 +166,7 @@
     <Compile Include="Views\General\Course.xaml.cs">
       <DependentUpon>Course.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Parameters\CourseParameters.cs" />
     <Compile Include="Views\Parameters\HomeParameters.cs" />
     <Compile Include="Views\General\Library.xaml.cs">
       <DependentUpon>Library.xaml</DependentUpon>
@@ -263,6 +269,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\Account\Profile.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\General\CourseDetails.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -2,5 +2,8 @@
 {
     class ProfileParameters : CommonParameters
     {
+        public ProfileParameters(CommonParameters param) : base(param)
+        {
+        }
     }
 }

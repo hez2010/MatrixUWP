@@ -3,33 +3,34 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:MatrixUWP.Views.General"
+    xmlns:model="using:MatrixUWP.Models"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
-    Background="{ThemeResource SystemControlAcrylicWindowMediumHighBrush}">
+    Background="{ThemeResource SystemControlAcrylicWindowMediumHighBrush}" Loaded="Page_Loaded">
 
     <Grid>
-        <GridView Margin="20">
+        <GridView Margin="20" ItemsSource="{x:Bind viewModel.Courses, Mode=OneWay}">
             <GridView.ItemTemplate>
-                <DataTemplate>
-                    <RelativePanel Height="140" Width="300" Margin="8" Padding="8">
-                        <TextBlock x:Name="CourseTitle" Foreground="CadetBlue" FontSize="20" Text="2016年初级实训测试1"></TextBlock>
+                <DataTemplate x:DataType="model:CourseInfoModel">
+                    <RelativePanel Height="140" Width="300" Margin="8" Padding="16" BorderBrush="Gray" BorderThickness="1" CornerRadius="3">
+                        <TextBlock x:Name="CourseTitle" Foreground="CadetBlue" FontSize="18" Text="{x:Bind CourseName}"></TextBlock>
                         <RelativePanel Margin="0,8,0,0" RelativePanel.Below="CourseTitle">
                             <Ellipse Margin="0,2" Height="18" Width="18" x:Name="Avatar">
                                 <Ellipse.Fill>
-                                    <ImageBrush ImageSource="https://test.vmatrix.org.cn/api/users/profile/avatar?username=matrix"/>
+                                    <ImageBrush ImageSource="{x:Bind Creator.Avatar, Mode=OneWay}"/>
                                 </Ellipse.Fill>
                             </Ellipse>
-                            <TextBlock RelativePanel.RightOf="Avatar" Margin="8,0" Text="贾同学"></TextBlock>
+                            <TextBlock RelativePanel.RightOf="Avatar" Margin="8,0" Text="{x:Bind Creator.RealName}"></TextBlock>
                         </RelativePanel>
                         <RelativePanel Margin="0,8,0,0" RelativePanel.Below="CourseTitle" RelativePanel.AlignRightWithPanel="True">
                             <Ellipse Margin="0,2" Height="12" Width="12" x:Name="StatusIcon">
                                 <Ellipse.Fill>
-                                    <SolidColorBrush Color="Green" />
+                                    <SolidColorBrush Color="{x:Bind StatusColor, Mode=OneWay}" />
                                 </Ellipse.Fill>
                             </Ellipse>
-                            <TextBlock RelativePanel.RightOf="StatusIcon" Margin="8,0" FontSize="12" Text="进行中"></TextBlock>
+                            <TextBlock RelativePanel.RightOf="StatusIcon" Margin="8,0" FontSize="12" Text="{x:Bind Status, Mode=OneWay}"></TextBlock>
                         </RelativePanel>
                         <Grid RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignLeftWithPanel="True">
                             <RelativePanel>
@@ -38,27 +39,25 @@
                                         <CompositeTransform ScaleX="0.8" ScaleY="0.8"></CompositeTransform>
                                     </SymbolIcon.RenderTransform>
                                 </SymbolIcon>
-                                <TextBlock FontSize="12" Margin="8,0" Text="450" RelativePanel.RightOf="CapacityIcon" x:Name="Capacity"></TextBlock>
+                                <TextBlock FontSize="12" Margin="8,0" Text="{x:Bind StudentNum, Mode=OneWay}" RelativePanel.RightOf="CapacityIcon" x:Name="Capacity"></TextBlock>
                                 <SymbolIcon Symbol="Find" x:Name="IdentityIcon" RelativePanel.RightOf="Capacity">
                                     <SymbolIcon.RenderTransform>
                                         <CompositeTransform ScaleX="0.8" ScaleY="0.8"></CompositeTransform>
                                     </SymbolIcon.RenderTransform>
                                 </SymbolIcon>
-                                <TextBlock FontSize="12" Margin="8,0" Text="TA" RelativePanel.RightOf="IdentityIcon"></TextBlock>
+                                <TextBlock FontSize="12" Margin="8,0" Text="{x:Bind Role, Mode=OneWay}" RelativePanel.RightOf="IdentityIcon"></TextBlock>
                             </RelativePanel>
                         </Grid>
                         <Grid RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignRightWithPanel="True">
                             <RelativePanel RelativePanel.AlignRightWithPanel="True">
-                                <TextBlock FontSize="12" x:Name="SchoolYear" Margin="2,4">2018-2019</TextBlock>
-                                <TextBlock FontSize="12" RelativePanel.RightOf="SchoolYear" Margin="2,4">春季学期</TextBlock>
+                                <TextBlock FontSize="12" x:Name="SchoolYear" Margin="2,4" Text="{x:Bind SchoolYear, Mode=OneWay}"></TextBlock>
+                                <TextBlock FontSize="12" RelativePanel.RightOf="SchoolYear" Margin="2,4" Text="{x:Bind Semester, Mode=OneWay}"></TextBlock>
                             </RelativePanel>
                         </Grid>
                     </RelativePanel>
                 </DataTemplate>
             </GridView.ItemTemplate>
         </GridView>
-        <StackPanel Margin="0,-50,0,0" HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal">
-            <ProgressRing Width="60" Height="60" IsActive="True"></ProgressRing>
-        </StackPanel>
+        <ProgressRing HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-50,0,0" Width="60" Height="60" IsActive="{x:Bind viewModel.Loading, Mode=OneWay}"></ProgressRing>
     </Grid>
 </Page>

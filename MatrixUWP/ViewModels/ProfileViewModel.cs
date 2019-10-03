@@ -19,7 +19,6 @@ namespace MatrixUWP.ViewModels
             {
                 this.userData = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(UserData)));
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Avatar)));
             }
         }
 
@@ -30,28 +29,6 @@ namespace MatrixUWP.ViewModels
             {
                 loading = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Loading)));
-            }
-        }
-
-        public ImageSource Avatar
-        {
-            get
-            {
-                var bitmap = new BitmapImage();
-                if (string.IsNullOrEmpty(userData?.UserName)) bitmap.UriSource = new Uri("ms-appx:///Assets/Home/user.png");
-                else
-                {
-                    try
-                    {
-                        bitmap.UriSource = new Uri(MatrixJsonHttpRequestBuilder.BaseUri, $"/api/users/profile/avatar?username={userData.UserName}");
-                    }
-                    catch
-                    {
-                        bitmap.UriSource = new Uri("ms-appx:///Assets/Home/user.png");
-                    }
-                }
-
-                return bitmap;
             }
         }
 

@@ -17,7 +17,7 @@ namespace MatrixUWP.Views.Account
     public sealed partial class Profile : Page
     {
         private readonly ProfileViewModel viewModel = new ProfileViewModel();
-        private ProfileParameters parameters = new ProfileParameters();
+        private ProfileParameters? parameters;
         public Profile()
         {
             this.InitializeComponent();
@@ -41,12 +41,12 @@ namespace MatrixUWP.Views.Account
             {
                 var result = await UserModel.SignOutAsync();
 
-                this.parameters.ShowMessage?.Invoke(result.Message);
-                this.parameters.UpdateUserData?.Invoke(new UserDataModel());
+                this.parameters?.ShowMessage?.Invoke(result.Message);
+                this.parameters?.UpdateUserData?.Invoke(new UserDataModel());
             }
             catch (Exception ex)
             {
-                this.parameters.ShowMessage?.Invoke(ex.Message);
+                this.parameters?.ShowMessage?.Invoke(ex.Message);
             }
             finally
             {

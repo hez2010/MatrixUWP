@@ -20,7 +20,7 @@
                 </Button.Template>
                 <Ellipse Height="150" Width="150">
                     <Ellipse.Fill>
-                        <ImageBrush ImageSource="{x:Bind viewModel.Avatar}"/>
+                        <ImageBrush ImageSource="{x:Bind viewModel.UserData.Avatar}"/>
                     </Ellipse.Fill>
                 </Ellipse>
             </Button>

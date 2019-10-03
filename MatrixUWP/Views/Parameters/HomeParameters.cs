@@ -2,5 +2,9 @@
 {
     class HomeParameters : CommonParameters
     {
+        public HomeParameters(CommonParameters param) : base(param)
+        {
+
+        }
     }
 }

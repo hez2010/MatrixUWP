@@ -1,14 +1,19 @@
-﻿using MatrixUWP.Extensions;
+﻿using System;
+using MatrixUWP.Extensions;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
+using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Imaging;
 using MatrixUWP.Annotations;
+using MatrixUWP.Utils;
 
 namespace MatrixUWP.Models
 {
-    class CaptchaDataModel : INotifyPropertyChanged
+    public class CaptchaDataModel : INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
         private string captcha = "";
 
         [JsonProperty("captcha")]
@@ -18,14 +23,18 @@ namespace MatrixUWP.Models
             set
             {
                 captcha = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Captcha)));
+                OnPropertyChanged();
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 
-    class MailConfig : INotifyPropertyChanged
+    public class MailConfig : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -84,17 +93,107 @@ namespace MatrixUWP.Models
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
-    class UserDataModel : INotifyPropertyChanged
+    public class UserEssentialDataModel : INotifyPropertyChanged
+    {
+        private string realName = "";
+        private string userName = "";
+        private string phone = "";
+        private string email = "";
+        private string homePage = "";
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [JsonProperty("realname")]
+        public string RealName
+        {
+            get => realName;
+            set
+            {
+                realName = value;
+                OnPropertyChanged();
+            }
+        }
+
+        [JsonProperty("username")]
+        public string UserName
+        {
+            get => userName;
+            set
+            {
+                userName = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(Avatar));
+            }
+        }
+
+        [JsonProperty("phone")]
+        public string Phone
+        {
+            get => phone;
+            set
+            {
+                phone = value;
+                OnPropertyChanged();
+            }
+        }
+
+        [JsonProperty("email")]
+        public string Email
+        {
+            get => email;
+            set
+            {
+                email = value;
+                OnPropertyChanged();
+            }
+        }
+
+        [JsonProperty("homepage")]
+        public string HomePage
+        {
+            get => homePage;
+            set
+            {
+                homePage = value;
+                OnPropertyChanged();
+            }
+        }
+
+        [JsonIgnore]
+        public ImageSource Avatar
+        {
+            get
+            {
+                var bitmap = new BitmapImage();
+                if (string.IsNullOrEmpty(UserName)) bitmap.UriSource = new Uri("ms-appx:///Assets/Home/user.png");
+                else
+                {
+                    try
+                    {
+                        bitmap.UriSource = new Uri(MatrixJsonHttpRequestBuilder.BaseUri, $"/api/users/profile/avatar?username={UserName}");
+                    }
+                    catch
+                    {
+                        bitmap.UriSource = new Uri("ms-appx:///Assets/Home/user.png");
+                    }
+                }
+
+                return bitmap;
+            }
+        }
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+    }
+    public class UserDataModel : UserEssentialDataModel
     {
         private bool captcha;
         private int userId;
         private string nickName = "";
-        private string realName = "";
-        private string userName = "";
         private int isValid;
-        private string homePage = "";
-        private string phone = "";
-        private string email = "";
         private dynamic? userAddition;
         private MailConfig mailConfig;
         private bool isInLib;
@@ -131,26 +230,6 @@ namespace MatrixUWP.Models
                 OnPropertyChanged();
             }
         }
-        [JsonProperty("realname")]
-        public string RealName
-        {
-            get => realName;
-            set
-            {
-                realName = value;
-                OnPropertyChanged();
-            }
-        }
-        [JsonProperty("username")]
-        public string UserName
-        {
-            get => userName;
-            set
-            {
-                userName = value;
-                OnPropertyChanged();
-            }
-        }
         [JsonProperty("is_valid")]
         public int IsValid
         {
@@ -161,36 +240,7 @@ namespace MatrixUWP.Models
                 OnPropertyChanged();
             }
         }
-        [JsonProperty("homepage")]
-        public string HomePage
-        {
-            get => homePage;
-            set
-            {
-                homePage = value;
-                OnPropertyChanged();
-            }
-        }
-        [JsonProperty("phone")]
-        public string Phone
-        {
-            get => phone;
-            set
-            {
-                phone = value;
-                OnPropertyChanged();
-            }
-        }
-        [JsonProperty("email")]
-        public string Email
-        {
-            get => email;
-            set
-            {
-                email = value;
-                OnPropertyChanged();
-            }
-        }
+
         [JsonProperty("user_addition")]
         public dynamic? UserAddition
         {
@@ -211,6 +261,7 @@ namespace MatrixUWP.Models
                 OnPropertyChanged();
             }
         }
+
         [JsonProperty("canCreateLib")]
         public bool CanCreateLib
         {
@@ -234,17 +285,9 @@ namespace MatrixUWP.Models
         }
 
         public bool SignedIn => this.UserId != 0;
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
     }
 
-    class UserModel
+    public class UserModel
     {
         public static UserDataModel? CurrentUser { get; set; }
         public static async ValueTask<ResponseModel<UserDataModel?>> SignInAsync(string userName, string password, string captcha = "")
