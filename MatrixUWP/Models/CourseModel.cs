@@ -42,7 +42,7 @@ namespace MatrixUWP.Models
         [JsonProperty("status")]
         public string Status
         {
-            get => status switch
+            get => status.ToLowerInvariant() switch
             {
                 "open" => "进行中",
                 "close" => "已结束",
@@ -57,7 +57,7 @@ namespace MatrixUWP.Models
         }
 
         [JsonIgnore]
-        public Color StatusColor => status switch
+        public Color StatusColor => status.ToLowerInvariant() switch
         {
             "open" => Colors.CadetBlue,
             "close" => Colors.Orange,
@@ -155,7 +155,14 @@ namespace MatrixUWP.Models
         [JsonProperty("role")]
         public string Role
         {
-            get => role;
+            get => role.ToLowerInvariant() switch
+            {
+                "teacher" => "教师",
+                "ta" => "助教",
+                "student" => "学生",
+                "admin" => "管理员",
+                _ => "未知"
+            };
             set
             {
                 role = value;

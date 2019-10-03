@@ -40,7 +40,7 @@
                                     </SymbolIcon.RenderTransform>
                                 </SymbolIcon>
                                 <TextBlock FontSize="12" Margin="8,0" Text="{x:Bind StudentNum, Mode=OneWay}" RelativePanel.RightOf="CapacityIcon" x:Name="Capacity"></TextBlock>
-                                <SymbolIcon Symbol="Find" x:Name="IdentityIcon" RelativePanel.RightOf="Capacity">
+                                <SymbolIcon Symbol="Contact" x:Name="IdentityIcon" RelativePanel.RightOf="Capacity">
                                     <SymbolIcon.RenderTransform>
                                         <CompositeTransform ScaleX="0.8" ScaleY="0.8"></CompositeTransform>
                                     </SymbolIcon.RenderTransform>
@@ -50,8 +50,8 @@
                         </Grid>
                         <Grid RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignRightWithPanel="True">
                             <RelativePanel RelativePanel.AlignRightWithPanel="True">
-                                <TextBlock FontSize="12" x:Name="SchoolYear" Margin="2,4" Text="{x:Bind SchoolYear, Mode=OneWay}"></TextBlock>
-                                <TextBlock FontSize="12" RelativePanel.RightOf="SchoolYear" Margin="2,4" Text="{x:Bind Semester, Mode=OneWay}"></TextBlock>
+                                <TextBlock FontSize="12" x:Name="SchoolYearText" Margin="2,4" Text="{x:Bind SchoolYear, Mode=OneWay}"></TextBlock>
+                                <TextBlock FontSize="12" RelativePanel.RightOf="SchoolYearText" Margin="2,4" Text="{x:Bind Semester, Mode=OneWay}"></TextBlock>
                             </RelativePanel>
                         </Grid>
                     </RelativePanel>
