@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Windows.Web.Http;
 
 namespace MatrixUWP.Utils
 {
-    class MatrixJsonHttpRequestClient
+    public class MatrixJsonHttpRequestClient
     {
         private readonly HttpClient httpClient;
         private readonly Uri baseUri;
@@ -38,27 +40,25 @@ namespace MatrixUWP.Utils
             return await httpClient.GetAsync(uri);
         }
 
-        public async ValueTask<HttpResponseMessage> PostAsync<T>(string path, T body)
+        public async ValueTask<HttpResponseMessage> PostJsonAsync<T>(string path, T body)
         {
             await EnsureTokenSavedAsync();
             var uri = new Uri(baseUri, path);
-            var jsonContent = new HttpJsonContent<T>(body);
+            using var jsonContent = new HttpJsonContent<T>(body);
             return await httpClient.PostAsync(uri, jsonContent);
         }
 
-        public async ValueTask<HttpResponseMessage> PutAsync<T>(string path, T body)
+        public async ValueTask<HttpResponseMessage> PostMultiPartAsync(string path, IDictionary<string, IHttpContent> contents)
         {
             await EnsureTokenSavedAsync();
             var uri = new Uri(baseUri, path);
-            var jsonContent = new HttpJsonContent<T>(body);
-            return await httpClient.PutAsync(uri, jsonContent);
-        }
-
-        public async ValueTask<HttpResponseMessage> DeleteAsync(string path)
-        {
-            await EnsureTokenSavedAsync();
-            var uri = new Uri(baseUri, path);
-            return await httpClient.DeleteAsync(uri);
+            using var multipartData = new HttpMultipartFormDataContent();
+            foreach (var i in contents)
+            {
+                if (string.IsNullOrEmpty(i.Key)) multipartData.Add(i.Value);
+                else multipartData.Add(i.Value, i.Key);
+            }
+            return await httpClient.PostAsync(uri, multipartData);
         }
     }
 }

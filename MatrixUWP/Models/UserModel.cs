@@ -8,6 +8,10 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using MatrixUWP.Annotations;
 using MatrixUWP.Utils;
+using System.Collections.Generic;
+using Windows.Web.Http;
+using System.IO;
+using Windows.Storage.Streams;
 
 namespace MatrixUWP.Models
 {
@@ -287,14 +291,28 @@ namespace MatrixUWP.Models
         public bool SignedIn => this.UserId != 0;
     }
 
+    public class ProfileUpdateModel
+    {
+        [JsonProperty("email")]
+        public string Email { get; set; } = "";
+        [JsonProperty("phone")]
+        public string Phone { get; set; } = "";
+        [JsonProperty("homepage")]
+        public string HomePage { get; set; } = "";
+        [JsonProperty("nickname")]
+        public string NickName { get; set; } = "";
+        [JsonProperty("mail_config")]
+        public MailConfig MailConfig { get; set; } = new MailConfig();
+    }
+
     public class UserModel
     {
         public static UserDataModel? CurrentUser { get; set; }
         public static async ValueTask<ResponseModel<UserDataModel?>> SignInAsync(string userName, string password, string captcha = "")
         {
             var result = await (string.IsNullOrEmpty(captcha) ?
-                App.MatrixHttpClient.PostAsync("/api/users/login", new { username = userName, password })
-                : App.MatrixHttpClient.PostAsync("/api/users/login", new { username = userName, password, captcha }))
+                App.MatrixHttpClient.PostJsonAsync("/api/users/login", new { username = userName, password })
+                : App.MatrixHttpClient.PostJsonAsync("/api/users/login", new { username = userName, password, captcha }))
             .JsonAsync<ResponseModel<UserDataModel?>>();
             if (result?.Data?.SignedIn ?? false)
             {
@@ -319,7 +337,17 @@ namespace MatrixUWP.Models
             App.AppConfiguration.SavedUserName = "";
             App.AppConfiguration.SavedPassword = "";
             CurrentUser = null;
-            return App.MatrixHttpClient.PostAsync("/api/users/logout", new { }).JsonAsync<ResponseModel>();
+            return App.MatrixHttpClient.PostJsonAsync("/api/users/logout", new { }).JsonAsync<ResponseModel>();
+        }
+
+        public static async ValueTask<ResponseModel> UpdateProfileAsync(ProfileUpdateModel model, FileInputStream stream)
+        {
+            return await App.MatrixHttpClient.PostMultiPartAsync("/api/users/profile", new Dictionary<string, IHttpContent>
+            {
+                [""] = new HttpJsonContent<ProfileUpdateModel>(model),
+                ["avatar"] = new HttpStreamContent(stream)
+            })
+                .JsonAsync<ResponseModel>();
         }
     }
 }

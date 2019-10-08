@@ -9,7 +9,7 @@ using Windows.Web.Http.Headers;
 
 namespace MatrixUWP.Utils
 {
-    class HttpJsonContent<T> : IHttpContent
+    class HttpJsonContent<T> : IHttpContent, IDisposable
     {
         private readonly T json;
         private string serializedJson = "";
