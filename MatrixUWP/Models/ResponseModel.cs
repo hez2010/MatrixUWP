@@ -4,6 +4,11 @@ using Newtonsoft.Json;
 
 namespace MatrixUWP.Models
 {
+    public enum StatusCode
+    {
+        OK, BAD_REQUEST, NOT_AUTHORIZED
+    }
+
     public class ResponseModel<T>
     {
         [JsonProperty("status")]
@@ -15,10 +20,11 @@ namespace MatrixUWP.Models
         [JsonProperty("time")]
         public DateTime Time { get; set; }
     }
+
     public class ResponseModel
     {
         [JsonProperty("status")]
-        public string Status { get; set; } = "";
+        public StatusCode Status { get; set; }
         [JsonProperty("msg")]
         public string Message { get; set; } = "";
         [JsonProperty("time")]

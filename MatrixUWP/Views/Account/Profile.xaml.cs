@@ -5,6 +5,7 @@ using MatrixUWP.ViewModels;
 using MatrixUWP.Views.Parameters;
 using System;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -59,9 +60,53 @@ namespace MatrixUWP.Views.Account
             // TODO
         }
 
-        private void Save_Click(object sender, RoutedEventArgs e)
+
+        private async void MailConfig_Click(object sender, RoutedEventArgs e)
         {
-            // TODO
+            this.viewModel.Loading = true;
+            await Dispatcher.Yield();
+            this.parameters.ShowMessage(await UpdateProfile());
+            this.viewModel.Loading = false;
+        }
+
+        private async ValueTask<string> UpdateProfile()
+        {
+            try
+            {
+                var result = await UserModel.UpdateProfileAsync(new ProfileUpdateModel
+                {
+                    Email = this.viewModel.UserData.Email,
+                    HomePage = this.viewModel.UserData.HomePage,
+                    NickName = this.viewModel.UserData.NickName,
+                    Phone = this.viewModel.UserData.Phone,
+                    MailConfig = this.viewModel.UserData.MailConfig
+                });
+
+                if (result.Status == StatusCode.OK)
+                {
+                    var model = UserModel.CurrentUser;
+                    model.Phone = this.viewModel.UserData.Phone;
+                    model.NickName = this.viewModel.UserData.NickName;
+                    model.HomePage = this.viewModel.UserData.HomePage;
+                    model.MailConfig = this.viewModel.UserData.MailConfig;
+                    model.Email = this.viewModel.UserData.Email;
+                    this.parameters.UpdateUserData(model);
+                    UserModel.CurrentUser = model;
+                }
+                return result.Message;
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        private async void Profiles_Changed(object sender, RoutedEventArgs e)
+        {
+            this.viewModel.Loading = true;
+            await Dispatcher.Yield();
+            this.parameters.ShowMessage(await UpdateProfile());
+            this.viewModel.Loading = false;
         }
     }
 }
