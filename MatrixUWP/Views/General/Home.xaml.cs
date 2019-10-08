@@ -88,11 +88,11 @@ namespace MatrixUWP.Views.General
             }
         }
 
-        private void Editor_TextChanging(RichEditBox sender, RichEditBoxTextChangingEventArgs args)
+        private void Login_KeyDown(object sender, Windows.UI.Xaml.Input.KeyRoutedEventArgs e)
         {
-            var position = sender.Document.Selection.StartPosition;
-            var range = sender.Document.GetRange(Math.Max(0, position - 10), position);
-            range.CharacterFormat.ForegroundColor = Colors.Red;
+            if (e.Key != Windows.System.VirtualKey.Enter) return;
+            if (!viewModel.SignInButtonEnabled) return;
+            SignIn_Click(this, null);
         }
     }
 }

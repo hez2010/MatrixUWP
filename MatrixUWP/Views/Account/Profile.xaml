@@ -27,42 +27,40 @@
         </StackPanel>
         <StackPanel>
             <StackPanel Margin="48,24,48,8">
-                <RelativePanel HorizontalAlignment="Center" Margin="8">
-                    <TextBlock FontSize="24" x:Name="HelloTextBlock" Text="你好，"></TextBlock>
-                    <TextBlock FontSize="24" x:Name="UserNameTextBlock" RelativePanel.RightOf="HelloTextBlock" Text="{x:Bind viewModel.UserData.UserName, Mode=OneWay}"></TextBlock>
-                    <TextBlock FontSize="24" RelativePanel.RightOf="UserNameTextBlock" Text="！"></TextBlock>
-                </RelativePanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="8">
+                    <TextBlock FontSize="24" Text="你好，"></TextBlock>
+                    <TextBlock FontSize="24" Text="{x:Bind viewModel.UserData.UserName, Mode=OneWay}"></TextBlock>
+                    <TextBlock FontSize="24" Text="！"></TextBlock>
+                </StackPanel>
                 <TextBlock Margin="8" FontSize="16" Text="基本信息" HorizontalAlignment="Left"></TextBlock>
                 <Border BorderThickness="1" BorderBrush="Gray"></Border>
             </StackPanel>
-            <RelativePanel Margin="0,8">
-                <TextBlock x:Name="NameTextBlock" TextAlignment="Right" Margin="16,8" Width="100" Text="姓名"></TextBlock>
-                <TextBox IsReadOnly="True" RelativePanel.RightOf="NameTextBlock" Margin="0,4" CornerRadius="3" Width="200" Text="{x:Bind viewModel.UserData.UserName, Mode=OneWay}"></TextBox>
-            </RelativePanel>
-            <RelativePanel Margin="0,8">
-                <TextBlock x:Name="NickNameTextBlock" TextAlignment="Right" Margin="16,8" Width="100" Text="昵称"></TextBlock>
-                <TextBox RelativePanel.RightOf="NickNameTextBlock" Margin="0,4" CornerRadius="3" Width="200" Text="{x:Bind viewModel.UserData.NickName, Mode=TwoWay}"></TextBox>
-            </RelativePanel>
-            <RelativePanel Margin="0,8">
-                <TextBlock x:Name="EmailTextBlock" TextAlignment="Right" Margin="16,8" Width="100" Text="邮箱"></TextBlock>
-                <TextBox RelativePanel.RightOf="EmailTextBlock" InputScope="EmailNameOrAddress" Margin="0,4" CornerRadius="3" Width="200" Text="{x:Bind viewModel.UserData.Email, Mode=TwoWay}"></TextBox>
-            </RelativePanel>
-            <RelativePanel Margin="0,8">
-                <TextBlock x:Name="PhoneTextBlock" TextAlignment="Right" Margin="16,8" Width="100" Text="电话"></TextBlock>
-                <TextBox RelativePanel.RightOf="PhoneTextBlock" InputScope="EmailNameOrAddress" Margin="0,4" CornerRadius="3" Width="200" Text="{x:Bind viewModel.UserData.Phone, Mode=TwoWay}"></TextBox>
-            </RelativePanel>
-            <RelativePanel Margin="0,8">
-                <TextBlock x:Name="WebsiteTextBlock" TextAlignment="Right" Margin="16,8" Width="100" Text="主页"></TextBlock>
-                <TextBox RelativePanel.RightOf="WebsiteTextBlock" InputScope="EmailNameOrAddress" Margin="0,4" CornerRadius="3" Width="200" Text="{x:Bind viewModel.UserData.HomePage, Mode=TwoWay}"></TextBox>
-            </RelativePanel>
-            <RelativePanel Margin="0,8">
-                <TextBlock x:Name="EmailConfig" TextAlignment="Right" Margin="16,8" Width="100" Text="邮件配置"></TextBlock>
-                <RelativePanel RelativePanel.RightOf="EmailConfig" Margin="0,4">
-                    <CheckBox x:Name="CourseEmail" IsChecked="{x:Bind viewModel.UserData.MailConfig.Course, Mode=TwoWay}">课程</CheckBox>
-                    <CheckBox RelativePanel.RightOf="CourseEmail" x:Name="ExamEmail" IsChecked="{x:Bind viewModel.UserData.MailConfig.Exam, Mode=TwoWay}">考试</CheckBox>
-                    <CheckBox RelativePanel.RightOf="ExamEmail" x:Name="HomeworkEmail" IsChecked="{x:Bind viewModel.UserData.MailConfig.Assignment, Mode=TwoWay}">作业</CheckBox>
-                </RelativePanel>
-            </RelativePanel>
+            <StackPanel Orientation="Horizontal" Margin="0,8">
+                <TextBlock TextAlignment="Right" Margin="16,8" Width="100" Text="姓名"></TextBlock>
+                <TextBox IsReadOnly="True" Margin="0,4" CornerRadius="3" Width="200" Text="{x:Bind viewModel.UserData.UserName, Mode=OneWay}"></TextBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0,8">
+                <TextBlock TextAlignment="Right" Margin="16,8" Width="100" Text="昵称"></TextBlock>
+                <TextBox Margin="0,4" CornerRadius="3" Width="200" Text="{x:Bind viewModel.UserData.NickName, Mode=TwoWay}"></TextBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0,8">
+                <TextBlock TextAlignment="Right" Margin="16,8" Width="100" Text="邮箱"></TextBlock>
+                <TextBox InputScope="EmailNameOrAddress" Margin="0,4" CornerRadius="3" Width="200" Text="{x:Bind viewModel.UserData.Email, Mode=TwoWay}"></TextBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0,8">
+                <TextBlock TextAlignment="Right" Margin="16,8" Width="100" Text="电话"></TextBlock>
+                <TextBox InputScope="NameOrPhoneNumber" Margin="0,4" CornerRadius="3" Width="200" Text="{x:Bind viewModel.UserData.Phone, Mode=TwoWay}"></TextBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0,8">
+                <TextBlock TextAlignment="Right" Margin="16,8" Width="100" Text="主页"></TextBlock>
+                <TextBox InputScope="Url" Margin="0,4" CornerRadius="3" Width="200" Text="{x:Bind viewModel.UserData.HomePage, Mode=TwoWay}"></TextBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0,8">
+                <TextBlock TextAlignment="Right" Margin="16,8" Width="100" Text="邮件配置"></TextBlock>
+                <CheckBox IsChecked="{x:Bind viewModel.UserData.MailConfig.Course, Mode=TwoWay}">课程</CheckBox>
+                <CheckBox IsChecked="{x:Bind viewModel.UserData.MailConfig.Exam, Mode=TwoWay}">考试</CheckBox>
+                <CheckBox IsChecked="{x:Bind viewModel.UserData.MailConfig.Assignment, Mode=TwoWay}">作业</CheckBox>
+            </StackPanel>
         </StackPanel>
 
         <Button IsEnabled="{x:Bind viewModel.Loading, Mode=OneWay, Converter={StaticResource NotConverter}}" Margin="160,48" HorizontalAlignment="Right" VerticalAlignment="Bottom" Style="{ThemeResource ButtonRevealStyle}" Width="100" CornerRadius="3" Click="Save_Click">

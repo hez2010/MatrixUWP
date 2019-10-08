@@ -6,58 +6,84 @@
     xmlns:model="using:MatrixUWP.Models"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    mc:Ignorable="d"
     Background="{ThemeResource SystemControlAcrylicWindowMediumHighBrush}" Loaded="Page_Loaded">
 
     <Grid>
-        <GridView Margin="20" ItemsSource="{x:Bind viewModel.Courses, Mode=OneWay}">
+        <GridView Margin="20" ItemsSource="{x:Bind viewModel.Courses}">
             <GridView.ItemTemplate>
                 <DataTemplate x:DataType="model:CourseInfoModel">
                     <RelativePanel Height="140" Width="300" Margin="8" Padding="16" BorderBrush="Gray" BorderThickness="1" CornerRadius="3">
                         <TextBlock x:Name="CourseTitle" Foreground="CadetBlue" FontSize="18" Text="{x:Bind CourseName}"></TextBlock>
-                        <RelativePanel Margin="0,8,0,0" RelativePanel.Below="CourseTitle">
-                            <Ellipse Margin="0,2" Height="18" Width="18" x:Name="Avatar">
+                        <StackPanel Orientation="Horizontal" Margin="0,8,0,0" RelativePanel.Below="CourseTitle">
+                            <Ellipse Margin="0,2" Height="18" Width="18">
                                 <Ellipse.Fill>
-                                    <ImageBrush ImageSource="{x:Bind Creator.Avatar, Mode=OneWay}"/>
+                                    <ImageBrush ImageSource="{x:Bind Creator.Avatar}"/>
                                 </Ellipse.Fill>
                             </Ellipse>
-                            <TextBlock RelativePanel.RightOf="Avatar" Margin="8,0" Text="{x:Bind Creator.RealName}"></TextBlock>
-                        </RelativePanel>
-                        <RelativePanel Margin="0,8,0,0" RelativePanel.Below="CourseTitle" RelativePanel.AlignRightWithPanel="True">
-                            <Ellipse Margin="0,2" Height="12" Width="12" x:Name="StatusIcon">
+                            <TextBlock Margin="8,0" Text="{x:Bind Creator.RealName}"></TextBlock>
+                            <ToolTipService.ToolTip>
+                                <ToolTip>
+                                    <StackPanel Margin="8">
+                                        <StackPanel Margin="2" Orientation="Horizontal">
+                                            <TextBlock>用户：</TextBlock>
+                                            <TextBlock Text="{x:Bind Creator.UserName}"></TextBlock>
+                                        </StackPanel>
+                                        <StackPanel Margin="2" Orientation="Horizontal">
+                                            <TextBlock>姓名：</TextBlock>
+                                            <TextBlock Text="{x:Bind Creator.RealName}"></TextBlock>
+                                        </StackPanel>
+                                        <StackPanel Margin="2" Orientation="Horizontal">
+                                            <TextBlock>邮箱：</TextBlock>
+                                            <TextBlock Text="{x:Bind Creator.Email}"></TextBlock>
+                                        </StackPanel>
+                                        <StackPanel Margin="2" Orientation="Horizontal">
+                                            <TextBlock>电话：</TextBlock>
+                                            <TextBlock Text="{x:Bind Creator.Phone}"></TextBlock>
+                                        </StackPanel>
+                                        <StackPanel Margin="2" Orientation="Horizontal">
+                                            <TextBlock>主页：</TextBlock>
+                                            <TextBlock Text="{x:Bind Creator.HomePage}"></TextBlock>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </ToolTip>
+                            </ToolTipService.ToolTip>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,8,0,0" RelativePanel.Below="CourseTitle" RelativePanel.AlignRightWithPanel="True">
+                            <Ellipse Margin="0,2" Height="12" Width="12">
                                 <Ellipse.Fill>
-                                    <SolidColorBrush Color="{x:Bind StatusColor, Mode=OneWay}" />
+                                    <SolidColorBrush Color="{x:Bind StatusColor}" />
                                 </Ellipse.Fill>
                             </Ellipse>
-                            <TextBlock RelativePanel.RightOf="StatusIcon" Margin="8,0" FontSize="12" Text="{x:Bind Status, Mode=OneWay}"></TextBlock>
-                        </RelativePanel>
+                            <TextBlock Margin="8,0" FontSize="12" Text="{x:Bind Status}"></TextBlock>
+                        </StackPanel>
                         <Grid RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignLeftWithPanel="True">
-                            <RelativePanel>
-                                <SymbolIcon Symbol="People" x:Name="CapacityIcon">
+                            <StackPanel Orientation="Horizontal">
+                                <SymbolIcon Symbol="People">
                                     <SymbolIcon.RenderTransform>
                                         <CompositeTransform ScaleX="0.8" ScaleY="0.8"></CompositeTransform>
                                     </SymbolIcon.RenderTransform>
                                 </SymbolIcon>
-                                <TextBlock FontSize="12" Margin="8,0" Text="{x:Bind StudentNum, Mode=OneWay}" RelativePanel.RightOf="CapacityIcon" x:Name="Capacity"></TextBlock>
-                                <SymbolIcon Symbol="Contact" x:Name="IdentityIcon" RelativePanel.RightOf="Capacity">
+                                <TextBlock FontSize="12" Margin="8,0" Text="{x:Bind StudentNum}"></TextBlock>
+                                <SymbolIcon Symbol="Contact">
                                     <SymbolIcon.RenderTransform>
                                         <CompositeTransform ScaleX="0.8" ScaleY="0.8"></CompositeTransform>
                                     </SymbolIcon.RenderTransform>
                                 </SymbolIcon>
-                                <TextBlock FontSize="12" Margin="8,0" Text="{x:Bind Role, Mode=OneWay}" RelativePanel.RightOf="IdentityIcon"></TextBlock>
-                            </RelativePanel>
+                                <TextBlock FontSize="12" Margin="8,0" Text="{x:Bind Role}"></TextBlock>
+                            </StackPanel>
                         </Grid>
                         <Grid RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignRightWithPanel="True">
-                            <RelativePanel RelativePanel.AlignRightWithPanel="True">
-                                <TextBlock FontSize="12" x:Name="SchoolYearText" Margin="2,4" Text="{x:Bind SchoolYear, Mode=OneWay}"></TextBlock>
-                                <TextBlock FontSize="12" RelativePanel.RightOf="SchoolYearText" Margin="2,4" Text="{x:Bind Semester, Mode=OneWay}"></TextBlock>
-                            </RelativePanel>
+                            <StackPanel Orientation="Horizontal" RelativePanel.AlignRightWithPanel="True">
+                                <TextBlock FontSize="12" Margin="2,4" Text="{x:Bind SchoolYear}"></TextBlock>
+                                <TextBlock FontSize="12" Margin="2,4" Text="{x:Bind Semester}"></TextBlock>
+                            </StackPanel>
                         </Grid>
                     </RelativePanel>
                 </DataTemplate>
             </GridView.ItemTemplate>
         </GridView>
-        <ProgressRing HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-50,0,0" Width="60" Height="60" IsActive="{x:Bind viewModel.Loading, Mode=OneWay}"></ProgressRing>
+        <ProgressRing HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-50,0,0" Width="60" Height="60" IsActive="{x:Bind viewModel.Loading}"></ProgressRing>
     </Grid>
 </Page>
