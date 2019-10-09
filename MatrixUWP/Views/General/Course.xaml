@@ -11,7 +11,7 @@
     Background="{ThemeResource SystemControlAcrylicWindowMediumHighBrush}" Loaded="Page_Loaded">
 
     <Grid>
-        <GridView Margin="20" ItemsSource="{x:Bind viewModel.Courses}">
+        <GridView Margin="20" ItemsSource="{x:Bind viewModel.Courses, Mode=OneWay}">
             <GridView.ItemTemplate>
                 <DataTemplate x:DataType="model:CourseInfoModel">
                     <RelativePanel Height="140" Width="300" Margin="8" Padding="16" BorderBrush="Gray" BorderThickness="1" CornerRadius="3">

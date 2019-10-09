@@ -6,13 +6,13 @@ namespace MatrixUWP.Models
 {
     public enum StatusCode
     {
-        OK, BAD_REQUEST, NOT_AUTHORIZED
+        OK, BAD_REQUEST, NOT_AUTHORIZED, WRONG_CAPTCHA, WRONG_PASSWORD
     }
 
     public class ResponseModel<T>
     {
         [JsonProperty("status")]
-        public string Status { get; set; } = "";
+        public StatusCode Status { get; set; }
         [JsonProperty("msg")]
         public string Message { get; set; } = "";
         [JsonProperty("data"), CanBeNull]

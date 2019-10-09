@@ -29,7 +29,6 @@ namespace MatrixUWP.Views.General
             if (e.Parameter is CourseParameters param)
             {
                 this.parameters = param;
-                this.parameters.UserData.Captcha = false;
             }
         }
 
@@ -41,7 +40,7 @@ namespace MatrixUWP.Views.General
             try
             {
                 var coursesResponse = await CourseModel.FetchCourseListAsync();
-                if (coursesResponse.Status == "OK") viewModel.Courses = coursesResponse.Data;
+                if (coursesResponse.Status == StatusCode.OK) viewModel.Courses = coursesResponse.Data;
                 else this.parameters?.ShowMessage(coursesResponse.Message);
             }
             catch (Exception ex)

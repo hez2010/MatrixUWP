@@ -21,12 +21,18 @@ namespace MatrixUWP.Extensions
             return JsonSerializer.Parse<T>(json);
         }
 #else
+        private static readonly JsonSerializerSettings jsonSerializerSettings = new JsonSerializerSettings();
+        static ResponseExtensions()
+        {
+            jsonSerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
+        }
+
         public static async ValueTask<T> JsonAsync<T>(this ValueTask<HttpResponseMessage> response)
         {
             var result = await response;
             var json = await result.Content.ReadAsStringAsync();
             Debug.WriteLine($"Got response: {response.Result.StatusCode}, with data: {json}, with headers: {response.Result.Headers.SerializeJson()}");
-            return JsonConvert.DeserializeObject<T>(json);
+            return JsonConvert.DeserializeObject<T>(json, jsonSerializerSettings);
         }
 #endif
 
