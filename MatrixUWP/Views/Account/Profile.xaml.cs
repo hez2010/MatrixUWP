@@ -6,6 +6,8 @@ using MatrixUWP.Views.Parameters;
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using Windows.Storage.Pickers;
+using Windows.Storage.Streams;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -55,32 +57,38 @@ namespace MatrixUWP.Views.Account
             }
         }
 
-        private void ChangeAvatar_Click(object sender, RoutedEventArgs e)
+        private async void ChangeAvatar_Click(object sender, RoutedEventArgs e)
         {
-            // TODO
-        }
-
-
-        private async void MailConfig_Click(object sender, RoutedEventArgs e)
-        {
+            var picker = new FileOpenPicker();
+            picker.FileTypeFilter.Add(".jpg");
+            picker.FileTypeFilter.Add(".jpeg");
+            picker.FileTypeFilter.Add(".png");
+            picker.FileTypeFilter.Add(".gif");
+            var file = await picker.PickSingleFileAsync();
+            if (file == null) return;
+            using var stream = await file.OpenSequentialReadAsync();
             this.viewModel.Loading = true;
             await Dispatcher.Yield();
-            this.parameters.ShowMessage(await UpdateProfile());
+            this.parameters.ShowMessage(await UpdateProfile(stream));
             this.viewModel.Loading = false;
         }
 
-        private async ValueTask<string> UpdateProfile()
+        private async ValueTask<string> UpdateProfile(IInputStream? stream = null)
         {
             try
             {
-                var result = await UserModel.UpdateProfileAsync(new ProfileUpdateModel
+                var result = stream switch
                 {
-                    Email = this.viewModel.UserData.Email,
-                    HomePage = this.viewModel.UserData.HomePage,
-                    NickName = this.viewModel.UserData.NickName,
-                    Phone = this.viewModel.UserData.Phone,
-                    MailConfig = this.viewModel.UserData.MailConfig
-                });
+                    IInputStream _ => await UserModel.UpdateAvatarAsync(stream),
+                    _ => await UserModel.UpdateProfileAsync(new ProfileUpdateModel
+                    {
+                        Email = this.viewModel.UserData.Email,
+                        HomePage = this.viewModel.UserData.HomePage,
+                        NickName = this.viewModel.UserData.NickName,
+                        Phone = this.viewModel.UserData.Phone,
+                        MailConfig = this.viewModel.UserData.MailConfig
+                    })
+                };
 
                 if (result.Status == StatusCode.OK)
                 {
@@ -101,7 +109,7 @@ namespace MatrixUWP.Views.Account
             }
         }
 
-        private async void Profiles_Changed(object sender, RoutedEventArgs e)
+        private async void SaveProfiles_Click(object sender, RoutedEventArgs e)
         {
             this.viewModel.Loading = true;
             await Dispatcher.Yield();

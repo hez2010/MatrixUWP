@@ -340,20 +340,21 @@ namespace MatrixUWP.Models
             return App.MatrixHttpClient.PostJsonAsync("/api/users/logout", new { }).JsonAsync<ResponseModel>();
         }
 
-        public static async ValueTask<ResponseModel> UpdateProfileAsync(ProfileUpdateModel model, FileInputStream? stream = null)
+        public static async ValueTask<ResponseModel> UpdateProfileAsync(ProfileUpdateModel model)
         {
-            if (stream != null)
-            {
-                var data = new Dictionary<string, IHttpContent>
-                {
-                    [""] = new HttpJsonContent<ProfileUpdateModel>(model),
-                    ["avatar"] = new HttpStreamContent(stream)
-                };
-                await App.MatrixHttpClient.PostMultiPartAsync("/api/users/profile", data)
-                    .JsonAsync<ResponseModel>();
-            }
-
             return await App.MatrixHttpClient.PostJsonAsync("/api/users/profile", model)
+                .JsonAsync<ResponseModel>();
+        }
+
+        public static async ValueTask<ResponseModel> UpdateAvatarAsync(IInputStream stream)
+        {
+            using var content = new HttpStreamContent(stream);
+            content.Headers.ContentType = new Windows.Web.Http.Headers.HttpMediaTypeHeaderValue("image/jpeg");
+            var data = new Dictionary<string, IHttpContent>
+            {
+                ["avatar"] = content
+            };
+            return await App.MatrixHttpClient.PostMultiPartAsync("/api/users/profile", data)
                 .JsonAsync<ResponseModel>();
         }
     }

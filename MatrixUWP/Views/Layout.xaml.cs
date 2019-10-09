@@ -53,6 +53,7 @@ namespace MatrixUWP.Views
                 _ => null
             };
 
+            UserModel.CurrentUser?.CopyTo(viewModel.UserData);
             var commonParameter =
                 new CommonParameters(UpdateUserData, viewModel.UserData, ShowMessage, NaviContent);
 
