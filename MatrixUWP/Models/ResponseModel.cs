@@ -1,5 +1,4 @@
 ﻿using System;
-using MatrixUWP.Annotations;
 using Newtonsoft.Json;
 
 namespace MatrixUWP.Models
@@ -15,7 +14,7 @@ namespace MatrixUWP.Models
         public StatusCode Status { get; set; }
         [JsonProperty("msg")]
         public string Message { get; set; } = "";
-        [JsonProperty("data"), CanBeNull]
+        [JsonProperty("data")]
         public T Data { get; set; }
         [JsonProperty("time")]
         public DateTime Time { get; set; }

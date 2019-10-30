@@ -1,10 +1,8 @@
 ﻿using MatrixUWP.Extensions;
 using MatrixUWP.Models;
-using MatrixUWP.Utils;
 using MatrixUWP.ViewModels;
 using MatrixUWP.Views.Parameters;
 using System;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using Windows.Storage.Pickers;
 using Windows.Storage.Streams;

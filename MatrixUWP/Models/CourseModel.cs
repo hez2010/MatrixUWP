@@ -3,7 +3,6 @@ using Newtonsoft.Json;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using MatrixUWP.Annotations;
 using MatrixUWP.Extensions;
 using Windows.UI;
 
@@ -11,33 +10,11 @@ namespace MatrixUWP.Models
 {
     public class CourseInfoModel : INotifyPropertyChanged
     {
-        private int courseId;
         private string status = "";
-        private string type = "";
-        private string courseName = "";
-        private string schoolYear = "";
-        private string description = "";
-        private string semester = "";
-        private string term = "";
-        private int accessibleWhenClose;
-        private int ipBinding;
         private string role = "";
-        private int studentNum;
-        private int progressingNum;
-        private int unfinishedNum;
-        private string teacher = "";
-        private UserEssentialDataModel creator = new UserEssentialDataModel();
 
         [JsonProperty("course_id")]
-        public int CourseId
-        {
-            get => courseId;
-            set
-            {
-                courseId = value;
-                OnPropertyChanged();
-            }
-        }
+        public int CourseId { get; set; }
 
         [JsonProperty("status")]
         public string Status
@@ -52,7 +29,6 @@ namespace MatrixUWP.Models
             set
             {
                 status = value;
-                OnPropertyChanged();
             }
         }
 
@@ -65,92 +41,28 @@ namespace MatrixUWP.Models
         };
 
         [JsonProperty("type")]
-        public string Type
-        {
-            get => type;
-            set
-            {
-                type = value;
-                OnPropertyChanged();
-            }
-        }
+        public string Type { get; set; } = "";
 
         [JsonProperty("course_name")]
-        public string CourseName
-        {
-            get => courseName;
-            set
-            {
-                courseName = value;
-                OnPropertyChanged();
-            }
-        }
+        public string CourseName { get; set; } = "";
 
         [JsonProperty("school_year")]
-        public string SchoolYear
-        {
-            get => schoolYear;
-            set
-            {
-                schoolYear = value;
-                OnPropertyChanged();
-            }
-        }
+        public string SchoolYear { get; set; } = "";
 
         [JsonProperty("description")]
-        public string Description
-        {
-            get => description;
-            set
-            {
-                description = value;
-                OnPropertyChanged();
-            }
-        }
+        public string Description { get; set; } = "";
 
         [JsonProperty("semester")]
-        public string Semester
-        {
-            get => semester;
-            set
-            {
-                semester = value;
-                OnPropertyChanged();
-            }
-        }
+        public string Semester { get; set; } = "";
 
         [JsonProperty("term")]
-        public string Term
-        {
-            get => term;
-            set
-            {
-                term = value;
-                OnPropertyChanged();
-            }
-        }
+        public string Term { get; set; } = "";
 
         [JsonProperty("accessible_when_close")]
-        public int AccessibleWhenClose
-        {
-            get => accessibleWhenClose;
-            set
-            {
-                accessibleWhenClose = value;
-                OnPropertyChanged();
-            }
-        }
+        public int AccessibleWhenClose { get; set; }
 
         [JsonProperty("ip_binding")]
-        public int IpBinding
-        {
-            get => ipBinding;
-            set
-            {
-                ipBinding = value;
-                OnPropertyChanged();
-            }
-        }
+        public int IpBinding { get; set; }
 
         [JsonProperty("role")]
         public string Role
@@ -166,68 +78,26 @@ namespace MatrixUWP.Models
             set
             {
                 role = value;
-                OnPropertyChanged();
             }
         }
 
         [JsonProperty("student_num")]
-        public int StudentNum
-        {
-            get => studentNum;
-            set
-            {
-                studentNum = value;
-                OnPropertyChanged();
-            }
-        }
+        public int StudentNum { get; set; }
 
         [JsonProperty("progressing_num")]
-        public int ProgressingNum
-        {
-            get => progressingNum;
-            set
-            {
-                progressingNum = value;
-                OnPropertyChanged();
-            }
-        }
+        public int ProgressingNum { get; set; }
 
         [JsonProperty("unfinished_num")]
-        public int UnfinishedNum
-        {
-            get => unfinishedNum;
-            set
-            {
-                unfinishedNum = value;
-                OnPropertyChanged();
-            }
-        }
+        public int UnfinishedNum { get; set; }
 
         [JsonProperty("teacher")]
-        public string Teacher
-        {
-            get => teacher;
-            set
-            {
-                teacher = value;
-                OnPropertyChanged();
-            }
-        }
+        public string Teacher { get; set; } = "";
 
         [JsonProperty("creator")]
-        public UserEssentialDataModel Creator
-        {
-            get => creator;
-            set
-            {
-                creator = value;
-                OnPropertyChanged();
-            }
-        }
+        public UserEssentialDataModel Creator { get; set; } = new UserEssentialDataModel();
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

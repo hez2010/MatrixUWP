@@ -130,6 +130,7 @@
     </Compile>
     <Compile Include="Controls\MyNavigationView.cs" />
     <Compile Include="Converters\EnumConverter.cs" />
+    <Compile Include="Converters\NumberCalculator.cs" />
     <Compile Include="Converters\NotConverter.cs" />
     <Compile Include="Converters\NotVisibilityConverter.cs" />
     <Compile Include="Extensions\CopyExtensions.cs" />
@@ -137,15 +138,20 @@
     <Compile Include="Extensions\ResponseExtensions.cs" />
     <Compile Include="Extensions\TaskExtensions.cs" />
     <Compile Include="Models\Configuration.cs" />
+    <Compile Include="Models\CourseAssignmentModel.cs" />
     <Compile Include="Models\CourseModel.cs" />
     <Compile Include="Models\ResponseModel.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Extensions\JsonExtensions.cs" />
-    <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Utils\LogHelper.cs" />
+    <Compile Include="ViewModels\CourseAssignmentsViewModel.cs" />
+    <Compile Include="ViewModels\CourseDetailsViewModel.cs" />
     <Compile Include="ViewModels\CourseViewModel.cs" />
     <Compile Include="ViewModels\ProfileViewModel.cs" />
-    <Compile Include="Views\General\CourseDetails.xaml.cs">
+    <Compile Include="Views\General\Course\CourseAssignments.xaml.cs">
+      <DependentUpon>CourseAssignments.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\General\Course\CourseDetails.xaml.cs">
       <DependentUpon>CourseDetails.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Parameters\CommonParameters.cs" />
@@ -163,9 +169,10 @@
     <Compile Include="Views\General\Home.xaml.cs">
       <DependentUpon>Home.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\General\Course.xaml.cs">
+    <Compile Include="Views\General\Course\Course.xaml.cs">
       <DependentUpon>Course.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Parameters\CourseDetailsParameters.cs" />
     <Compile Include="Views\Parameters\CourseParameters.cs" />
     <Compile Include="Views\Parameters\HomeParameters.cs" />
     <Compile Include="Views\General\Library.xaml.cs">
@@ -272,7 +279,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\General\CourseDetails.xaml">
+    <Page Include="Views\General\Course\CourseAssignments.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\General\Course\CourseDetails.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -284,7 +295,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\General\Course.xaml">
+    <Page Include="Views\General\Course\Course.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -334,7 +345,7 @@
       <Version>4.5.3</Version>
     </PackageReference>
     <PackageReference Include="Win2D.uwp">
-      <Version>1.23.0</Version>
+      <Version>1.24.0</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

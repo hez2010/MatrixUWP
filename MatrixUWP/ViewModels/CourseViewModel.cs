@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using MatrixUWP.Annotations;
 using MatrixUWP.Models;
 
 namespace MatrixUWP.ViewModels
@@ -33,7 +32,6 @@ namespace MatrixUWP.ViewModels
             }
         }
 
-        [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

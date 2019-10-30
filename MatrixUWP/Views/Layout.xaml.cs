@@ -4,8 +4,6 @@ using MatrixUWP.ViewModels;
 using MatrixUWP.Views.Parameters;
 using System;
 using System.Collections.Generic;
-using Windows.Foundation;
-using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
@@ -43,7 +41,7 @@ namespace MatrixUWP.Views
             {
                 (_, true) => typeof(Settings),
                 ("HomeNaviPage", _) => typeof(General.Home),
-                ("CourseNaviPage", _) => typeof(General.Course),
+                ("CourseNaviPage", _) => typeof(General.Course.Course),
                 ("ExamNaviPage", _) => typeof(General.Exam),
                 ("LibraryNaviPage", _) => typeof(General.Library),
                 ("MessagesNaviPage", _) => typeof(General.Messages),
@@ -55,7 +53,7 @@ namespace MatrixUWP.Views
 
             UserModel.CurrentUser?.CopyTo(viewModel.UserData);
             var commonParameter =
-                new CommonParameters(UpdateUserData, viewModel.UserData, ShowMessage, NaviContent);
+                new CommonParameters(UpdateUserData, viewModel.UserData, ShowMessage, NavigateToPage);
 
             // Get parameters needed
             var parameter = (naviPageName, isSettingsPage) switch
@@ -114,6 +112,17 @@ namespace MatrixUWP.Views
             NaviMenu.SelectedItem = naviItem;
         }
 
+        private void NavigateToPage(Type pageType, Type parameterType, object parameter)
+        {
+            var param = parameterType.GetConstructor(new[] { typeof(CommonParameters) })
+                .Invoke(new[] { new CommonParameters(UpdateUserData, viewModel.UserData, ShowMessage, NavigateToPage) });
+            parameter.CopyTo(param);
+
+            // Update navi history and last selected index of navimenu
+            navimenuNaviHistory.Push(lastSelectedItemIndex);
+            NaviContent.Navigate(pageType, param, new DrillInNavigationTransitionInfo());
+        }
+
         private void UpdateUserData(UserDataModel userData)
         {
             userData.CopyTo(this.viewModel.UserData);
@@ -142,6 +151,7 @@ namespace MatrixUWP.Views
                 NaviContent.GoBack();
                 if (navimenuNaviHistory.TryPop(out var index))
                 {
+                    if (index == -1) return true;
                     if (index != NaviMenu.MenuItems.Count) NaviMenu.SelectedItem = NaviMenu.MenuItems[index];
                     else NaviMenu.SelectedItem = NaviMenu.SettingsItem;
                     lastSelectedItemIndex = index;

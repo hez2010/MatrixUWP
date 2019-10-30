@@ -6,22 +6,19 @@
     xmlns:local="using:MatrixUWP">
     <Application.Resources>
         <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary>
-                    <ResourceDictionary.ThemeDictionaries>
-                        <ResourceDictionary x:Key="Light">
-                            <BitmapImage x:Key="MatrixLogo" UriSource="/Assets/Home/logoblack.png"></BitmapImage>
-                        </ResourceDictionary>
-                        <ResourceDictionary x:Key="Dark">
-                            <BitmapImage x:Key="MatrixLogo" UriSource="/Assets/Home/logowhite.png"></BitmapImage>
-                        </ResourceDictionary>
-                    </ResourceDictionary.ThemeDictionaries>
-
-                    <cvt:EnumConverter x:Key="EnumConverter"/>
-                    <cvt:NotConverter x:Key="NotConverter"/>
-                    <cvt:NotVisibilityConverter x:Key="NotVisibilityConverter"/>
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Light">
+                    <BitmapImage x:Key="MatrixLogo" UriSource="/Assets/Home/logoblack.png"></BitmapImage>
                 </ResourceDictionary>
-            </ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary x:Key="Dark">
+                    <BitmapImage x:Key="MatrixLogo" UriSource="/Assets/Home/logowhite.png"></BitmapImage>
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+
+            <cvt:EnumConverter x:Key="EnumConverter"/>
+            <cvt:NotConverter x:Key="NotConverter"/>
+            <cvt:NotVisibilityConverter x:Key="NotVisibilityConverter"/>
+            <cvt:NumberCalculator x:Key="NumberCalculator"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

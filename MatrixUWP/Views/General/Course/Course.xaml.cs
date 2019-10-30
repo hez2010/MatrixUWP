@@ -5,10 +5,11 @@ using MatrixUWP.ViewModels;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using MatrixUWP.Views.Parameters;
+using System.Linq;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
-namespace MatrixUWP.Views.General
+namespace MatrixUWP.Views.General.Course
 {
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
@@ -51,6 +52,12 @@ namespace MatrixUWP.Views.General
             {
                 viewModel.Loading = false;
             }
+        }
+
+        private void CoursesView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (!(e.AddedItems.First() is CourseInfoModel course)) return;
+            this.parameters?.NavigateToPage(typeof(CourseDetails), typeof(CourseDetailsParameters), new { course.CourseId });
         }
     }
 }

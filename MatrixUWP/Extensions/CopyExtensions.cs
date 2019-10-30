@@ -4,15 +4,17 @@ namespace MatrixUWP.Extensions
 {
     static class CopyExtensions
     {
-        public static void CopyTo<T>(this T source, T target, params string[] suppress)
+        public static void CopyTo(this object source, object target, params string[] suppress)
         {
-            var props = typeof(T).GetProperties();
-            foreach (var i in props)
+            var targetProps = target.GetType().GetProperties();
+            var sourceProps = source.GetType().GetProperties();
+            foreach (var i in targetProps)
             {
                 if (suppress?.Contains(i.Name) ?? false) continue;
-                if (i.CanWrite && i.CanWrite)
+                var sourceProp = sourceProps.FirstOrDefault(j => j.Name == i.Name);
+                if (sourceProp != null && i.CanWrite && i.CanWrite)
                 {
-                    var value = i.GetValue(source);
+                    var value = sourceProp.GetValue(source);
                     i.SetValue(target, value);
                 }
             }

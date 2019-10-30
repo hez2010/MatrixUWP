@@ -1,5 +1,5 @@
 ﻿<Page
-    x:Class="MatrixUWP.Views.General.Course"
+    x:Class="MatrixUWP.Views.General.Course.Course"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:MatrixUWP.Views.General"
@@ -11,7 +11,7 @@
     Background="{ThemeResource SystemControlAcrylicWindowMediumHighBrush}" Loaded="Page_Loaded">
 
     <Grid>
-        <GridView Margin="20" ItemsSource="{x:Bind viewModel.Courses, Mode=OneWay}">
+        <GridView Margin="24" ItemsSource="{x:Bind viewModel.Courses, Mode=OneWay}" SelectionMode="Single" SelectionChanged="CoursesView_SelectionChanged">
             <GridView.ItemTemplate>
                 <DataTemplate x:DataType="model:CourseInfoModel">
                     <RelativePanel Height="140" Width="300" Margin="8" Padding="16" BorderBrush="Gray" BorderThickness="1" CornerRadius="3">
@@ -84,6 +84,6 @@
                 </DataTemplate>
             </GridView.ItemTemplate>
         </GridView>
-        <ProgressRing HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-50,0,0" Width="60" Height="60" IsActive="{x:Bind viewModel.Loading}"></ProgressRing>
+        <ProgressRing HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-50,0,0" Width="60" Height="60" IsActive="{x:Bind viewModel.Loading, Mode=OneWay}"></ProgressRing>
     </Grid>
 </Page>

@@ -4,17 +4,19 @@ using System.Runtime.CompilerServices;
 
 namespace MatrixUWP.ViewModels
 {
-    class ProfileViewModel : INotifyPropertyChanged
+    class CourseDetailsViewModel : INotifyPropertyChanged
     {
         private bool loading;
-        private UserDataModel userData = new UserDataModel();
+        private CourseInfoModel course = new CourseInfoModel();
 
-        public UserDataModel UserData
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public CourseInfoModel Course
         {
-            get => userData;
+            get => course;
             set
             {
-                this.userData = value;
+                course = value;
                 OnPropertyChanged();
             }
         }
@@ -29,7 +31,6 @@ namespace MatrixUWP.ViewModels
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

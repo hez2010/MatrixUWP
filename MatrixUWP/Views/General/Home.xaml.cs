@@ -1,12 +1,9 @@
 ﻿using MatrixUWP.Extensions;
 using MatrixUWP.Models;
-using MatrixUWP.Utils;
 using MatrixUWP.ViewModels;
 using MatrixUWP.Views.Parameters;
 using System;
-using System.Diagnostics;
 using System.IO;
-using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Imaging;
@@ -93,6 +90,14 @@ namespace MatrixUWP.Views.General
             if (e.Key != Windows.System.VirtualKey.Enter) return;
             if (!viewModel.SignInButtonEnabled) return;
             SignIn_Click(this, null);
+        }
+
+        private async void Button_Click(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(ApiBody.Text))
+                await App.MatrixHttpClient.GetAsync(ApiPath.Text).JsonAsync<object>();
+            else
+                await App.MatrixHttpClient.PostJsonAsync(ApiPath.Text, ApiBody.Text.DeserializeJson<object>()).JsonAsync<object>();
         }
     }
 }

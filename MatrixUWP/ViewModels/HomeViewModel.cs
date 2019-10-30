@@ -1,6 +1,7 @@
 ﻿using MatrixUWP.Utils;
 using System;
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 
@@ -20,7 +21,7 @@ namespace MatrixUWP.ViewModels
             set
             {
                 captchaData = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CaptchaData)));
+                OnPropertyChanged();
             }
         }
 
@@ -30,9 +31,9 @@ namespace MatrixUWP.ViewModels
             set
             {
                 userName = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(UserName)));
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Avatar)));
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SignInButtonEnabled)));
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(Avatar));
+                OnPropertyChanged(nameof(SignInButtonEnabled));
             }
         }
 
@@ -42,8 +43,8 @@ namespace MatrixUWP.ViewModels
             set
             {
                 password = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Password)));
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SignInButtonEnabled)));
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(SignInButtonEnabled));
             }
         }
 
@@ -53,7 +54,7 @@ namespace MatrixUWP.ViewModels
             set
             {
                 captcha = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Captcha)));
+                OnPropertyChanged();
             }
         }
 
@@ -85,13 +86,17 @@ namespace MatrixUWP.ViewModels
             set
             {
                 loading = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Loading)));
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SignInButtonEnabled)));
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(SignInButtonEnabled));
             }
         }
 
         public bool SignInButtonEnabled => !this.loading && !string.IsNullOrEmpty(this.userName) && !string.IsNullOrEmpty(this.password);
 
         public event PropertyChangedEventHandler PropertyChanged;
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }

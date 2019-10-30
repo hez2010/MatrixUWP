@@ -1,20 +1,21 @@
 ﻿using MatrixUWP.Models;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 namespace MatrixUWP.ViewModels
 {
-    class ProfileViewModel : INotifyPropertyChanged
+    public class CourseAssignmentsViewModel : INotifyPropertyChanged
     {
         private bool loading;
-        private UserDataModel userData = new UserDataModel();
+        private List<CourseAssignmentInfoModel> assignments = new List<CourseAssignmentInfoModel>();
 
-        public UserDataModel UserData
+        public List<CourseAssignmentInfoModel> Assignments
         {
-            get => userData;
+            get => assignments;
             set
             {
-                this.userData = value;
+                assignments = value;
                 OnPropertyChanged();
             }
         }
@@ -34,5 +35,6 @@ namespace MatrixUWP.ViewModels
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
     }
 }

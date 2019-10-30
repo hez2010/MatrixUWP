@@ -1,0 +1,71 @@
+﻿<Page
+    x:Class="MatrixUWP.Views.General.Course.CourseDetails"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MatrixUWP.Views.General"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    mc:Ignorable="d"
+    Background="{ThemeResource SystemControlAcrylicWindowMediumHighBrush}" Loaded="Page_Loaded" SizeChanged="Page_SizeChanged">
+
+    <Grid>
+        <StackPanel x:Name="Container" Margin="24">
+            <RelativePanel>
+                <StackPanel Orientation="Horizontal" Margin="8">
+                    <TextBlock FontSize="24" Text="{x:Bind viewModel.Course.CourseName, Mode=OneWay}"></TextBlock>
+                    <StackPanel Margin="16,0" Orientation="Horizontal">
+                        <Ellipse VerticalAlignment="Bottom" Margin="0,2" Height="12" Width="12">
+                            <Ellipse.Fill>
+                                <SolidColorBrush Color="{x:Bind viewModel.Course.StatusColor, Mode=OneWay}" />
+                            </Ellipse.Fill>
+                        </Ellipse>
+                        <TextBlock VerticalAlignment="Bottom" Margin="8,0" FontSize="12" Text="{x:Bind viewModel.Course.Status, Mode=OneWay}"></TextBlock>
+                    </StackPanel>
+                </StackPanel>
+                <Button Padding="16,4" Style="{ThemeResource ButtonRevealStyle}" CornerRadius="3" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignRightWithPanel="True" HorizontalAlignment="Right" Content="查看作业"></Button>
+            </RelativePanel>
+            <StackPanel Orientation="Horizontal" Margin="8,0,0,0" RelativePanel.Below="CourseTitle">
+                <StackPanel Orientation="Horizontal">
+                    <Ellipse Margin="0,2" Height="18" Width="18">
+                        <Ellipse.Fill>
+                            <ImageBrush ImageSource="{x:Bind viewModel.Course.Creator.Avatar, Mode=OneWay}"/>
+                        </Ellipse.Fill>
+                    </Ellipse>
+                    <TextBlock Margin="8,0" Text="{x:Bind viewModel.Course.Creator.RealName, Mode=OneWay}"></TextBlock>
+                </StackPanel>
+                <ToolTipService.ToolTip>
+                    <ToolTip>
+                        <StackPanel Margin="8">
+                            <StackPanel Margin="2" Orientation="Horizontal">
+                                <TextBlock>用户：</TextBlock>
+                                <TextBlock Text="{x:Bind viewModel.Course.Creator.UserName, Mode=OneWay}"></TextBlock>
+                            </StackPanel>
+                            <StackPanel Margin="2" Orientation="Horizontal">
+                                <TextBlock>姓名：</TextBlock>
+                                <TextBlock Text="{x:Bind viewModel.Course.Creator.RealName, Mode=OneWay}"></TextBlock>
+                            </StackPanel>
+                            <StackPanel Margin="2" Orientation="Horizontal">
+                                <TextBlock>邮箱：</TextBlock>
+                                <TextBlock Text="{x:Bind viewModel.Course.Creator.Email, Mode=OneWay}"></TextBlock>
+                            </StackPanel>
+                            <StackPanel Margin="2" Orientation="Horizontal">
+                                <TextBlock>电话：</TextBlock>
+                                <TextBlock Text="{x:Bind viewModel.Course.Creator.Phone, Mode=OneWay}"></TextBlock>
+                            </StackPanel>
+                            <StackPanel Margin="2" Orientation="Horizontal">
+                                <TextBlock>主页：</TextBlock>
+                                <TextBlock Text="{x:Bind viewModel.Course.Creator.HomePage, Mode=OneWay}"></TextBlock>
+                            </StackPanel>
+                        </StackPanel>
+                    </ToolTip>
+                </ToolTipService.ToolTip>
+            </StackPanel>
+            <Line x:Name="BorderLine" StrokeThickness="1" Margin="0,8" Stroke="Gray" X1="0" X2="0"></Line>
+            <ScrollViewer x:Name="DescriptionViewer" Margin="8">
+                <controls:MarkdownTextBlock Background="Transparent" Text="{x:Bind viewModel.Course.Description, Mode=OneWay}"></controls:MarkdownTextBlock>
+            </ScrollViewer>
+        </StackPanel>
+        <ProgressRing HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-50,0,0" Width="60" Height="60" IsActive="{x:Bind viewModel.Loading, Mode=OneWay}"></ProgressRing>
+    </Grid>
+</Page>

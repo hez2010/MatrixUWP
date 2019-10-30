@@ -1,6 +1,7 @@
 ﻿using MatrixUWP.Models;
 using System;
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using Windows.UI.Xaml;
 
 namespace MatrixUWP.ViewModels
@@ -23,7 +24,7 @@ namespace MatrixUWP.ViewModels
             set
             {
                 showMessage = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ShowMessage)));
+                OnPropertyChanged();
                 if (showMessage) messageTimer.Start();
             }
         }
@@ -33,7 +34,7 @@ namespace MatrixUWP.ViewModels
             set
             {
                 message = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Message)));
+                OnPropertyChanged();
             }
         }
 
@@ -43,5 +44,9 @@ namespace MatrixUWP.ViewModels
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }

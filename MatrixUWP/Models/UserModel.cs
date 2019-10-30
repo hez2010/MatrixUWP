@@ -6,11 +6,9 @@ using Newtonsoft.Json;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
-using MatrixUWP.Annotations;
 using MatrixUWP.Utils;
 using System.Collections.Generic;
 using Windows.Web.Http;
-using System.IO;
 using Windows.Storage.Streams;
 
 namespace MatrixUWP.Models
@@ -31,7 +29,6 @@ namespace MatrixUWP.Models
             }
         }
 
-        [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
@@ -91,7 +88,6 @@ namespace MatrixUWP.Models
             }
         }
 
-        [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
@@ -186,7 +182,6 @@ namespace MatrixUWP.Models
             }
         }
 
-        [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
