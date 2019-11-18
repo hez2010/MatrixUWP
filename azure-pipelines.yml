@@ -12,7 +12,6 @@ pool:
 variables:
   solution: '**/MatrixUWP.csproj'
   buildPlatform: 'x86|x64|ARM|ARM64'
-  buildConfiguration: 'Release'
   appxPackageDir: '$(Build.ArtifactStagingDirectory)\\AppxPackages\\'
 
 steps:
@@ -28,18 +27,28 @@ steps:
     restoreSolution: '$(solution)'
 
 - task: VSBuild@1
+  condition: eq(variables['Build.SourceBranch'], 'refs/heads/develop')
   inputs:
     solution: '$(solution)'
-    configuration: '$(buildConfiguration)'
+    configuration: 'Debug'
+    msbuildArgs: '/p:AppxBundlePlatforms="$(buildPlatform)" /p:AppxPackageDir="$(appxPackageDir)" /p:AppxBundle=Always /p:UapAppxPackageBuildMode=StoreUpload /m'
+
+- task: VSBuild@1
+  condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
+  inputs:
+    solution: '$(solution)'
+    configuration: 'Release'
     msbuildArgs: '/p:AppxBundlePlatforms="$(buildPlatform)" /p:AppxPackageDir="$(appxPackageDir)" /p:AppxBundle=Always /p:UapAppxPackageBuildMode=StoreUpload /m'
 
 - task: PublishBuildArtifacts@1
+  condition: eq(variables['Build.SourceBranch'], 'refs/heads/develop')
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
     ArtifactName: 'MatirxUWP-Feed'
     publishLocation: 'Container'
 
 - task: UniversalPackages@0
+  condition: eq(variables['Build.SourceBranch'], 'refs/heads/develop')
   inputs:
     command: 'publish'
     publishDirectory: '$(Build.ArtifactStagingDirectory)'
