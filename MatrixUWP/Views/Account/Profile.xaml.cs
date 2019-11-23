@@ -37,7 +37,7 @@ namespace MatrixUWP.Views.Account
         private async void SignOut_Click(object sender, RoutedEventArgs e)
         {
             viewModel.Loading = true;
-            await Dispatcher.Yield();
+            await Dispatcher.YieldAsync();
             try
             {
                 var result = await UserModel.SignOutAsync();
@@ -66,7 +66,7 @@ namespace MatrixUWP.Views.Account
             if (file == null) return;
             using var stream = await file.OpenSequentialReadAsync();
             this.viewModel.Loading = true;
-            await Dispatcher.Yield();
+            await Dispatcher.YieldAsync();
             this.parameters.ShowMessage(await UpdateProfile(stream));
             this.viewModel.Loading = false;
         }
@@ -110,7 +110,7 @@ namespace MatrixUWP.Views.Account
         private async void SaveProfiles_Click(object sender, RoutedEventArgs e)
         {
             this.viewModel.Loading = true;
-            await Dispatcher.Yield();
+            await Dispatcher.YieldAsync();
             this.parameters.ShowMessage(await UpdateProfile());
             this.viewModel.Loading = false;
         }

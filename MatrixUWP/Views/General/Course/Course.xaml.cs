@@ -36,7 +36,7 @@ namespace MatrixUWP.Views.General.Course
         private async void Page_Loaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
             viewModel.Loading = true;
-            await Dispatcher.Yield();
+            await Dispatcher.YieldAsync();
 
             try
             {

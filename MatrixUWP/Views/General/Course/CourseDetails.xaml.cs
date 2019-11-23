@@ -36,7 +36,7 @@ namespace MatrixUWP.Views.General.Course
         {
             AdjustElementsSize();
             this.viewModel.Loading = true;
-            await Dispatcher.Yield();
+            await Dispatcher.YieldAsync();
             try
             {
                 var response = await CourseModel.FetchCourseAsync(this.parameters?.CourseId ?? 0);

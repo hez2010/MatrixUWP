@@ -49,7 +49,7 @@ namespace MatrixUWP.Views.General
         private async void SignIn_Click(object sender, RoutedEventArgs e)
         {
             viewModel.Loading = true;
-            await Dispatcher.Yield();
+            await Dispatcher.YieldAsync();
             try
             {
                 var result = await (string.IsNullOrEmpty(viewModel.Captcha) ? UserModel.SignInAsync(viewModel.UserName, viewModel.Password)
