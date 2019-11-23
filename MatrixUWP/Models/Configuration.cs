@@ -20,7 +20,7 @@ namespace MatrixUWP.Models
     {
         private Language appLanguage = GetConfiguration(nameof(AppLanguage), Language.Default);
         private Theme appTheme = GetConfiguration(nameof(AppTheme), Theme.Default);
-        private string savedUserName = GetConfiguration<string>(nameof(SavedPassword));
+        private string savedUserName = GetConfiguration<string>(nameof(SavedUserName));
         private string savedPassword = GetConfiguration<string>(nameof(SavedPassword));
 
         public string SavedUserName
@@ -87,7 +87,7 @@ namespace MatrixUWP.Models
             ApplicationData.Current.LocalSettings.Values[propertyName] = value;
         }
 
-        protected static T GetConfiguration<T>(string propertyName = null, T defaultValue = default)
+        protected static T GetConfiguration<T>([CallerMemberName] string propertyName = null, T defaultValue = default)
         {
             var value = ApplicationData.Current.LocalSettings.Values[propertyName];
             if (value is null) return defaultValue;
