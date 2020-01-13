@@ -4,9 +4,9 @@ cache:
     key: ${CI_COMMIT_REF_NAME}
     paths:
         - MatrixUWP/obj
+        - packages
 
 stages:
-    - restore
     - build
 
 build-debug:
