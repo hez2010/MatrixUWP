@@ -10,10 +10,8 @@ restore:
         - msbuild MatrixUWP/MatrixUWP.csproj /t:restore /m
     tags: ["windows"]
     cache:
-        key: ${CI_COMMIT_REF_SLUG}
-        paths:
-            - MatrixUWP/obj
-            - MatrixUWP.Test/obj
+        key: ${CI_COMMIT_REF_NAME}
+        untracked: true
 
 build-debug:
     stage: build
