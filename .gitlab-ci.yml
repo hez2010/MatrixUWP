@@ -1,28 +1,28 @@
 image: vsbuildci:latest
 
 stages:
+    - restore
     - build
     
 restore:
-    stage: build
+    stage: restore
     script:
-        - msbuild MatrixUWP.sln /t:restore
-        
+        - msbuild MatrixUWP/MatrixUWP.csproj /t:restore /m
+    tags: ["windows"]
+
 build-debug:
     stage: build
     only:
         - develop
     script:
-        - msbuild MatrixUWP/MatrixUWP.csproj /t:restore /m 
         - msbuild MatrixUWP/MatrixUWP.csproj /p:Configuration=Debug /p:AppxBundlePlatforms="x86|x64|ARM" /p:AppxPackageDir="AppxPackages" /p:AppxBundle=Always /p:UapAppxPackageBuildMode=StoreUpload /m
     tags: ["windows"]
-        
+
 build-release:
     stage: build
     only:
         - master
     script:
-        - msbuild MatrixUWP/MatrixUWP.csproj /t:restore /m
         - msbuild MatrixUWP/MatrixUWP.csproj /p:Configuration=Release /p:AppxBundlePlatforms="x86|x64|ARM|ARM64" /p:AppxPackageDir="AppxPackages" /p:AppxBundle=Always /p:UapAppxPackageBuildMode=StoreUpload /m
     tags: ["windows"]
     artifacts:
