@@ -1,17 +1,19 @@
 image: vsbuildci:latest
 
+cache:
+    key: ${CI_COMMIT_REF_NAME}
+    paths:
+        - MatrixUWP/obj
+
 stages:
     - restore
     - build
-    
+
 restore:
     stage: restore
     script:
         - msbuild MatrixUWP/MatrixUWP.csproj /t:restore /m
     tags: ["windows"]
-    cache:
-        key: ${CI_COMMIT_REF_NAME}
-        untracked: true
 
 build-debug:
     stage: build
