@@ -1,0 +1,26 @@
+image: vsbuildci:latest
+
+stages:
+    - build
+    
+restore:
+    stage: build
+    script:
+        - msbuild MatrixUWP.sln /t:restore
+        
+build-debug:
+    stage: build
+    only:
+        - develop
+    script:
+        - 
+        - msbuild MatrixUWP.sln /p:Configuration=Debug /p:AppxBundlePlatforms="x86|x64|ARM" /p:AppxPackageDir="AppxPackages" /p:AppxBundle=Always /p:UapAppxPackageBuildMode=StoreUpload /m
+        
+        
+build-release:
+    stage: build
+    only:
+        - master
+    script:
+        - 
+        - msbuild MatrixUWP.sln /p:Configuration=Release /p:AppxBundlePlatforms="x86|x64|ARM|ARM64" /p:AppxPackageDir="AppxPackages" /p:AppxBundle=Always /p:UapAppxPackageBuildMode=StoreUpload /m
