@@ -13,14 +13,15 @@ build-debug:
     only:
         - develop
     script:
-        - 
-        - msbuild MatrixUWP.sln /p:Configuration=Debug /p:AppxBundlePlatforms="x86|x64|ARM" /p:AppxPackageDir="AppxPackages" /p:AppxBundle=Always /p:UapAppxPackageBuildMode=StoreUpload /m
-        
+        - msbuild MatrixUWP/MatrixUWP.csproj /t:restore /m 
+        - msbuild MatrixUWP/MatrixUWP.csproj /p:Configuration=Debug /p:AppxBundlePlatforms="x86|x64|ARM" /p:AppxPackageDir="AppxPackages" /p:AppxBundle=Always /p:UapAppxPackageBuildMode=StoreUpload /m
+    tags: ["windows"]
         
 build-release:
     stage: build
     only:
         - master
     script:
-        - 
-        - msbuild MatrixUWP.sln /p:Configuration=Release /p:AppxBundlePlatforms="x86|x64|ARM|ARM64" /p:AppxPackageDir="AppxPackages" /p:AppxBundle=Always /p:UapAppxPackageBuildMode=StoreUpload /m
+        - msbuild MatrixUWP/MatrixUWP.csproj /t:restore /m
+        - msbuild MatrixUWP/MatrixUWP.csproj /p:Configuration=Release /p:AppxBundlePlatforms="x86|x64|ARM|ARM64" /p:AppxPackageDir="AppxPackages" /p:AppxBundle=Always /p:UapAppxPackageBuildMode=StoreUpload /m
+    tags: ["windows"]
