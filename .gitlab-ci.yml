@@ -25,3 +25,6 @@ build-release:
         - msbuild MatrixUWP/MatrixUWP.csproj /t:restore /m
         - msbuild MatrixUWP/MatrixUWP.csproj /p:Configuration=Release /p:AppxBundlePlatforms="x86|x64|ARM|ARM64" /p:AppxPackageDir="AppxPackages" /p:AppxBundle=Always /p:UapAppxPackageBuildMode=StoreUpload /m
     tags: ["windows"]
+    artifacts:
+      paths:
+        - AppxPackages
