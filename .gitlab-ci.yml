@@ -28,4 +28,4 @@ build-release:
     tags: ["windows"]
     artifacts:
       paths:
-        - AppxPackages
+        - MatrixUWP/AppxPackages
