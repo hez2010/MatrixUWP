@@ -93,13 +93,5 @@ namespace MatrixUWP.Views.General
             if (!viewModel.SignInButtonEnabled) return;
             SignIn_Click(this, null);
         }
-
-        private async void Button_Click(object sender, RoutedEventArgs e)
-        {
-            if (string.IsNullOrEmpty(ApiBody.Text))
-                await App.MatrixHttpClient.GetAsync(ApiPath.Text).JsonAsync<object>();
-            else
-                await App.MatrixHttpClient.PostJsonAsync(ApiPath.Text, ApiBody.Text.DeserializeJson<object>()).JsonAsync<object>();
-        }
     }
 }

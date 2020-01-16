@@ -9,7 +9,7 @@
     Background="{ThemeResource SystemControlAcrylicWindowMediumHighBrush}">
 
     <Grid>
-        <StackPanel  HorizontalAlignment="Right" VerticalAlignment="Top" x:Name="UserAvatar" Margin="88,128">
+        <StackPanel HorizontalAlignment="Right" VerticalAlignment="Top" x:Name="UserAvatar" Margin="88,128">
             <Button IsEnabled="{x:Bind viewModel.Loading, Mode=OneWay, Converter={StaticResource NotConverter}}" x:Name="ChangeAvatar" Margin="8" HorizontalAlignment="Center" Click="ChangeAvatar_Click" >
                 <Button.Template>
                     <ControlTemplate TargetType="Button">

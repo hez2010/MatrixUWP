@@ -36,10 +36,9 @@
                 </StackPanel>
             </Border>
         </StackPanel>
-        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="{x:Bind parameters.UserData.SignedIn, Mode=OneWay}">
-            <TextBox Margin="8" x:Name="ApiPath" Width="500"></TextBox>
-            <TextBox Margin="8" x:Name="ApiBody" Width="500" Height="300"></TextBox>
-            <Button HorizontalAlignment="Center" Margin="8" Click="Button_Click">提交</Button>
+        <StackPanel VerticalAlignment="Center" Orientation="Horizontal" HorizontalAlignment="Center" Visibility="{x:Bind parameters.UserData.SignedIn, Mode=OneWay}">
+            <TextBlock Text="欢迎回来，" FontSize="30"></TextBlock>
+            <TextBlock Text="{x:Bind parameters.UserData.NickName, Mode=OneWay}" FontSize="30"></TextBlock>
         </StackPanel>
     </Grid>
 </Page>
