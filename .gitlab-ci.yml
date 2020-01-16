@@ -17,6 +17,9 @@ build-debug:
         - msbuild MatrixUWP/MatrixUWP.csproj /t:restore /m
         - msbuild MatrixUWP/MatrixUWP.csproj /p:Configuration=Debug /p:AppxBundlePlatforms="x86|x64|ARM" /p:AppxPackageDir="AppxPackages" /p:AppxBundle=Always /p:UapAppxPackageBuildMode=StoreUpload /m
     tags: ["windows"]
+    artifacts:
+      paths:
+        - MatrixUWP/AppxPackages
 
 build-release:
     stage: build
