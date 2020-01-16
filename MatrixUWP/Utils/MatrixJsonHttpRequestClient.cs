@@ -29,7 +29,7 @@ namespace MatrixUWP.Utils
             {
                 return;
             }
-            this.tokenSaved = true;
+            tokenSaved = true;
         }
 
         public async ValueTask<HttpResponseMessage> GetAsync(string path)

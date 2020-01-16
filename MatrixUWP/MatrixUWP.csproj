@@ -172,8 +172,9 @@
     <Compile Include="Views\General\Course\Course.xaml.cs">
       <DependentUpon>Course.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Parameters\CourseDetailsParameters.cs" />
-    <Compile Include="Views\Parameters\CourseParameters.cs" />
+    <Compile Include="Views\Parameters\Course\CourseAssignmentsParameters.cs" />
+    <Compile Include="Views\Parameters\Course\CourseDetailsParameters.cs" />
+    <Compile Include="Views\Parameters\Course\CourseParameters.cs" />
     <Compile Include="Views\Parameters\HomeParameters.cs" />
     <Compile Include="Views\General\Library.xaml.cs">
       <DependentUpon>Library.xaml</DependentUpon>

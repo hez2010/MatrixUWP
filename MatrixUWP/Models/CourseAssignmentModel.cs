@@ -135,7 +135,7 @@ namespace MatrixUWP.Models
               await App.MatrixHttpClient.GetAsync($"/api/courses/{courseId}/assignments")
                   .JsonAsync<ResponseModel<List<CourseAssignmentInfoModel>>>();
 
-        public static async ValueTask<ResponseModel<CourseAssignmentInfoModel>> FetchCourseAsync(int courseId, int courseAssignmentId) =>
+        public static async ValueTask<ResponseModel<CourseAssignmentInfoModel>> FetchCourseAssignmentAsync(int courseId, int courseAssignmentId) =>
             await App.MatrixHttpClient.GetAsync($"/api/courses/{courseId}/assignments/{courseAssignmentId}")
                 .JsonAsync<ResponseModel<CourseAssignmentInfoModel>>();
     }

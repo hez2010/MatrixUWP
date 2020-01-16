@@ -5,10 +5,28 @@
     xmlns:local="using:MatrixUWP.Views.General"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="using:MatrixUWP.Models"
     mc:Ignorable="d"
-    Background="{ThemeResource SystemControlAcrylicWindowMediumHighBrush}">
+    Background="{ThemeResource SystemControlAcrylicWindowMediumHighBrush}" 
+    Loaded="Page_Loaded">
 
     <Grid>
-
+        <ListBox Background="{ThemeResource SystemControlAcrylicWindowMediumHighBrush}" ItemsSource="{x:Bind viewModel.Assignments, Mode=OneWay}">
+            <ListBox.ItemTemplate>
+                <DataTemplate x:DataType="models:CourseAssignmentInfoModel">
+                    <StackPanel>
+                        <TextBlock Text="{x:Bind Type}"></TextBlock>
+                        <TextBlock Text="{x:Bind SubmitLimit}"></TextBlock>
+                        <TextBlock Text="{x:Bind Title}"></TextBlock>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="Background" Value="{ThemeResource SystemControlBackgroundTransparentRevealBorderBrush}"></Setter>
+                </Style>
+            </ListBox.ItemContainerStyle>
+        </ListBox>
+        <ProgressRing HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-50,0,0" Width="60" Height="60" IsActive="{x:Bind viewModel.Loading, Mode=OneWay}"></ProgressRing>
     </Grid>
 </Page>

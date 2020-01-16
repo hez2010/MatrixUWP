@@ -11,7 +11,7 @@ namespace MatrixUWP.Views.Help
     {
         public Manual()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
     }
 }

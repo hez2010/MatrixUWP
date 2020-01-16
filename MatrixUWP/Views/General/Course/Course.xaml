@@ -15,7 +15,7 @@
             <GridView.ItemTemplate>
                 <DataTemplate x:DataType="model:CourseInfoModel">
                     <RelativePanel Height="140" Width="300" Margin="8" Padding="16" BorderBrush="Gray" BorderThickness="1" CornerRadius="3">
-                        <TextBlock x:Name="CourseTitle" Foreground="CadetBlue" FontSize="18" Text="{x:Bind CourseName}"></TextBlock>
+                        <TextBlock x:Name="CourseTitle" Foreground="SteelBlue" FontSize="18" Text="{x:Bind CourseName}"></TextBlock>
                         <StackPanel Orientation="Horizontal" Margin="0,8,0,0" RelativePanel.Below="CourseTitle">
                             <Ellipse Margin="0,2" Height="18" Width="18">
                                 <Ellipse.Fill>

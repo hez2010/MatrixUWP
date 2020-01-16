@@ -11,7 +11,7 @@ namespace MatrixUWP.Views.General
     {
         public Library()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
     }
 }

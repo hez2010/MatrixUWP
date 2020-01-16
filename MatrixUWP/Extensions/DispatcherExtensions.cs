@@ -23,7 +23,7 @@ namespace MatrixUWP.Extensions
                 this.priority = priority;
             }
 
-            public DispatcherPriorityAwaiter GetAwaiter() => new DispatcherPriorityAwaiter(this.dispatcher, this.priority);
+            public DispatcherPriorityAwaiter GetAwaiter() => new DispatcherPriorityAwaiter(dispatcher, priority);
         }
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace MatrixUWP.Extensions
 
             public async void OnCompleted(Action continuation)
             {
-                await this.dispatcher.RunAsync(this.priority, new DispatchedHandler(continuation));
+                await dispatcher.RunAsync(priority, new DispatchedHandler(continuation));
             }
         }
 

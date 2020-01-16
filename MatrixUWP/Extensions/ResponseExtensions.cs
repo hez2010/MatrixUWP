@@ -21,7 +21,11 @@ namespace MatrixUWP.Extensions
             return JsonSerializer.Parse<T>(json);
         }
 #else
-        private static readonly JsonSerializerSettings jsonSerializerSettings = new JsonSerializerSettings();
+        private static readonly JsonSerializerSettings jsonSerializerSettings
+            = new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore
+            };
         static ResponseExtensions()
         {
             jsonSerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());

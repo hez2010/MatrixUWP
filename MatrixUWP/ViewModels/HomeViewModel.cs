@@ -91,7 +91,7 @@ namespace MatrixUWP.ViewModels
             }
         }
 
-        public bool SignInButtonEnabled => !this.loading && !string.IsNullOrEmpty(this.userName) && !string.IsNullOrEmpty(this.password);
+        public bool SignInButtonEnabled => !loading && !string.IsNullOrEmpty(userName) && !string.IsNullOrEmpty(password);
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

@@ -12,7 +12,7 @@ namespace MatrixUWP.Controls
 
         public MyNavigationView()
         {
-            this.DefaultStyleKey = typeof(MyNavigationView);
+            DefaultStyleKey = typeof(MyNavigationView);
         }
     }
 }

@@ -3,6 +3,7 @@ using MatrixUWP.Models;
 using MatrixUWP.ViewModels;
 using MatrixUWP.Views.Parameters;
 using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Windows.Storage.Pickers;
 using Windows.Storage.Streams;
@@ -21,7 +22,7 @@ namespace MatrixUWP.Views.Account
         private ProfileParameters? parameters;
         public Profile()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -29,8 +30,8 @@ namespace MatrixUWP.Views.Account
             base.OnNavigatedTo(e);
             if (e.Parameter is ProfileParameters p)
             {
-                this.parameters = p;
-                this.viewModel.UserData = p.UserData;
+                parameters = p;
+                viewModel.UserData = p.UserData;
             }
         }
 
@@ -42,12 +43,13 @@ namespace MatrixUWP.Views.Account
             {
                 var result = await UserModel.SignOutAsync();
 
-                this.parameters?.ShowMessage?.Invoke(result.Message);
-                this.parameters?.UpdateUserData?.Invoke(new UserDataModel());
+                parameters?.ShowMessage?.Invoke(result.Message);
+                parameters?.UpdateUserData?.Invoke(new UserDataModel());
             }
             catch (Exception ex)
             {
-                this.parameters?.ShowMessage?.Invoke(ex.Message);
+                parameters?.ShowMessage?.Invoke(ex.Message);
+                Debug.Fail(ex.Message, ex.StackTrace);
             }
             finally
             {
@@ -65,10 +67,10 @@ namespace MatrixUWP.Views.Account
             var file = await picker.PickSingleFileAsync();
             if (file == null) return;
             using var stream = await file.OpenSequentialReadAsync();
-            this.viewModel.Loading = true;
+            viewModel.Loading = true;
             await Dispatcher.YieldAsync();
-            this.parameters.ShowMessage(await UpdateProfile(stream));
-            this.viewModel.Loading = false;
+            parameters.ShowMessage(await UpdateProfile(stream));
+            viewModel.Loading = false;
         }
 
         private async ValueTask<string> UpdateProfile(IInputStream? stream = null)
@@ -80,39 +82,40 @@ namespace MatrixUWP.Views.Account
                     IInputStream _ => await UserModel.UpdateAvatarAsync(stream),
                     _ => await UserModel.UpdateProfileAsync(new ProfileUpdateModel
                     {
-                        Email = this.viewModel.UserData.Email,
-                        HomePage = this.viewModel.UserData.HomePage,
-                        NickName = this.viewModel.UserData.NickName,
-                        Phone = this.viewModel.UserData.Phone,
-                        MailConfig = this.viewModel.UserData.MailConfig
+                        Email = viewModel.UserData.Email,
+                        HomePage = viewModel.UserData.HomePage,
+                        NickName = viewModel.UserData.NickName,
+                        Phone = viewModel.UserData.Phone,
+                        MailConfig = viewModel.UserData.MailConfig
                     })
                 };
 
                 if (result.Status == StatusCode.OK)
                 {
                     var model = UserModel.CurrentUser;
-                    model.Phone = this.viewModel.UserData.Phone;
-                    model.NickName = this.viewModel.UserData.NickName;
-                    model.HomePage = this.viewModel.UserData.HomePage;
-                    model.MailConfig = this.viewModel.UserData.MailConfig;
-                    model.Email = this.viewModel.UserData.Email;
-                    this.parameters.UpdateUserData(model);
+                    model.Phone = viewModel.UserData.Phone;
+                    model.NickName = viewModel.UserData.NickName;
+                    model.HomePage = viewModel.UserData.HomePage;
+                    model.MailConfig = viewModel.UserData.MailConfig;
+                    model.Email = viewModel.UserData.Email;
+                    parameters.UpdateUserData(model);
                     UserModel.CurrentUser = model;
                 }
                 return result.Message;
             }
             catch (Exception ex)
             {
+                Debug.Fail(ex.Message, ex.StackTrace);
                 return ex.Message;
             }
         }
 
         private async void SaveProfiles_Click(object sender, RoutedEventArgs e)
         {
-            this.viewModel.Loading = true;
+            viewModel.Loading = true;
             await Dispatcher.YieldAsync();
-            this.parameters.ShowMessage(await UpdateProfile());
-            this.viewModel.Loading = false;
+            parameters.ShowMessage(await UpdateProfile());
+            viewModel.Loading = false;
         }
     }
 }

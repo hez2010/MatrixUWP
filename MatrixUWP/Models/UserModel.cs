@@ -283,7 +283,7 @@ namespace MatrixUWP.Models
             }
         }
 
-        public bool SignedIn => this.UserId != 0;
+        public bool SignedIn => UserId != 0;
     }
 
     public class ProfileUpdateModel

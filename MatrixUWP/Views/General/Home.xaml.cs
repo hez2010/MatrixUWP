@@ -3,6 +3,7 @@ using MatrixUWP.Models;
 using MatrixUWP.ViewModels;
 using MatrixUWP.Views.Parameters;
 using System;
+using System.Diagnostics;
 using System.IO;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -24,7 +25,7 @@ namespace MatrixUWP.Views.General
 
         public Home()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -32,8 +33,8 @@ namespace MatrixUWP.Views.General
             base.OnNavigatedTo(e);
             if (e.Parameter is HomeParameters param)
             {
-                this.parameters = param;
-                this.parameters.UserData.Captcha = false;
+                parameters = param;
+                parameters.UserData.Captcha = false;
             }
             if (!(parameters?.UserData?.SignedIn ?? false))
             {
@@ -57,8 +58,8 @@ namespace MatrixUWP.Views.General
 
                 if (result?.Data == null) throw new InvalidOperationException("Network Error");
 
-                this.parameters?.ShowMessage?.Invoke(result.Message);
-                this.parameters?.UpdateUserData?.Invoke(result.Data);
+                parameters?.ShowMessage?.Invoke(result.Message);
+                parameters?.UpdateUserData?.Invoke(result.Data);
 
                 if (!result.Data.Captcha) return;
                 var captcha = await UserModel.FetchCaptchaAsync();
@@ -77,7 +78,8 @@ namespace MatrixUWP.Views.General
             {
                 App.AppConfiguration.SavedUserName = "";
                 App.AppConfiguration.SavedPassword = "";
-                this.parameters?.ShowMessage?.Invoke(ex.Message);
+                parameters?.ShowMessage?.Invoke(ex.Message);
+                Debug.Fail(ex.Message, ex.StackTrace);
             }
             finally
             {

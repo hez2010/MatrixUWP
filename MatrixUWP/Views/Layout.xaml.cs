@@ -2,6 +2,7 @@
 using MatrixUWP.Models;
 using MatrixUWP.ViewModels;
 using MatrixUWP.Views.Parameters;
+using MatrixUWP.Views.Parameters.Course;
 using System;
 using System.Collections.Generic;
 using Windows.UI.Xaml;
@@ -19,7 +20,7 @@ namespace MatrixUWP.Views
 
         public Layout()
         {
-            this.InitializeComponent();
+            InitializeComponent();
 
             Window.Current.SetTitleBar(MyTitleBar);
             Windows.UI.Core.SystemNavigationManager.GetForCurrentView().BackRequested += App_BackRequested;
@@ -40,14 +41,14 @@ namespace MatrixUWP.Views
             var page = (naviPageName, isSettingsPage) switch
             {
                 (_, true) => typeof(Settings),
-                ("HomeNaviPage", _) => typeof(General.Home),
-                ("CourseNaviPage", _) => typeof(General.Course.Course),
-                ("ExamNaviPage", _) => typeof(General.Exam),
-                ("LibraryNaviPage", _) => typeof(General.Library),
-                ("MessagesNaviPage", _) => typeof(General.Messages),
-                ("ProfileNaviPage", _) => typeof(Account.Profile),
-                ("ManualNaviPage", _) => typeof(Help.Manual),
-                ("FeedbackNaviPage", _) => typeof(Help.Feedback),
+                (nameof(HomeNaviPage), _) => typeof(General.Home),
+                (nameof(CourseNaviPage), _) => typeof(General.Course.Course),
+                (nameof(ExamNaviPage), _) => typeof(General.Exam),
+                (nameof(LibraryNaviPage), _) => typeof(General.Library),
+                (nameof(MessagesNaviPage), _) => typeof(General.Messages),
+                (nameof(ProfileNaviPage), _) => typeof(Account.Profile),
+                (nameof(ManualNaviPage), _) => typeof(Help.Manual),
+                (nameof(FeedbackNaviPage), _) => typeof(Help.Feedback),
                 _ => null
             };
 
@@ -58,9 +59,9 @@ namespace MatrixUWP.Views
             // Get parameters needed
             var parameter = (naviPageName, isSettingsPage) switch
             {
-                ("HomeNaviPage", _) => new HomeParameters(commonParameter),
-                ("ProfileNaviPage", _) => new ProfileParameters(commonParameter),
-                ("CourseNaviPage", _) => new CourseParameters(commonParameter),
+                (nameof(HomeNaviPage), _) => new HomeParameters(commonParameter),
+                (nameof(ProfileNaviPage), _) => new ProfileParameters(commonParameter),
+                (nameof(CourseNaviPage), _) => new CourseParameters(commonParameter),
                 _ => commonParameter
             };
 
@@ -125,7 +126,7 @@ namespace MatrixUWP.Views
 
         private void UpdateUserData(UserDataModel userData)
         {
-            userData.CopyTo(this.viewModel.UserData);
+            userData.CopyTo(viewModel.UserData);
             if (!(userData?.SignedIn ?? false))
             {
                 navimenuNaviHistory.Clear();
@@ -135,8 +136,8 @@ namespace MatrixUWP.Views
 
         private void ShowMessage(string message)
         {
-            this.viewModel.Message = message;
-            this.viewModel.ShowMessage = true;
+            viewModel.Message = message;
+            viewModel.ShowMessage = true;
         }
 
         private void NaviMenu_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)

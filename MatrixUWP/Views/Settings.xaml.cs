@@ -11,7 +11,7 @@ namespace MatrixUWP.Views
     {
         public Settings()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
     }

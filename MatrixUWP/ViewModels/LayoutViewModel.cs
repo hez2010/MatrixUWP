@@ -10,7 +10,7 @@ namespace MatrixUWP.ViewModels
     {
         public LayoutViewModel()
         {
-            this.messageTimer.Tick += Timer_Tick;
+            messageTimer.Tick += Timer_Tick;
         }
 
         private bool showMessage;
@@ -40,7 +40,7 @@ namespace MatrixUWP.ViewModels
 
         private void Timer_Tick(object sender, object e)
         {
-            this.ShowMessage = false;
+            ShowMessage = false;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

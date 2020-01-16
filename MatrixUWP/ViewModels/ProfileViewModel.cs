@@ -14,7 +14,7 @@ namespace MatrixUWP.ViewModels
             get => userData;
             set
             {
-                this.userData = value;
+                userData = value;
                 OnPropertyChanged();
             }
         }

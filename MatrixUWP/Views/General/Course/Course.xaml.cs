@@ -4,8 +4,9 @@ using MatrixUWP.Models;
 using MatrixUWP.ViewModels;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
-using MatrixUWP.Views.Parameters;
+using MatrixUWP.Views.Parameters.Course;
 using System.Linq;
+using System.Diagnostics;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -21,16 +22,13 @@ namespace MatrixUWP.Views.General.Course
 
         public Course()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            if (e.Parameter is CourseParameters param)
-            {
-                this.parameters = param;
-            }
+            parameters = e.Parameter as CourseParameters;
         }
 
         private async void Page_Loaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)
@@ -42,11 +40,12 @@ namespace MatrixUWP.Views.General.Course
             {
                 var coursesResponse = await CourseModel.FetchCourseListAsync();
                 if (coursesResponse.Status == StatusCode.OK) viewModel.Courses = coursesResponse.Data;
-                else this.parameters?.ShowMessage(coursesResponse.Message);
+                else parameters?.ShowMessage(coursesResponse.Message);
             }
             catch (Exception ex)
             {
-                this.parameters?.ShowMessage(ex.Message);
+                parameters?.ShowMessage(ex.Message);
+                Debug.Fail(ex.Message, ex.StackTrace);
             }
             finally
             {
@@ -57,7 +56,7 @@ namespace MatrixUWP.Views.General.Course
         private void CoursesView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (!(e.AddedItems.First() is CourseInfoModel course)) return;
-            this.parameters?.NavigateToPage(typeof(CourseDetails), typeof(CourseDetailsParameters), new { course.CourseId });
+            parameters?.NavigateToPage(typeof(CourseDetails), typeof(CourseDetailsParameters), new { course.CourseId });
         }
     }
 }

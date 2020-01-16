@@ -1,8 +1,9 @@
 ﻿using MatrixUWP.Extensions;
 using MatrixUWP.Models;
 using MatrixUWP.ViewModels;
-using MatrixUWP.Views.Parameters;
+using MatrixUWP.Views.Parameters.Course;
 using System;
+using System.Diagnostics;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -20,40 +21,38 @@ namespace MatrixUWP.Views.General.Course
         private CourseDetailsParameters? parameters;
         public CourseDetails()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            if (e.Parameter is CourseDetailsParameters p)
-            {
-                this.parameters = p;
-            }
+            parameters = e.Parameter as CourseDetailsParameters;
         }
 
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
             AdjustElementsSize();
-            this.viewModel.Loading = true;
+            viewModel.Loading = true;
             await Dispatcher.YieldAsync();
             try
             {
-                var response = await CourseModel.FetchCourseAsync(this.parameters?.CourseId ?? 0);
+                var response = await CourseModel.FetchCourseAsync(parameters?.CourseId ?? 0);
                 if (response.Status != StatusCode.OK)
                 {
-                    this.parameters?.ShowMessage(response.Message);
+                    parameters?.ShowMessage(response.Message);
                     return;
                 }
                 viewModel.Course = response.Data;
             }
             catch (Exception ex)
             {
-                this.parameters?.ShowMessage(ex.Message);
+                parameters?.ShowMessage(ex.Message);
+                Debug.Fail(ex.Message, ex.StackTrace);
             }
             finally
             {
-                this.viewModel.Loading = false;
+                viewModel.Loading = false;
             }
         }
 
@@ -65,5 +64,12 @@ namespace MatrixUWP.Views.General.Course
         }
 
         private void Page_SizeChanged(object sender, SizeChangedEventArgs e) => AdjustElementsSize();
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            parameters.NavigateToPage(typeof(CourseAssignments),
+                typeof(CourseAssignmentsParameters),
+                new { parameters.CourseId });
+        }
     }
 }

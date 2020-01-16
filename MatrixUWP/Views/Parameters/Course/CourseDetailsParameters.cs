@@ -1,4 +1,4 @@
-﻿namespace MatrixUWP.Views.Parameters
+﻿namespace MatrixUWP.Views.Parameters.Course
 {
     class CourseDetailsParameters : CommonParameters
     {
