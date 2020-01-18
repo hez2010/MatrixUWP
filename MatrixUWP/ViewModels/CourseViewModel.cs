@@ -9,11 +9,11 @@ namespace MatrixUWP.ViewModels
     class CourseViewModel : INotifyPropertyChanged
     {
         private bool loading;
-        private List<CourseInfoModel> courses = new List<CourseInfoModel>();
+        private List<CourseInfoModel>? courses;
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        public List<CourseInfoModel> Courses
+        public List<CourseInfoModel>? Courses
         {
             get => courses;
             set

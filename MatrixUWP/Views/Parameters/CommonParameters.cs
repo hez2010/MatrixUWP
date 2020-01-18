@@ -12,7 +12,7 @@ namespace MatrixUWP.Views.Parameters
         public UserDataModel UserData { get; set; }
         public Action<string> ShowMessage { get; set; }
         /// <summary>
-        /// PageType, ParameterType, Parameter
+        /// PageType, ParameterType, Parameter, Cache
         /// </summary>
         public Action<Type, Type, object> NavigateToPage { get; set; }
 

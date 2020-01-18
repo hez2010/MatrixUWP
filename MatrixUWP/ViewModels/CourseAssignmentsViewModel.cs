@@ -9,9 +9,9 @@ namespace MatrixUWP.ViewModels
     public class CourseAssignmentsViewModel : INotifyPropertyChanged
     {
         private bool loading;
-        private List<CourseAssignmentDetailsModel> assignments = new List<CourseAssignmentDetailsModel>();
+        private List<CourseAssignmentDetailsModel>? assignments;
 
-        public List<CourseAssignmentDetailsModel> Assignments
+        public List<CourseAssignmentDetailsModel>? Assignments
         {
             get => assignments;
             set

@@ -24,7 +24,7 @@
                         <TextBlock VerticalAlignment="Bottom" Margin="8,0" FontSize="12" Text="{x:Bind viewModel.Course.Status, Mode=OneWay}"></TextBlock>
                     </StackPanel>
                 </StackPanel>
-                <Button Padding="16,4" Style="{ThemeResource ButtonRevealStyle}" CornerRadius="3" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignRightWithPanel="True" HorizontalAlignment="Right" Content="查看题目" Click="Button_Click"></Button>
+                <Button Padding="16,4" Visibility="{x:Bind viewModel.Loading, Mode=OneWay, Converter={StaticResource NotVisibilityConverter}}" Style="{ThemeResource ButtonRevealStyle}" CornerRadius="3" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignRightWithPanel="True" HorizontalAlignment="Right" Content="查看题目" Click="Button_Click"></Button>
             </RelativePanel>
             <StackPanel Orientation="Horizontal" Margin="8,0,0,0" RelativePanel.Below="CourseTitle">
                 <StackPanel Orientation="Horizontal">

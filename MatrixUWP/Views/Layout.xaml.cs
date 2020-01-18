@@ -124,7 +124,6 @@ namespace MatrixUWP.Views
             var param = parameterType.GetConstructor(new[] { typeof(CommonParameters) })
                 .Invoke(new[] { new CommonParameters(UpdateUserData, viewModel.UserData, ShowMessage, NavigateToPage) });
             parameter.CopyTo(param);
-
             NaviContent.Navigate(pageType, param, new DrillInNavigationTransitionInfo());
         }
 

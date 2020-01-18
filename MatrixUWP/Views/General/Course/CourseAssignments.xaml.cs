@@ -8,15 +8,16 @@ using MatrixUWP.Models.Course.Assignment.File;
 using MatrixUWP.Models.Course.Assignment.Output;
 using MatrixUWP.Models.Course.Assignment.Programming;
 using MatrixUWP.Models.Course.Assignment.Report;
+using MatrixUWP.Utils;
 using MatrixUWP.ViewModels;
+using MatrixUWP.Views.General.Submit;
 using MatrixUWP.Views.Parameters.Course;
+using MatrixUWP.Views.Parameters.Submit;
 using Microsoft.Toolkit.Uwp.UI.Controls;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Diagnostics;
 using System.Linq;
-using System.Reflection.Metadata;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 
@@ -35,9 +36,17 @@ namespace MatrixUWP.Views.General.Course
         {
             NullValueHandling = NullValueHandling.Ignore
         };
+        private static (int CourseId, int SelectedIndex) lastState = (-1, -1);
+
         public CourseAssignments()
         {
             InitializeComponent();
+        }
+
+        protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
+        {
+            base.OnNavigatingFrom(e);
+            lastState = (parameters?.CourseId ?? -1, viewModel.Assignments?.FindIndex(i => i == AssignmentView.SelectedItem) ?? -1);
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -60,6 +69,15 @@ namespace MatrixUWP.Views.General.Course
                     return;
                 }
                 viewModel.Assignments = response.Data;
+                if (lastState.CourseId == parameters?.CourseId &&
+                    lastState.SelectedIndex != -1 &&
+                    viewModel.Assignments != null &&
+                    lastState.SelectedIndex < viewModel.Assignments.Count)
+                {
+                    AssignmentView.SelectedItem = viewModel.Assignments[lastState.SelectedIndex];
+                    var child = AssignmentView.FindChildOfType<ListView>();
+                    child?.ScrollIntoView(AssignmentView.SelectedItem);
+                }
             }
             catch (Exception ex)
             {
@@ -113,7 +131,7 @@ namespace MatrixUWP.Views.General.Course
             await Windows.System.Launcher.LaunchUriAsync(new Uri(e.Link));
         }
 
-        private void ShowSubmitPage(object config)
+        private void ShowSubmitPage(object config, CourseAssignmentDetailsModel model)
         {
             switch (config)
             {
@@ -121,7 +139,10 @@ namespace MatrixUWP.Views.General.Course
                     Debug.WriteLine(asgnConfig.SerializeJson());
                     break;
                 case ChoiceAssignmentConfig asgnConfig:
-                    Debug.WriteLine(asgnConfig.SerializeJson());
+                    parameters?.NavigateToPage(
+                        typeof(ChoiceSubmit),
+                        typeof(ChoiceSubmitParameters),
+                        new { asgnConfig.Questions, model.Title, model.Description });
                     break;
                 case ReportAssignmentConfig asgnConfig:
                     Debug.WriteLine(asgnConfig.SerializeJson());
@@ -165,7 +186,7 @@ namespace MatrixUWP.Views.General.Course
                     parameters?.ShowMessage("题目配置错误");
                     return;
                 }
-                ShowSubmitPage(obj);
+                ShowSubmitPage(obj, model);
             }
             catch (Exception ex)
             {

@@ -130,9 +130,11 @@
     </Compile>
     <Compile Include="Controls\MyNavigationView.cs" />
     <Compile Include="Converters\EnumConverter.cs" />
+    <Compile Include="Converters\IndexOffsetConverter.cs" />
     <Compile Include="Converters\NumberCalculator.cs" />
     <Compile Include="Converters\NotConverter.cs" />
     <Compile Include="Converters\NotVisibilityConverter.cs" />
+    <Compile Include="Converters\NumberLetterConverter.cs" />
     <Compile Include="Extensions\CopyExtensions.cs" />
     <Compile Include="Extensions\DispatcherExtensions.cs" />
     <Compile Include="Extensions\ResponseExtensions.cs" />
@@ -151,6 +153,7 @@
     <Compile Include="Models\Course\Assignment\Programming\ProgrammingAssignmentConfig.cs" />
     <Compile Include="Models\Course\Assignment\Programming\ProgrammingStandard.cs" />
     <Compile Include="Models\Course\Assignment\Report\ReportAssignmentConfig.cs" />
+    <Compile Include="Models\Submission\SubmissionModel.cs" />
     <Compile Include="Models\User\CaptchaDataModel.cs" />
     <Compile Include="Models\Config\Configuration.cs" />
     <Compile Include="Models\Course\Assignment\CourseAssignmentDetailsModel.cs" />
@@ -168,6 +171,8 @@
     <Compile Include="Models\User\UserModel.cs" />
     <Compile Include="Extensions\JsonExtensions.cs" />
     <Compile Include="Utils\LogHelper.cs" />
+    <Compile Include="Utils\VisualTreeUtils.cs" />
+    <Compile Include="ViewModels\ChoiceSubmitViewModel.cs" />
     <Compile Include="ViewModels\CourseAssignmentsViewModel.cs" />
     <Compile Include="ViewModels\CourseDetailsViewModel.cs" />
     <Compile Include="ViewModels\CourseViewModel.cs" />
@@ -177,6 +182,9 @@
     </Compile>
     <Compile Include="Views\General\Course\CourseDetails.xaml.cs">
       <DependentUpon>CourseDetails.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\General\Submit\ChoiceSubmit.xaml.cs">
+      <DependentUpon>ChoiceSubmit.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Parameters\CommonParameters.cs" />
     <Compile Include="Utils\HttpJsonContent.cs" />
@@ -216,6 +224,7 @@
       <DependentUpon>Layout.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Parameters\ProfileParameters.cs" />
+    <Compile Include="Views\Parameters\Submit\ChoiceSubmitParameters.cs" />
     <Compile Include="Views\Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
     </Compile>
@@ -332,6 +341,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\General\Submit\ChoiceSubmit.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Help\Feedback.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -360,6 +373,9 @@
     <PackageReference Include="Microsoft.Toolkit.Uwp.UI.Controls">
       <Version>6.0.0</Version>
     </PackageReference>
+    <PackageReference Include="Microsoft.UI.Xaml">
+      <Version>2.3.191211002</Version>
+    </PackageReference>
     <PackageReference Include="Monaco.Editor">
       <Version>0.8.1-alpha</Version>
     </PackageReference>
@@ -385,7 +401,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Dialogs\" />
-    <Folder Include="Views\General\Submit\" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
