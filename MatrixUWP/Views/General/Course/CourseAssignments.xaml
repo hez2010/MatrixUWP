@@ -21,7 +21,7 @@
             x:Name="AssignmentView" SelectionChanged="AssignmentView_SelectionChanged">
             <controls:MasterDetailsView.NoSelectionContent>
                 <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <TextBlock Text="请选择一项作业"></TextBlock>
+                    <TextBlock Text="请选择一项题目"></TextBlock>
                 </Grid>
             </controls:MasterDetailsView.NoSelectionContent>
             <controls:MasterDetailsView.ItemTemplate>
