@@ -12,7 +12,8 @@
     Loaded="Page_Loaded">
 
     <Grid>
-        <controls:MasterDetailsView 
+        <controls:MasterDetailsView
+            BorderBrush="{ThemeResource MasterDetailsViewBorderBrush}"
             BackButtonBehavior="Manual"
             Background="{ThemeResource SystemControlAcrylicWindowMediumHighBrush}" 
             ItemsSource="{x:Bind viewModel.Assignments, Mode=OneWay}" 
@@ -43,7 +44,7 @@
                 </DataTemplate>
             </controls:MasterDetailsView.ItemTemplate>
             <controls:MasterDetailsView.DetailsHeader>
-                <TextBlock Margin="8" FontSize="18" Foreground="SteelBlue" Text="题目描述"></TextBlock>
+                <TextBlock Margin="8" FontSize="22" Text="题目描述"></TextBlock>
             </controls:MasterDetailsView.DetailsHeader>
             <controls:MasterDetailsView.DetailsTemplate>
                 <DataTemplate x:DataType="models:CourseAssignmentInfoModel">

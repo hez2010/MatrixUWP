@@ -78,7 +78,7 @@ namespace MatrixUWP.Views.General.Course
                     return;
                 }
                 response.Data.CopyTo(selectedItem);
-                selectedItem.Loading = true;
+                selectedItem.Loaded = true;
             }
             catch (Exception ex)
             {

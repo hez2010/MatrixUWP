@@ -9,9 +9,11 @@
             <ResourceDictionary.ThemeDictionaries>
                 <ResourceDictionary x:Key="Light">
                     <BitmapImage x:Key="MatrixLogo" UriSource="/Assets/Home/logoblack.png"></BitmapImage>
+                    <SolidColorBrush x:Key="MasterDetailsViewBorderBrush" Color="LightGray"></SolidColorBrush>
                 </ResourceDictionary>
                 <ResourceDictionary x:Key="Dark">
                     <BitmapImage x:Key="MatrixLogo" UriSource="/Assets/Home/logowhite.png"></BitmapImage>
+                    <SolidColorBrush x:Key="MasterDetailsViewBorderBrush" Color="DimGray"></SolidColorBrush>
                 </ResourceDictionary>
             </ResourceDictionary.ThemeDictionaries>
 

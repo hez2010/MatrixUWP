@@ -6,4 +6,5 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/Themes/MyNavigationView.xaml"></ResourceDictionary>
     </ResourceDictionary.MergedDictionaries>
+
 </ResourceDictionary>
