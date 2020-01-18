@@ -1,5 +1,5 @@
 #nullable enable
-﻿using MatrixUWP.Models.Course;
+using MatrixUWP.Models.Course.Assignment;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -9,9 +9,9 @@ namespace MatrixUWP.ViewModels
     public class CourseAssignmentsViewModel : INotifyPropertyChanged
     {
         private bool loading;
-        private List<CourseAssignmentInfoModel> assignments = new List<CourseAssignmentInfoModel>();
+        private List<CourseAssignmentDetailsModel> assignments = new List<CourseAssignmentDetailsModel>();
 
-        public List<CourseAssignmentInfoModel> Assignments
+        public List<CourseAssignmentDetailsModel> Assignments
         {
             get => assignments;
             set

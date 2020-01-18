@@ -1,6 +1,6 @@
 ﻿#nullable enable
 
-namespace MatrixUWP.Models.Course
+namespace MatrixUWP.Models.Course.Assignment
 {
     public class AssignmentFile
     {

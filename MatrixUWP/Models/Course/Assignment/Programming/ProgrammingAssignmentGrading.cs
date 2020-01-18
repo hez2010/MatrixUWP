@@ -1,10 +1,13 @@
 #nullable enable
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
+using System.Collections.Generic;
 
-namespace MatrixUWP.Models.Course
+namespace MatrixUWP.Models.Course.Assignment.Programming
 {
-    public class AssignmentGrading
+    public class ProgrammingAssignmentGrading
     {
+        [JsonProperty("style check")]
+        public int StyleCheck { get; set; }
         [JsonProperty("google tests")]
         public int GoogleTests { get; set; }
         [JsonProperty("memory check")]
@@ -17,5 +20,7 @@ namespace MatrixUWP.Models.Course
         public int CompileCheck { get; set; }
         [JsonProperty("standard check")]
         public int StandardCheck { get; set; }
+        [JsonProperty("google tests detail")]
+        public Dictionary<string, int> GoogleTestsDetail { get; set; } = new Dictionary<string, int>();
     }
 }

@@ -1,14 +1,15 @@
 #nullable enable
-﻿using MatrixUWP.Models.User;
+using MatrixUWP.Models.User;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace MatrixUWP.Models.Course
+namespace MatrixUWP.Models.Course.Assignment
 {
-    public class CourseAssignmentInfoModel : INotifyPropertyChanged
+    public class CourseAssignmentDetailsModel : INotifyPropertyChanged
     {
         private bool loading;
         private string description = "";
@@ -41,6 +42,18 @@ namespace MatrixUWP.Models.Course
 
         [JsonProperty("prob_id")]
         public int ProblemId { get; set; }
+        /// <summary>
+        /// <para>Problem Type:</para>
+        /// <list type="table">
+        /// <item>0 - Programming problem</item>
+        /// <item>1 - Choice problem</item>
+        /// <item>2 - Report</item>
+        /// <item>3 - Fileupload problem</item>
+        /// <item>4 - Program output problem</item>
+        /// <item>5 - Problem blank fill problem (<strong>NOT SUPPORTED</strong>)</item>
+        /// <item>6 - Answer problem</item>
+        /// </list>
+        /// </summary>
 
         [JsonProperty("ptype_id")]
         public int ProblemTypeId { get; set; }
@@ -74,7 +87,7 @@ namespace MatrixUWP.Models.Course
         public int AssignmentId { get; set; }
 
         [JsonProperty("plcheck")]
-        public int PlCheck { get; set; }
+        public int PlagiarismCheck { get; set; }
 
         [JsonProperty("submit_limitation")]
         public int SubmitLimit { get; set; }
@@ -91,6 +104,9 @@ namespace MatrixUWP.Models.Course
         [JsonProperty("author")]
         public UserEssentialDataModel Author { get; set; } = new UserEssentialDataModel();
 
+        [JsonProperty("config")]
+        public JObject? Config { get; set; }
+
         public bool Loading
         {
             get => loading;
@@ -100,6 +116,8 @@ namespace MatrixUWP.Models.Course
                 OnPropertyChanged();
             }
         }
+
+        public Type? ConfigType { get; set; }
 
         public bool Loaded { get; set; } = false;
 

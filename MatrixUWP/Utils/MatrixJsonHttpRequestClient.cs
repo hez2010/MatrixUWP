@@ -9,13 +9,13 @@ namespace MatrixUWP.Utils
     public class MatrixJsonHttpRequestClient
     {
         private readonly HttpClient httpClient;
-        private readonly Uri baseUri;
+        public readonly Uri BaseUri;
         private bool tokenSaved = false;
 
         public MatrixJsonHttpRequestClient(HttpClient httpClient, Uri baseUri)
         {
             this.httpClient = httpClient;
-            this.baseUri = baseUri;
+            BaseUri = baseUri;
         }
 
         private async ValueTask EnsureTokenSavedAsync()
@@ -23,7 +23,7 @@ namespace MatrixUWP.Utils
             if (tokenSaved) return;
             try
             {
-                var uri = new Uri(baseUri, "/api/users/login");
+                var uri = new Uri(BaseUri, "/api/users/login");
                 await httpClient.GetAsync(uri);
             }
             catch
@@ -36,14 +36,14 @@ namespace MatrixUWP.Utils
         public async ValueTask<HttpResponseMessage> GetAsync(string path)
         {
             await EnsureTokenSavedAsync();
-            var uri = new Uri(baseUri, path);
+            var uri = new Uri(BaseUri, path);
             return await httpClient.GetAsync(uri);
         }
 
         public async ValueTask<HttpResponseMessage> PostJsonAsync<T>(string path, T body)
         {
             await EnsureTokenSavedAsync();
-            var uri = new Uri(baseUri, path);
+            var uri = new Uri(BaseUri, path);
             using var jsonContent = new HttpJsonContent<T>(body);
             return await httpClient.PostAsync(uri, jsonContent);
         }
@@ -51,7 +51,7 @@ namespace MatrixUWP.Utils
         public async ValueTask<HttpResponseMessage> PostMultiPartAsync(string path, IDictionary<string, IHttpContent> contents)
         {
             await EnsureTokenSavedAsync();
-            var uri = new Uri(baseUri, path);
+            var uri = new Uri(BaseUri, path);
             using var multipartData = new HttpMultipartFormDataContent();
             foreach (var i in contents)
             {

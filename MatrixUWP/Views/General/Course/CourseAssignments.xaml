@@ -2,10 +2,11 @@
     x:Class="MatrixUWP.Views.General.Course.CourseAssignments"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:MatrixUWP.Views.General"
+    xmlns:local="using:MatrixUWP.Views.General.Course"
+    xmlns:root="using:MatrixUWP"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:models="using:MatrixUWP.Models.Course"
+    xmlns:models="using:MatrixUWP.Models.Course.Assignment"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     mc:Ignorable="d"
     Background="{ThemeResource SystemControlAcrylicWindowMediumHighBrush}" 
@@ -16,7 +17,7 @@
             BorderBrush="{ThemeResource MasterDetailsViewBorderBrush}"
             BackButtonBehavior="Manual"
             Background="{ThemeResource SystemControlAcrylicWindowMediumHighBrush}" 
-            ItemsSource="{x:Bind viewModel.Assignments, Mode=OneWay}" 
+            ItemsSource="{x:Bind viewModel.Assignments, Mode=OneWay}"
             CompactModeThresholdWidth="720"
             x:Name="AssignmentView" SelectionChanged="AssignmentView_SelectionChanged">
             <controls:MasterDetailsView.NoSelectionContent>
@@ -25,7 +26,7 @@
                 </Grid>
             </controls:MasterDetailsView.NoSelectionContent>
             <controls:MasterDetailsView.ItemTemplate>
-                <DataTemplate x:DataType="models:CourseAssignmentInfoModel">
+                <DataTemplate x:DataType="models:CourseAssignmentDetailsModel">
                     <StackPanel Margin="0,8">
                         <TextBlock Foreground="SteelBlue" FontSize="18" Text="{x:Bind Title}"></TextBlock>
                         <StackPanel Orientation="Horizontal">
@@ -43,17 +44,22 @@
                     </StackPanel>
                 </DataTemplate>
             </controls:MasterDetailsView.ItemTemplate>
-            <controls:MasterDetailsView.DetailsHeader>
-                <TextBlock Margin="8" FontSize="22" Text="题目描述"></TextBlock>
-            </controls:MasterDetailsView.DetailsHeader>
+            <controls:MasterDetailsView.DetailsHeaderTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Margin="8" FontSize="22" Text="{Binding ElementName=AssignmentView, Path=SelectedItem.Title, Mode=OneWay}"></TextBlock>
+                    </StackPanel>
+                </DataTemplate>
+            </controls:MasterDetailsView.DetailsHeaderTemplate>
             <controls:MasterDetailsView.DetailsTemplate>
-                <DataTemplate x:DataType="models:CourseAssignmentInfoModel">
+                <DataTemplate x:DataType="models:CourseAssignmentDetailsModel">
                     <Grid Margin="8">
                         <ScrollViewer>
                             <controls:MarkdownTextBlock
                                 LinkClicked="MarkdownTextBlock_LinkClicked"
                                 ImageClicked="MarkdownTextBlock_ImageClicked"
-                                Background="Transparent" 
+                                Background="Transparent"
+                                UriPrefix="{x:Bind root:App.MatrixHttpClient.BaseUri.AbsoluteUri}"
                                 Text="{x:Bind Description, Mode=OneWay}"></controls:MarkdownTextBlock>
                         </ScrollViewer>
                         <ProgressRing HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-50,0,0" Width="60" Height="60" IsActive="{x:Bind Loading, Mode=OneWay}"></ProgressRing>
@@ -61,16 +67,16 @@
                 </DataTemplate>
             </controls:MasterDetailsView.DetailsTemplate>
             <controls:MasterDetailsView.MasterCommandBar>
-                <CommandBar Background="{ThemeResource SystemControlAcrylicWindowBrush}">
+                <CommandBar Background="{ThemeResource SystemControlAcrylicWindowBrush}" DefaultLabelPosition="Right">
                     <AppBarButton Icon="Find" Label="查找"></AppBarButton>
                     <AppBarButton Icon="Filter" Label="筛选"></AppBarButton>
                 </CommandBar>
             </controls:MasterDetailsView.MasterCommandBar>
             <controls:MasterDetailsView.DetailsCommandBar>
-                <CommandBar Background="{ThemeResource SystemControlAcrylicWindowBrush}">
-                    <AppBarButton Icon="Up" Label="提交"></AppBarButton>
-                    <AppBarButton Icon="Page2" Label="成绩"></AppBarButton>
-                    <AppBarButton Icon="OutlineStar" Label="收藏"></AppBarButton>
+                <CommandBar Background="{ThemeResource SystemControlAcrylicWindowBrush}" DefaultLabelPosition="Right">
+                    <AppBarButton Icon="Up" Label="提交" Click="Submit_Clicked"></AppBarButton>
+                    <AppBarButton Icon="Page2" Label="成绩" Click="Report_Clicked"></AppBarButton>
+                    <AppBarButton Icon="OutlineStar" Label="收藏" Click="Star_Clicked"></AppBarButton>
                 </CommandBar>
             </controls:MasterDetailsView.DetailsCommandBar>
         </controls:MasterDetailsView>

@@ -137,14 +137,24 @@
     <Compile Include="Extensions\DispatcherExtensions.cs" />
     <Compile Include="Extensions\ResponseExtensions.cs" />
     <Compile Include="Extensions\TaskExtensions.cs" />
-    <Compile Include="Models\Course\AssignmentConfig.cs" />
-    <Compile Include="Models\Course\AssignmentFile.cs" />
-    <Compile Include="Models\Course\AssignmentGrading.cs" />
-    <Compile Include="Models\Course\AssignmentLimits.cs" />
+    <Compile Include="Models\Course\Assignment\Answer\AnswerAssignmentConfig.cs" />
+    <Compile Include="Models\Course\Assignment\Answer\AnswerAssignmentQuestion.cs" />
+    <Compile Include="Models\Course\Assignment\Choice\ChoiceAssignmentQuestion.cs" />
+    <Compile Include="Models\Course\Assignment\Choice\ChoiceAssignmentConfig.cs" />
+    <Compile Include="Models\Course\Assignment\Choice\ChoiceAssignmentElement.cs" />
+    <Compile Include="Models\Course\Assignment\Choice\ChoiceAssignmentGrading.cs" />
+    <Compile Include="Models\Course\Assignment\File\FileAssignmentConfig.cs" />
+    <Compile Include="Models\Course\Assignment\AssignmentFile.cs" />
+    <Compile Include="Models\Course\Assignment\Output\OutputAssignmentConfig.cs" />
+    <Compile Include="Models\Course\Assignment\Programming\ProgrammingAssignmentGrading.cs" />
+    <Compile Include="Models\Course\Assignment\Programming\ProgrammingAssignmentLimits.cs" />
+    <Compile Include="Models\Course\Assignment\Programming\ProgrammingAssignmentConfig.cs" />
+    <Compile Include="Models\Course\Assignment\Programming\ProgrammingStandard.cs" />
+    <Compile Include="Models\Course\Assignment\Report\ReportAssignmentConfig.cs" />
     <Compile Include="Models\User\CaptchaDataModel.cs" />
     <Compile Include="Models\Config\Configuration.cs" />
-    <Compile Include="Models\Course\CourseAssignmentInfoModel.cs" />
-    <Compile Include="Models\Course\CourseAssignmentModel.cs" />
+    <Compile Include="Models\Course\Assignment\CourseAssignmentDetailsModel.cs" />
+    <Compile Include="Models\Course\Assignment\CourseAssignmentModel.cs" />
     <Compile Include="Models\Course\CourseInfoModel.cs" />
     <Compile Include="Models\Course\CourseModel.cs" />
     <Compile Include="Models\Config\Language.cs" />
@@ -375,6 +385,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Dialogs\" />
+    <Folder Include="Views\General\Submit\" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
