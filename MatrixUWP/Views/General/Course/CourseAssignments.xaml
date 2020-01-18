@@ -5,28 +5,74 @@
     xmlns:local="using:MatrixUWP.Views.General"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:models="using:MatrixUWP.Models"
+    xmlns:models="using:MatrixUWP.Models.Course"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     mc:Ignorable="d"
     Background="{ThemeResource SystemControlAcrylicWindowMediumHighBrush}" 
     Loaded="Page_Loaded">
 
     <Grid>
-        <ListBox Background="{ThemeResource SystemControlAcrylicWindowMediumHighBrush}" ItemsSource="{x:Bind viewModel.Assignments, Mode=OneWay}">
-            <ListBox.ItemTemplate>
+        <controls:MasterDetailsView 
+            BackButtonBehavior="Manual"
+            Background="{ThemeResource SystemControlAcrylicWindowMediumHighBrush}" 
+            ItemsSource="{x:Bind viewModel.Assignments, Mode=OneWay}" 
+            CompactModeThresholdWidth="720"
+            x:Name="AssignmentView" SelectionChanged="AssignmentView_SelectionChanged">
+            <controls:MasterDetailsView.NoSelectionContent>
+                <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock Text="请选择一项作业"></TextBlock>
+                </Grid>
+            </controls:MasterDetailsView.NoSelectionContent>
+            <controls:MasterDetailsView.ItemTemplate>
                 <DataTemplate x:DataType="models:CourseAssignmentInfoModel">
-                    <StackPanel>
-                        <TextBlock Text="{x:Bind Type}"></TextBlock>
-                        <TextBlock Text="{x:Bind SubmitLimit}"></TextBlock>
-                        <TextBlock Text="{x:Bind Title}"></TextBlock>
+                    <StackPanel Margin="0,8">
+                        <TextBlock Foreground="SteelBlue" FontSize="18" Text="{x:Bind Title}"></TextBlock>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock FontSize="12" Foreground="Gray" Text="开始时间："></TextBlock>
+                            <TextBlock FontSize="12" Foreground="Gray" Text="{x:Bind StartTime}"></TextBlock>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock FontSize="12" Foreground="Gray" Text="结束时间："></TextBlock>
+                            <TextBlock FontSize="12" Foreground="Gray" Text="{x:Bind EndTime}"></TextBlock>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock FontSize="12" Text="{x:Bind Type}"></TextBlock>
+                            <TextBlock FontSize="12" Margin="8,0,0,0" Text="{x:Bind GradeAtEndDescription}"></TextBlock>
+                        </StackPanel>
                     </StackPanel>
                 </DataTemplate>
-            </ListBox.ItemTemplate>
-            <ListBox.ItemContainerStyle>
-                <Style TargetType="ListBoxItem">
-                    <Setter Property="Background" Value="{ThemeResource SystemControlBackgroundTransparentRevealBorderBrush}"></Setter>
-                </Style>
-            </ListBox.ItemContainerStyle>
-        </ListBox>
+            </controls:MasterDetailsView.ItemTemplate>
+            <controls:MasterDetailsView.DetailsHeader>
+                <TextBlock Margin="8" FontSize="18" Foreground="SteelBlue" Text="题目描述"></TextBlock>
+            </controls:MasterDetailsView.DetailsHeader>
+            <controls:MasterDetailsView.DetailsTemplate>
+                <DataTemplate x:DataType="models:CourseAssignmentInfoModel">
+                    <Grid Margin="8">
+                        <ScrollViewer>
+                            <controls:MarkdownTextBlock
+                                LinkClicked="MarkdownTextBlock_LinkClicked"
+                                ImageClicked="MarkdownTextBlock_ImageClicked"
+                                Background="Transparent" 
+                                Text="{x:Bind Description, Mode=OneWay}"></controls:MarkdownTextBlock>
+                        </ScrollViewer>
+                        <ProgressRing HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-50,0,0" Width="60" Height="60" IsActive="{x:Bind Loading, Mode=OneWay}"></ProgressRing>
+                    </Grid>
+                </DataTemplate>
+            </controls:MasterDetailsView.DetailsTemplate>
+            <controls:MasterDetailsView.MasterCommandBar>
+                <CommandBar Background="{ThemeResource SystemControlAcrylicWindowBrush}">
+                    <AppBarButton Icon="Find" Label="查找"></AppBarButton>
+                    <AppBarButton Icon="Filter" Label="筛选"></AppBarButton>
+                </CommandBar>
+            </controls:MasterDetailsView.MasterCommandBar>
+            <controls:MasterDetailsView.DetailsCommandBar>
+                <CommandBar Background="{ThemeResource SystemControlAcrylicWindowBrush}">
+                    <AppBarButton Icon="Up" Label="提交"></AppBarButton>
+                    <AppBarButton Icon="Page2" Label="成绩"></AppBarButton>
+                    <AppBarButton Icon="OutlineStar" Label="收藏"></AppBarButton>
+                </CommandBar>
+            </controls:MasterDetailsView.DetailsCommandBar>
+        </controls:MasterDetailsView>
         <ProgressRing HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-50,0,0" Width="60" Height="60" IsActive="{x:Bind viewModel.Loading, Mode=OneWay}"></ProgressRing>
     </Grid>
 </Page>

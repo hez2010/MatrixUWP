@@ -1,5 +1,7 @@
+#nullable enable
 ﻿using MatrixUWP.Extensions;
 using MatrixUWP.Models;
+using MatrixUWP.Models.Course;
 using MatrixUWP.ViewModels;
 using MatrixUWP.Views.Parameters.Course;
 using System;
@@ -67,9 +69,20 @@ namespace MatrixUWP.Views.General.Course
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            if (parameters is null) return;
             parameters.NavigateToPage(typeof(CourseAssignments),
                 typeof(CourseAssignmentsParameters),
                 new { parameters.CourseId });
+        }
+
+        private async void MarkdownTextBlock_LinkClicked(object sender, Microsoft.Toolkit.Uwp.UI.Controls.LinkClickedEventArgs e)
+        {
+            await Windows.System.Launcher.LaunchUriAsync(new Uri(e.Link));
+        }
+
+        private async void MarkdownTextBlock_ImageClicked(object sender, Microsoft.Toolkit.Uwp.UI.Controls.LinkClickedEventArgs e)
+        {
+            await Windows.System.Launcher.LaunchUriAsync(new Uri(e.Link));
         }
     }
 }

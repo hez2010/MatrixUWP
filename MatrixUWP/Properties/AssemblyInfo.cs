@@ -1,3 +1,4 @@
+#nullable enable
 ﻿using System.Reflection;
 using System.Runtime.InteropServices;
 

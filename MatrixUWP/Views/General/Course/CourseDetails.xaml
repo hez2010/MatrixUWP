@@ -23,7 +23,7 @@
                         <TextBlock VerticalAlignment="Bottom" Margin="8,0" FontSize="12" Text="{x:Bind viewModel.Course.Status, Mode=OneWay}"></TextBlock>
                     </StackPanel>
                 </StackPanel>
-                <Button Padding="16,4" Style="{ThemeResource ButtonRevealStyle}" CornerRadius="3" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignRightWithPanel="True" HorizontalAlignment="Right" Content="查看作业" Click="Button_Click"></Button>
+                <Button Padding="16,4" Style="{ThemeResource ButtonRevealStyle}" CornerRadius="3" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignRightWithPanel="True" HorizontalAlignment="Right" Content="查看题目" Click="Button_Click"></Button>
             </RelativePanel>
             <StackPanel Orientation="Horizontal" Margin="8,0,0,0" RelativePanel.Below="CourseTitle">
                 <StackPanel Orientation="Horizontal">
@@ -63,7 +63,12 @@
             </StackPanel>
             <Line x:Name="BorderLine" StrokeThickness="1" Margin="0,8" Stroke="Gray" X1="0" X2="0"></Line>
             <ScrollViewer x:Name="DescriptionViewer" Margin="8">
-                <controls:MarkdownTextBlock Background="Transparent" Text="{x:Bind viewModel.Course.Description, Mode=OneWay}"></controls:MarkdownTextBlock>
+                <controls:MarkdownTextBlock
+                    LinkClicked="MarkdownTextBlock_LinkClicked"
+                    ImageClicked="MarkdownTextBlock_ImageClicked"
+                    Background="Transparent"
+                    Text="{x:Bind viewModel.Course.Description, Mode=OneWay}">
+                </controls:MarkdownTextBlock>
             </ScrollViewer>
         </StackPanel>
         <ProgressRing HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-50,0,0" Width="60" Height="60" IsActive="{x:Bind viewModel.Loading, Mode=OneWay}"></ProgressRing>

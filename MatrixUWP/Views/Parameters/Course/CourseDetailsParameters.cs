@@ -1,3 +1,4 @@
+#nullable enable
 ﻿namespace MatrixUWP.Views.Parameters.Course
 {
     class CourseDetailsParameters : CommonParameters

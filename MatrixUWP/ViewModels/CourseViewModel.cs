@@ -1,7 +1,8 @@
+#nullable enable
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using MatrixUWP.Models;
+using MatrixUWP.Models.Course;
 
 namespace MatrixUWP.ViewModels
 {
@@ -10,7 +11,7 @@ namespace MatrixUWP.ViewModels
         private bool loading;
         private List<CourseInfoModel> courses = new List<CourseInfoModel>();
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         public List<CourseInfoModel> Courses
         {
@@ -32,7 +33,7 @@ namespace MatrixUWP.ViewModels
             }
         }
 
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }

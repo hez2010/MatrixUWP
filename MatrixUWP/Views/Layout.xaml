@@ -38,7 +38,7 @@
             </Grid>
         </Grid>
         <Grid Grid.Row="1">
-            <ctl:MyNavigationView BackRequested="NaviMenu_BackRequested" x:Name="NaviMenu" AlwaysShowHeader="False" Header="{x:Bind ((NavigationViewItem)NaviMenu.SelectedItem).Content, Mode=OneWay}" IsBackEnabled="{x:Bind NaviContent.CanGoBack, Mode=OneWay}" ItemInvoked="NaviMenu_ItemInvoked">
+            <ctl:MyNavigationView CompactModeThresholdWidth="720" BackRequested="NaviMenu_BackRequested" x:Name="NaviMenu" AlwaysShowHeader="False" Header="{x:Bind ((NavigationViewItem)NaviMenu.SelectedItem).Content, Mode=OneWay}" IsBackEnabled="{x:Bind NaviContent.CanGoBack, Mode=OneWay}" ItemInvoked="NaviMenu_ItemInvoked">
                 <ctl:MyNavigationView.MenuItems>
                     <NavigationViewItemHeader x:Uid="NaviMenu_Header_General"></NavigationViewItemHeader>
                     <NavigationViewItem x:Name="HomeNaviPage" Icon="Home" x:Uid="NaviMenu_Item_Home"></NavigationViewItem>

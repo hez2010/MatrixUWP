@@ -1,3 +1,4 @@
+#nullable enable
 ﻿using System;
 #if FXJSON
 using System.Text.Json.Serialization;

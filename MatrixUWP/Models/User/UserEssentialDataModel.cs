@@ -1,31 +1,36 @@
 #nullable enable
-﻿using MatrixUWP.Utils;
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using Newtonsoft.Json;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
+using MatrixUWP.Utils;
 
-namespace MatrixUWP.ViewModels
+namespace MatrixUWP.Models.User
 {
-    class HomeViewModel : INotifyPropertyChanged
+    public class UserEssentialDataModel : INotifyPropertyChanged
     {
-        private SvgImageSource captchaData = new SvgImageSource();
+        private string realName = "";
         private string userName = "";
-        private string password = "";
-        private string captcha = "";
-        private bool loading;
+        private string phone = "";
+        private string email = "";
+        private string homePage = "";
 
-        public SvgImageSource CaptchaData
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        [JsonProperty("realname")]
+        public string RealName
         {
-            get => captchaData;
+            get => realName;
             set
             {
-                captchaData = value;
+                realName = value;
                 OnPropertyChanged();
             }
         }
 
+        [JsonProperty("username")]
         public string UserName
         {
             get => userName;
@@ -34,42 +39,54 @@ namespace MatrixUWP.ViewModels
                 userName = value;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(Avatar));
-                OnPropertyChanged(nameof(SignInButtonEnabled));
             }
         }
 
-        public string Password
+        [JsonProperty("phone")]
+        public string Phone
         {
-            get => password;
+            get => phone;
             set
             {
-                password = value;
-                OnPropertyChanged();
-                OnPropertyChanged(nameof(SignInButtonEnabled));
-            }
-        }
-
-        public string Captcha
-        {
-            get => captcha;
-            set
-            {
-                captcha = value;
+                phone = value;
                 OnPropertyChanged();
             }
         }
 
+        [JsonProperty("email")]
+        public string Email
+        {
+            get => email;
+            set
+            {
+                email = value;
+                OnPropertyChanged();
+            }
+        }
+
+        [JsonProperty("homepage")]
+        public string HomePage
+        {
+            get => homePage;
+            set
+            {
+                homePage = value;
+                OnPropertyChanged();
+            }
+        }
+
+        [JsonIgnore]
         public ImageSource Avatar
         {
             get
             {
                 var bitmap = new BitmapImage();
-                if (string.IsNullOrEmpty(userName)) bitmap.UriSource = new Uri("ms-appx:///Assets/Home/user.png");
+                if (string.IsNullOrEmpty(UserName)) bitmap.UriSource = new Uri("ms-appx:///Assets/Home/user.png");
                 else
                 {
                     try
                     {
-                        bitmap.UriSource = new Uri(MatrixJsonHttpRequestBuilder.BaseUri, $"/api/users/profile/avatar?username={userName}");
+                        bitmap.UriSource = new Uri(MatrixJsonHttpRequestBuilder.BaseUri, $"/api/users/profile/avatar?username={UserName}");
                     }
                     catch
                     {
@@ -81,20 +98,6 @@ namespace MatrixUWP.ViewModels
             }
         }
 
-        public bool Loading
-        {
-            get => loading;
-            set
-            {
-                loading = value;
-                OnPropertyChanged();
-                OnPropertyChanged(nameof(SignInButtonEnabled));
-            }
-        }
-
-        public bool SignInButtonEnabled => !loading && !string.IsNullOrEmpty(userName) && !string.IsNullOrEmpty(password);
-
-        public event PropertyChangedEventHandler? PropertyChanged;
         protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

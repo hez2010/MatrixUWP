@@ -1,12 +1,11 @@
-﻿using System.Collections.Generic;
+#nullable enable
+﻿using MatrixUWP.Models.User;
 using Newtonsoft.Json;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
-using MatrixUWP.Extensions;
 using Windows.UI;
 
-namespace MatrixUWP.Models
+namespace MatrixUWP.Models.Course
 {
     public class CourseInfoModel : INotifyPropertyChanged
     {
@@ -96,21 +95,11 @@ namespace MatrixUWP.Models
         [JsonProperty("creator")]
         public UserEssentialDataModel Creator { get; set; } = new UserEssentialDataModel();
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-    }
-    public class CourseModel
-    {
-        public static async ValueTask<ResponseModel<List<CourseInfoModel>>> FetchCourseListAsync() =>
-            await App.MatrixHttpClient.GetAsync("/api/courses")
-                .JsonAsync<ResponseModel<List<CourseInfoModel>>>();
-
-        public static async ValueTask<ResponseModel<CourseInfoModel>> FetchCourseAsync(int courseId) =>
-            await App.MatrixHttpClient.GetAsync($"/api/courses/{courseId}")
-                .JsonAsync<ResponseModel<CourseInfoModel>>();
     }
 }

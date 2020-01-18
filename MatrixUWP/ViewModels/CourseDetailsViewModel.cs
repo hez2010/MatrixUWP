@@ -1,4 +1,5 @@
-﻿using MatrixUWP.Models;
+#nullable enable
+﻿using MatrixUWP.Models.Course;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
@@ -9,7 +10,7 @@ namespace MatrixUWP.ViewModels
         private bool loading;
         private CourseInfoModel course = new CourseInfoModel();
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         public CourseInfoModel Course
         {
@@ -31,7 +32,7 @@ namespace MatrixUWP.ViewModels
             }
         }
 
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }

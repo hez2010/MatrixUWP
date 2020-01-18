@@ -1,3 +1,4 @@
+#nullable enable
 ﻿using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 

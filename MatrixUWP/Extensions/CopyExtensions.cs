@@ -1,3 +1,4 @@
+#nullable enable
 ﻿using System.Linq;
 
 namespace MatrixUWP.Extensions

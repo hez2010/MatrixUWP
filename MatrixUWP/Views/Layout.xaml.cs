@@ -1,5 +1,6 @@
+#nullable enable
 ﻿using MatrixUWP.Extensions;
-using MatrixUWP.Models;
+using MatrixUWP.Models.User;
 using MatrixUWP.ViewModels;
 using MatrixUWP.Views.Parameters;
 using MatrixUWP.Views.Parameters.Course;
@@ -25,8 +26,16 @@ namespace MatrixUWP.Views
             Window.Current.SetTitleBar(MyTitleBar);
             Windows.UI.Core.SystemNavigationManager.GetForCurrentView().BackRequested += App_BackRequested;
 
+            NaviContent.Navigated += NaviContent_Navigated;
             // Navigate to Home
             NavigateToPage(HomeNaviPage, false, NaviMenu.PaneDisplayMode);
+        }
+
+        private void NaviContent_Navigated(object sender, Windows.UI.Xaml.Navigation.NavigationEventArgs e)
+        {
+            if (e.NavigationMode == Windows.UI.Xaml.Navigation.NavigationMode.Back) return;
+            // Update navi history and last selected index of navimenu
+            if (lastSelectedItemIndex != -1) navimenuNaviHistory.Push(lastSelectedItemIndex);
         }
 
         /// <summary>
@@ -102,15 +111,12 @@ namespace MatrixUWP.Views
             }
             else transition = new DrillInNavigationTransitionInfo();
 
-            // Update navi history and last selected index of navimenu
-            if (lastSelectedItemIndex != -1) navimenuNaviHistory.Push(lastSelectedItemIndex);
-            lastSelectedItemIndex = index;
-
             // Navigate to page
             NaviContent.Navigate(targetInfo.Page, targetInfo.Parameter, transition);
 
             // Set current selected item for navimenu
             NaviMenu.SelectedItem = naviItem;
+            lastSelectedItemIndex = index;
         }
 
         private void NavigateToPage(Type pageType, Type parameterType, object parameter)
@@ -119,8 +125,6 @@ namespace MatrixUWP.Views
                 .Invoke(new[] { new CommonParameters(UpdateUserData, viewModel.UserData, ShowMessage, NavigateToPage) });
             parameter.CopyTo(param);
 
-            // Update navi history and last selected index of navimenu
-            navimenuNaviHistory.Push(lastSelectedItemIndex);
             NaviContent.Navigate(pageType, param, new DrillInNavigationTransitionInfo());
         }
 
@@ -161,6 +165,7 @@ namespace MatrixUWP.Views
             }
             return false;
         }
+
         private void App_BackRequested(object sender, Windows.UI.Core.BackRequestedEventArgs e)
         {
             e.Handled = NavigateBack();

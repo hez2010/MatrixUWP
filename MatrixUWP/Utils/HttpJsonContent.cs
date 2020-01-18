@@ -1,3 +1,4 @@
+#nullable enable
 ﻿using MatrixUWP.Extensions;
 using System;
 using System.Runtime.InteropServices.WindowsRuntime;

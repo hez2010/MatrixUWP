@@ -1,4 +1,5 @@
-﻿using MatrixUWP.Models;
+#nullable enable
+﻿using MatrixUWP.Models.Config;
 using MatrixUWP.Utils;
 using MatrixUWP.Views;
 using System;
@@ -112,8 +113,7 @@ namespace MatrixUWP
 
         private void OnUnhandledException(object sender, Windows.UI.Xaml.UnhandledExceptionEventArgs e)
         {
-            Debug.WriteLine(e.Message);
-            Debugger.Break();
+            Debug.Fail(e.Message, e.Exception.StackTrace);
             e.Handled = true;
         }
     }

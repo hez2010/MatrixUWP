@@ -1,3 +1,4 @@
+#nullable enable
 ﻿using System;
 using MatrixUWP.Extensions;
 using MatrixUWP.Models;
@@ -7,6 +8,7 @@ using Windows.UI.Xaml.Navigation;
 using MatrixUWP.Views.Parameters.Course;
 using System.Linq;
 using System.Diagnostics;
+using MatrixUWP.Models.Course;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 

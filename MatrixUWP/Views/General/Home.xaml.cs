@@ -1,5 +1,6 @@
+#nullable enable
 ﻿using MatrixUWP.Extensions;
-using MatrixUWP.Models;
+using MatrixUWP.Models.User;
 using MatrixUWP.ViewModels;
 using MatrixUWP.Views.Parameters;
 using System;
@@ -47,7 +48,7 @@ namespace MatrixUWP.Views.General
             }
         }
 
-        private async void SignIn_Click(object sender, RoutedEventArgs e)
+        private async void SignIn_Click(object sender, RoutedEventArgs? e)
         {
             viewModel.Loading = true;
             await Dispatcher.YieldAsync();

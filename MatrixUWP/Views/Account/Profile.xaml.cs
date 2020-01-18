@@ -1,5 +1,7 @@
+#nullable enable
 ﻿using MatrixUWP.Extensions;
 using MatrixUWP.Models;
+using MatrixUWP.Models.User;
 using MatrixUWP.ViewModels;
 using MatrixUWP.Views.Parameters;
 using System;
@@ -69,7 +71,7 @@ namespace MatrixUWP.Views.Account
             using var stream = await file.OpenSequentialReadAsync();
             viewModel.Loading = true;
             await Dispatcher.YieldAsync();
-            parameters.ShowMessage(await UpdateProfile(stream));
+            parameters?.ShowMessage(await UpdateProfile(stream));
             viewModel.Loading = false;
         }
 
@@ -93,12 +95,13 @@ namespace MatrixUWP.Views.Account
                 if (result.Status == StatusCode.OK)
                 {
                     var model = UserModel.CurrentUser;
+                    if (model is null) throw new NullReferenceException("CurrentUser cannot be null.");
                     model.Phone = viewModel.UserData.Phone;
                     model.NickName = viewModel.UserData.NickName;
                     model.HomePage = viewModel.UserData.HomePage;
                     model.MailConfig = viewModel.UserData.MailConfig;
                     model.Email = viewModel.UserData.Email;
-                    parameters.UpdateUserData(model);
+                    parameters?.UpdateUserData(model);
                     UserModel.CurrentUser = model;
                 }
                 return result.Message;
@@ -114,7 +117,7 @@ namespace MatrixUWP.Views.Account
         {
             viewModel.Loading = true;
             await Dispatcher.YieldAsync();
-            parameters.ShowMessage(await UpdateProfile());
+            parameters?.ShowMessage(await UpdateProfile());
             viewModel.Loading = false;
         }
     }
