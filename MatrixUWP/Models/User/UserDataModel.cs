@@ -10,7 +10,7 @@ namespace MatrixUWP.Models.User
         private string nickName = "";
         private int isValid;
         private object? userAddition;
-        private MailConfig mailConfig = new MailConfig();
+        private MailConfig? mailConfig;
         private bool isInLib;
         private bool canCreateLib;
 
@@ -89,7 +89,7 @@ namespace MatrixUWP.Models.User
         }
 
         [JsonProperty("mail_config")]
-        public MailConfig MailConfig
+        public MailConfig? MailConfig
         {
             get => mailConfig;
             set

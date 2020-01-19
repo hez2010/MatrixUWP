@@ -110,7 +110,7 @@ namespace MatrixUWP.Models.Course.Assignment
         public bool IsStarted { get; set; }
 
         [JsonProperty("files")]
-        public List<AssignmentFile> Files { get; set; } = new List<AssignmentFile>();
+        public List<AssignmentFile>? Files { get; set; }
 
         [JsonProperty("author")]
         public UserEssentialDataModel Author { get; set; } = new UserEssentialDataModel();

@@ -11,7 +11,7 @@ namespace MatrixUWP.Models.Course.Assignment.Answer
         [JsonProperty("grade")]
         public int Grade { get; set; }
         [JsonProperty("keywords")]
-        public List<string> Keywords { get; set; } = new List<string>();
+        public List<string>? Keywords { get; set; }
         [JsonProperty("description")]
         public string Description { get; set; } = "";
         [JsonProperty("explanation")]

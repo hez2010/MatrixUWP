@@ -1,12 +1,11 @@
 ﻿#nullable enable
-using MatrixUWP.Models.Course.Assignment.Choice;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 namespace MatrixUWP.ViewModels
 {
-    class ChoiceSubmitViewModel : INotifyPropertyChanged
+    class ProgrammingSubmitViewModel : INotifyPropertyChanged
     {
         private bool loading;
 
@@ -19,9 +18,11 @@ namespace MatrixUWP.ViewModels
                 OnPropertyChanged();
             }
         }
-        public List<ChoiceAssignmentQuestion>? Questions { get; set; }
+
         public string Description { get; set; } = "";
         public string Title { get; set; } = "";
+        public List<ProgrammingFileModel>? Files { get; set; }
+        public List<string>? Languages { get; set; }
 
         public event PropertyChangedEventHandler? PropertyChanged;
         protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)

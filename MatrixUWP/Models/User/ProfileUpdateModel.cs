@@ -14,6 +14,6 @@ namespace MatrixUWP.Models.User
         [JsonProperty("nickname")]
         public string NickName { get; set; } = "";
         [JsonProperty("mail_config")]
-        public MailConfig MailConfig { get; set; } = new MailConfig();
+        public MailConfig? MailConfig { get; set; }
     }
 }

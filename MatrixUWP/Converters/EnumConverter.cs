@@ -1,5 +1,5 @@
 #nullable enable
-﻿using System;
+using System;
 using Windows.UI.Xaml.Data;
 
 namespace MatrixUWP.Converters
@@ -10,6 +10,8 @@ namespace MatrixUWP.Converters
         {
             if (value is Enum)
             {
+                if (targetType.IsEnum && Enum.IsDefined(targetType, (int)value))
+                    return Enum.ToObject(targetType, (int)value);
                 return System.Convert.ChangeType(value, targetType);
             }
             throw new InvalidCastException();

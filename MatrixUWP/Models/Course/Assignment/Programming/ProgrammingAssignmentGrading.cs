@@ -21,6 +21,6 @@ namespace MatrixUWP.Models.Course.Assignment.Programming
         [JsonProperty("standard check")]
         public int StandardCheck { get; set; }
         [JsonProperty("google tests detail")]
-        public Dictionary<string, int> GoogleTestsDetail { get; set; } = new Dictionary<string, int>();
+        public Dictionary<string, int>? GoogleTestsDetail { get; set; }
     }
 }

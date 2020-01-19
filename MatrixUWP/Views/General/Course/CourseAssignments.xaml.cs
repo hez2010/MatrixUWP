@@ -161,25 +161,58 @@ namespace MatrixUWP.Views.General.Course
         private void ShowSubmitPage(object config, CourseAssignmentDetailsModel model)
         {
             var animation = ConnectedAnimationService.GetForCurrentView();
+            var description = AssignmentView.FindChildOfName<ScrollViewer>("DescriptionViewer");
+            animation.PrepareToAnimate("DescriptionViewer", description);
+            var title = AssignmentView.FindChildOfName<TextBlock>("TitleViewer");
+            animation.PrepareToAnimate("TitleViewer", title);
 
             switch (config)
             {
                 case ProgrammingAssignmentConfig asgnConfig:
-                    Debug.WriteLine(asgnConfig.SerializeJson());
-                    break;
-                case ChoiceAssignmentConfig asgnConfig:
                     {
-                        var description = AssignmentView.FindChildOfName<ScrollViewer>("DescriptionViewer");
-                        animation.PrepareToAnimate("DescriptionViewer", description);
-                        var title = AssignmentView.FindChildOfName<TextBlock>("TitleViewer");
-                        animation.PrepareToAnimate("TitleViewer", title);
+                        void SetContent(int index, string content)
+                        {
+                            if (asgnConfig.SubmitContents is null || index >= asgnConfig.SubmitContents.Count) return;
+                            asgnConfig.SubmitContents[index] = content;
+                        }
 
-                        parameters?.NavigateToPage(typeof(ChoiceSubmit),
-                            typeof(ChoiceSubmitParameters),
-                            new { asgnConfig.Questions, model.Title, model.Description, model.CourseId, AssignmentId = model.CourseAssignmentId },
+                        string? GetContent(int index)
+                        {
+                            if (asgnConfig.SubmitContents is null || index >= asgnConfig.SubmitContents.Count) return null;
+                            return asgnConfig.SubmitContents[index];
+                        }
+
+                        parameters?.NavigateToPage(typeof(ProgrammingSubmit),
+                            typeof(ProgrammingSubmitParameters),
+                            new
+                            {
+                                Submissions = asgnConfig.Submission,
+                                Supports = asgnConfig.Standard?.Support,
+                                Languages = asgnConfig.Language,
+                                asgnConfig.SubmitContents,
+                                model.Title,
+                                model.Description,
+                                model.CourseId,
+                                AssignmentId = model.CourseAssignmentId,
+                                GetContent = (Func<int, string?>)GetContent,
+                                SetContent = (Action<int, string>)SetContent
+                            },
                             new EntranceNavigationTransitionInfo());
                         break;
                     }
+                case ChoiceAssignmentConfig asgnConfig:
+                    parameters?.NavigateToPage(typeof(ChoiceSubmit),
+                        typeof(ChoiceSubmitParameters),
+                        new
+                        {
+                            asgnConfig.Questions,
+                            model.Title,
+                            model.Description,
+                            model.CourseId,
+                            AssignmentId = model.CourseAssignmentId
+                        },
+                        new EntranceNavigationTransitionInfo());
+                    break;
                 case ReportAssignmentConfig asgnConfig:
                     Debug.WriteLine(asgnConfig.SerializeJson());
                     break;

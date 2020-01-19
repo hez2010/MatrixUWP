@@ -115,6 +115,11 @@ namespace MatrixUWP.Views.General.Submit
         private async void Submit_Click(object sender, RoutedEventArgs e)
         {
             if (parameters is null) return;
+            if (viewModel.Questions is null) return;
+
+            viewModel.Loading = true;
+            await Dispatcher.YieldAsync();
+
             var content = new SubmitPostModel<List<ChoiceAnswer>>();
             content.Detail.Answers = new List<ChoiceAnswer>();
             foreach (var i in viewModel.Questions)
@@ -126,8 +131,6 @@ namespace MatrixUWP.Views.General.Submit
                 });
             }
 
-            viewModel.Loading = true;
-            await Dispatcher.YieldAsync();
             try
             {
                 var response = await SubmissionModel.SubmitForCourseAssignment(parameters.CourseId, parameters.AssignmentId, content);

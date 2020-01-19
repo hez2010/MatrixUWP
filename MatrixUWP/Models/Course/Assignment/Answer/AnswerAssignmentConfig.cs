@@ -7,7 +7,7 @@ namespace MatrixUWP.Models.Course.Assignment.Answer
     class AnswerAssignmentConfig
     {
         [JsonProperty("questions")]
-        public List<AnswerAssignmentQuestion> Questions { get; set; } = new List<AnswerAssignmentQuestion>();
+        public List<AnswerAssignmentQuestion>? Questions { get; set; }
         [JsonProperty("standard_score")]
         public int StandardScore { get; set; }
     }

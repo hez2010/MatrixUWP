@@ -30,7 +30,7 @@ namespace MatrixUWP.Models.Course.Assignment.Choice
             }
         }
         [JsonProperty("grading")]
-        public ChoiceAssignmentGrading Grading { get; set; } = new ChoiceAssignmentGrading();
+        public ChoiceAssignmentGrading? Grading { get; set; }
         [JsonProperty("$$hashKey")]
         public string HashKey { get; set; } = "";
         [JsonProperty("caseStatus")]

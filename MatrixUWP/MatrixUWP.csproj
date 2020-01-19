@@ -131,6 +131,7 @@
     <Compile Include="Controls\MyNavigationView.cs" />
     <Compile Include="Converters\EnumConverter.cs" />
     <Compile Include="Converters\IndexOffsetConverter.cs" />
+    <Compile Include="Converters\LanguageConverter.cs" />
     <Compile Include="Converters\NumberCalculator.cs" />
     <Compile Include="Converters\NotConverter.cs" />
     <Compile Include="Converters\NotVisibilityConverter.cs" />
@@ -182,6 +183,8 @@
     <Compile Include="ViewModels\CourseDetailsViewModel.cs" />
     <Compile Include="ViewModels\CourseViewModel.cs" />
     <Compile Include="ViewModels\ProfileViewModel.cs" />
+    <Compile Include="ViewModels\ProgrammingFileModel.cs" />
+    <Compile Include="ViewModels\ProgrammingSubmitViewModel.cs" />
     <Compile Include="Views\General\Course\CourseAssignments.xaml.cs">
       <DependentUpon>CourseAssignments.xaml</DependentUpon>
     </Compile>
@@ -190,6 +193,9 @@
     </Compile>
     <Compile Include="Views\General\Submit\ChoiceSubmit.xaml.cs">
       <DependentUpon>ChoiceSubmit.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\General\Submit\ProgrammingSubmit.xaml.cs">
+      <DependentUpon>ProgrammingSubmit.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Parameters\CommonParameters.cs" />
     <Compile Include="Utils\HttpJsonContent.cs" />
@@ -230,6 +236,7 @@
     </Compile>
     <Compile Include="Views\Parameters\ProfileParameters.cs" />
     <Compile Include="Views\Parameters\Submit\ChoiceSubmitParameters.cs" />
+    <Compile Include="Views\Parameters\Submit\ProgrammingSubmitParameters.cs" />
     <Compile Include="Views\Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
     </Compile>
@@ -347,6 +354,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\General\Submit\ChoiceSubmit.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\General\Submit\ProgrammingSubmit.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
