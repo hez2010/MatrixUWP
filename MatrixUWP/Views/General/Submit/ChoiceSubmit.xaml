@@ -14,14 +14,14 @@
     Background="{ThemeResource SystemControlAcrylicWindowMediumHighBrush}" Loaded="Page_Loaded">
 
     <Grid>
-        <TextBlock Margin="8" FontSize="22" Text="{x:Bind viewModel.Title, Mode=OneWay}"></TextBlock>
-        <Button Margin="0,8,8,0" CornerRadius="3" Content="提交" VerticalAlignment="Top" HorizontalAlignment="Right" Click="Submit_Click"></Button>
+        <TextBlock x:Name="TitleViewer" Margin="8" FontSize="22" Text="{x:Bind viewModel.Title, Mode=OneWay}"></TextBlock>
+        <Button x:Name="Submit" Margin="0,8,8,0" CornerRadius="3" Content="提交" VerticalAlignment="Top" HorizontalAlignment="Right" Click="Submit_Click"></Button>
         <Grid Margin="8,54,8,8">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
-            <ScrollViewer Margin="0,0,16,0" Grid.Column="0">
+            <ScrollViewer Margin="0,0,16,0" Grid.Column="0" x:Name="DescriptionViewer">
                 <controls1:MarkdownTextBlock
                                 LinkClicked="MarkdownTextBlock_LinkClicked"
                                 ImageClicked="MarkdownTextBlock_ImageClicked"
@@ -38,8 +38,8 @@
                 CursorBehavior="ChangeOnSplitterHover"
                 Width="16">
             </controls1:GridSplitter>
-            <ScrollViewer Margin="16,0,0,0" Grid.Column="1">
-                <controls:ItemsRepeater x:Name="QuestionContainer" ItemsSource="{x:Bind viewModel.Questions, Mode=OneWay}">
+            <ScrollViewer x:Name="QuestionContainer" Margin="16,0,0,0" Grid.Column="1">
+                <controls:ItemsRepeater ItemsSource="{x:Bind viewModel.Questions, Mode=OneWay}">
                     <controls:ItemsRepeater.ItemTemplate>
                         <DataTemplate x:DataType="choice:ChoiceAssignmentQuestion">
                             <StackPanel Margin="8,8,0,0">
@@ -104,17 +104,19 @@
                 </controls:ItemsRepeater>
             </ScrollViewer>
         </Grid>
-        <ProgressRing HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-50,0,0" Width="60" Height="60" IsActive="{x:Bind viewModel.Loading, Mode=OneWay}"></ProgressRing>
-        <ContentDialog
-            x:Name="LoadPreviousSubmissionDialog"
-            Title="是否加载上次提交内容？"
-            PrimaryButtonText="是"
-            SecondaryButtonText="否"
-            DefaultButton="Primary">
 
-            <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                <TextBlock Text="提示：加载后将覆盖当前答题状态"></TextBlock>
-            </StackPanel>
-        </ContentDialog>
+        <controls:TeachingTip x:Name="LoadPreviousSubmissionTip"
+                              Target="{x:Bind QuestionContainer}"
+                              Title="是否加载上一次的提交内容？"
+                              Subtitle="注意：加载后将覆盖当前答题状态"
+                              ActionButtonClick="LoadSubmission_Clicked"
+                              ActionButtonContent="是"
+                              CloseButtonContent="否">
+            <controls:TeachingTip.IconSource>
+                <controls:SymbolIconSource Symbol="Refresh" />
+            </controls:TeachingTip.IconSource>
+        </controls:TeachingTip>
+        <ProgressRing HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-50,0,0" Width="60" Height="60" IsActive="{x:Bind viewModel.Loading, Mode=OneWay}"></ProgressRing>
     </Grid>
+
 </Page>

@@ -7,7 +7,7 @@ namespace MatrixUWP.Utils
 {
     static class VisualTreeUtils
     {
-        public static T? FindChildOfType<T>(this DependencyObject root) where T : class
+        public static T? FindChildOfType<T>(this DependencyObject root) where T : UIElement
         {
             var queue = new Queue<DependencyObject>();
             queue.Enqueue(root);
@@ -18,6 +18,25 @@ namespace MatrixUWP.Utils
                 {
                     var child = VisualTreeHelper.GetChild(current, i);
                     if (child is T typedChild)
+                    {
+                        return typedChild;
+                    }
+                    queue.Enqueue(child);
+                }
+            }
+            return null;
+        }
+        public static T? FindChildOfName<T>(this DependencyObject root, string name) where T : UIElement
+        {
+            var queue = new Queue<DependencyObject>();
+            queue.Enqueue(root);
+            while (queue.Count > 0)
+            {
+                DependencyObject current = queue.Dequeue();
+                for (int i = 0; i < VisualTreeHelper.GetChildrenCount(current); i++)
+                {
+                    var child = VisualTreeHelper.GetChild(current, i);
+                    if (child is T typedChild && child is FrameworkElement fe && fe.Name == name)
                     {
                         return typedChild;
                     }

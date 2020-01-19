@@ -117,6 +117,7 @@ namespace MatrixUWP.Models.Course.Assignment
 
         [JsonProperty("config")]
         public JObject? Config { get; set; }
+        public object? DeserialzedConfig { get; set; }
 
         public bool Loading
         {

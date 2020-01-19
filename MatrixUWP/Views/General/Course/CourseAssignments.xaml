@@ -46,15 +46,13 @@
             </controls:MasterDetailsView.ItemTemplate>
             <controls:MasterDetailsView.DetailsHeaderTemplate>
                 <DataTemplate>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Margin="8" FontSize="22" Text="{Binding ElementName=AssignmentView, Path=SelectedItem.Title, Mode=OneWay}"></TextBlock>
-                    </StackPanel>
+                    <TextBlock x:Name="TitleViewer" Margin="8" FontSize="22" Text="{Binding ElementName=AssignmentView, Path=SelectedItem.Title, Mode=OneWay}"></TextBlock>
                 </DataTemplate>
             </controls:MasterDetailsView.DetailsHeaderTemplate>
             <controls:MasterDetailsView.DetailsTemplate>
                 <DataTemplate x:DataType="models:CourseAssignmentDetailsModel">
                     <Grid Margin="8">
-                        <ScrollViewer>
+                        <ScrollViewer x:Name="DescriptionViewer">
                             <controls:MarkdownTextBlock
                                 LinkClicked="MarkdownTextBlock_LinkClicked"
                                 ImageClicked="MarkdownTextBlock_ImageClicked"

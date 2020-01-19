@@ -137,7 +137,7 @@ namespace MatrixUWP.Views
                 // clear all states
                 navimenuNaviHistory.Clear();
                 NaviContent.BackStack.Clear();
-                CourseAssignments.LastState = (-1, -1);
+                CourseAssignments.LastCourseId = -1;
             }
         }
 

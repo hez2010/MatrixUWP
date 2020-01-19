@@ -37,27 +37,52 @@ namespace MatrixUWP.Views.General.Course
         {
             NullValueHandling = NullValueHandling.Ignore
         };
-        public static (int CourseId, int SelectedIndex) LastState = (-1, -1);
+        public static int LastCourseId = -1;
 
         public CourseAssignments()
         {
+            NavigationCacheMode = NavigationCacheMode.Required;
             InitializeComponent();
         }
 
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
             base.OnNavigatingFrom(e);
-            LastState = (parameters?.CourseId ?? -1, viewModel.Assignments?.FindIndex(i => i == AssignmentView.SelectedItem) ?? -1);
+            LastCourseId = parameters?.CourseId ?? -1;
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
             parameters = e.Parameter as CourseAssignmentsParameters;
+
+            // Conntected Animations
+            var animation = ConnectedAnimationService.GetForCurrentView();
+
+            var descriptionAnimation = animation.GetAnimation("DescriptionViewer");
+            if (descriptionAnimation != null)
+            {
+                var description = AssignmentView.FindChildOfName<ScrollViewer>("DescriptionViewer");
+                if (description != null) descriptionAnimation.TryStart(description);
+            }
+
+            var titleAnimation = animation.GetAnimation("TitleViewer");
+            if (titleAnimation != null)
+            {
+                var title = AssignmentView.FindChildOfName<TextBlock>("TitleViewer");
+                if (title != null) titleAnimation.TryStart(title);
+            }
         }
 
         private async void Page_Loaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
+            if (parameters is null)
+            {
+                viewModel.Assignments = null;
+                return;
+            }
+            if (LastCourseId == parameters.CourseId) return;
+            viewModel.Assignments = null;
             viewModel.Loading = true;
             await Dispatcher.YieldAsync();
 
@@ -70,15 +95,6 @@ namespace MatrixUWP.Views.General.Course
                     return;
                 }
                 viewModel.Assignments = response.Data;
-                if (LastState.CourseId == parameters?.CourseId &&
-                    LastState.SelectedIndex != -1 &&
-                    viewModel.Assignments != null &&
-                    LastState.SelectedIndex < viewModel.Assignments.Count)
-                {
-                    AssignmentView.SelectedItem = viewModel.Assignments[LastState.SelectedIndex];
-                    var child = AssignmentView.FindChildOfType<ListView>();
-                    child?.ScrollIntoView(AssignmentView.SelectedItem);
-                }
             }
             catch (Exception ex)
             {
@@ -134,17 +150,26 @@ namespace MatrixUWP.Views.General.Course
 
         private void ShowSubmitPage(object config, CourseAssignmentDetailsModel model)
         {
+            var animation = ConnectedAnimationService.GetForCurrentView();
+
             switch (config)
             {
                 case ProgrammingAssignmentConfig asgnConfig:
                     Debug.WriteLine(asgnConfig.SerializeJson());
                     break;
                 case ChoiceAssignmentConfig asgnConfig:
-                    parameters?.NavigateToPage(typeof(ChoiceSubmit),
-                        typeof(ChoiceSubmitParameters),
-                        new { asgnConfig.Questions, model.Title, model.Description, model.CourseId, AssignmentId = model.CourseAssignmentId },
-                        new EntranceNavigationTransitionInfo());
-                    break;
+                    {
+                        var description = AssignmentView.FindChildOfName<ScrollViewer>("DescriptionViewer");
+                        animation.PrepareToAnimate("DescriptionViewer", description);
+                        var title = AssignmentView.FindChildOfName<TextBlock>("TitleViewer");
+                        animation.PrepareToAnimate("TitleViewer", title);
+
+                        parameters?.NavigateToPage(typeof(ChoiceSubmit),
+                            typeof(ChoiceSubmitParameters),
+                            new { asgnConfig.Questions, model.Title, model.Description, model.CourseId, AssignmentId = model.CourseAssignmentId },
+                            new EntranceNavigationTransitionInfo());
+                        break;
+                    }
                 case ReportAssignmentConfig asgnConfig:
                     Debug.WriteLine(asgnConfig.SerializeJson());
                     break;
@@ -181,13 +206,14 @@ namespace MatrixUWP.Views.General.Course
                     };
                 }
 
-                var obj = model.Config.ToObject(model.ConfigType, jsonSerializer);
-                if (obj is null)
+                if (model.DeserialzedConfig is null)
+                    model.DeserialzedConfig = model.Config.ToObject(model.ConfigType, jsonSerializer);
+                if (model.DeserialzedConfig is null)
                 {
                     parameters?.ShowMessage("题目配置错误");
                     return;
                 }
-                ShowSubmitPage(obj, model);
+                ShowSubmitPage(model.DeserialzedConfig, model);
             }
             catch (Exception ex)
             {

@@ -4,16 +4,16 @@ using MatrixUWP.Models;
 using MatrixUWP.Models.Submission;
 using MatrixUWP.Models.Submission.Answer;
 using MatrixUWP.ViewModels;
+using MatrixUWP.Views.General.Course;
 using MatrixUWP.Views.Parameters.Submit;
 using Microsoft.Toolkit.Uwp.UI.Controls;
-using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
@@ -29,6 +29,7 @@ namespace MatrixUWP.Views.General.Submit
         private ChoiceSubmitParameters? parameters;
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            base.OnNavigatedTo(e);
             if (e.Parameter is ChoiceSubmitParameters p)
             {
                 parameters = p;
@@ -36,10 +37,24 @@ namespace MatrixUWP.Views.General.Submit
                 viewModel.Questions = p.Questions;
                 viewModel.Title = p.Title;
             }
+            var animation = ConnectedAnimationService.GetForCurrentView();
+            animation.GetAnimation("DescriptionViewer")?.TryStart(DescriptionViewer);
+            animation.GetAnimation("TitleViewer")?.TryStart(TitleViewer);
+        }
+
+        protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
+        {
+            base.OnNavigatingFrom(e);
+            if (e.SourcePageType == typeof(CourseAssignments))
+            {
+                var animation = ConnectedAnimationService.GetForCurrentView();
+                animation.PrepareToAnimate("DescriptionViewer", DescriptionViewer);
+                animation.PrepareToAnimate("TitleViewer", TitleViewer);
+            }
         }
         public ChoiceSubmit()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
         private async void MarkdownTextBlock_LinkClicked(object sender, LinkClickedEventArgs e)
@@ -84,23 +99,7 @@ namespace MatrixUWP.Views.General.Submit
                 }
                 var answers = submissionDetails.Data.Answers;
                 if (answers is null) return;
-
-                var load = await LoadPreviousSubmissionDialog.ShowAsync();
-                if (load != ContentDialogResult.Primary) return;
-
-                foreach (var i in viewModel.Questions.SelectMany(q => q.Choices, (_, c) => c))
-                {
-                    i.IsChecked = false;
-                }
-
-                foreach (var i in answers)
-                {
-                    var question = viewModel.Questions.FirstOrDefault(q => q.Id == i.QuestionId);
-                    if (question is null || question.Choices is null || i.ChoiceId is null) continue;
-                    foreach (var c in question.Choices
-                        .Where(x => i.ChoiceId.Contains(x.Id))) c.IsChecked = true;
-                }
-                parameters.ShowMessage("已加载上次提交内容");
+                LoadPreviousSubmissionTip.IsOpen = true;
             }
             catch (Exception ex)
             {
@@ -143,6 +142,60 @@ namespace MatrixUWP.Views.General.Submit
             {
                 viewModel.Loading = false;
             }
+        }
+
+        private async void LoadSubmission_Clicked(Microsoft.UI.Xaml.Controls.TeachingTip sender, object args)
+        {
+            LoadPreviousSubmissionTip.IsOpen = false;
+            if (parameters is null) return;
+            viewModel.Loading = true;
+            await Dispatcher.YieldAsync();
+            try
+            {
+                var response = await SubmissionModel.FetchCourseSubmissionListAsync(parameters.CourseId, parameters.AssignmentId);
+                if (response.Status != StatusCode.OK)
+                {
+                    parameters.ShowMessage(response.Message);
+                    return;
+                }
+                var latestSubmission = response.Data.OrderByDescending(i => i.SubmitAt).FirstOrDefault();
+                if (latestSubmission is null) return;
+                var submissionDetails =
+                    await SubmissionModel.FetchCourseSubmissionAsync<List<ChoiceAnswer>, object>(parameters.CourseId,
+                        parameters.AssignmentId,
+                        latestSubmission.SubmissionId);
+                if (submissionDetails.Status != StatusCode.OK)
+                {
+                    parameters.ShowMessage(response.Message);
+                    return;
+                }
+                var answers = submissionDetails.Data.Answers;
+                if (answers is null) return;
+
+                foreach (var i in viewModel.Questions.SelectMany(q => q.Choices, (_, c) => c))
+                {
+                    i.IsChecked = false;
+                }
+
+                foreach (var i in answers)
+                {
+                    var question = viewModel.Questions.FirstOrDefault(q => q.Id == i.QuestionId);
+                    if (question is null || question.Choices is null || i.ChoiceId is null) continue;
+                    foreach (var c in question.Choices
+                        .Where(x => i.ChoiceId.Contains(x.Id))) c.IsChecked = true;
+                }
+                parameters.ShowMessage("已加载上次提交内容");
+            }
+            catch (Exception ex)
+            {
+                Debug.Fail(ex.Message, ex.StackTrace);
+                parameters.ShowMessage(ex.Message);
+            }
+            finally
+            {
+                viewModel.Loading = false;
+            }
+
         }
     }
 }
