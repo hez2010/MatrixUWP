@@ -38,7 +38,7 @@
                             <TextBlock FontSize="12" Foreground="Gray" Text="{x:Bind EndTime}"></TextBlock>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock FontSize="12" Text="{x:Bind Type}"></TextBlock>
+                            <TextBlock FontSize="12" Text="{x:Bind TypeDisplayText}"></TextBlock>
                             <TextBlock FontSize="12" Margin="8,0,0,0" Text="{x:Bind GradeAtEndDescription}"></TextBlock>
                         </StackPanel>
                     </StackPanel>

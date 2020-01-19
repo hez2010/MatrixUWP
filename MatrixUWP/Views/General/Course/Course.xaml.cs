@@ -9,6 +9,7 @@ using MatrixUWP.Views.Parameters.Course;
 using System.Linq;
 using System.Diagnostics;
 using MatrixUWP.Models.Course;
+using Windows.UI.Xaml.Media.Animation;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -58,7 +59,11 @@ namespace MatrixUWP.Views.General.Course
         private void CoursesView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (!(e.AddedItems.First() is CourseInfoModel course)) return;
-            parameters?.NavigateToPage(typeof(CourseDetails), typeof(CourseDetailsParameters), new { course.CourseId });
+            parameters?.NavigateToPage(
+                typeof(CourseDetails),
+                typeof(CourseDetailsParameters),
+                new { course.CourseId },
+                new EntranceNavigationTransitionInfo());
         }
     }
 }

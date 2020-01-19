@@ -8,6 +8,7 @@ namespace MatrixUWP.ViewModels
 {
     class ChoiceSubmitViewModel : INotifyPropertyChanged
     {
+        public bool Loading { get; set; }
         public List<ChoiceAssignmentQuestion> Questions { get; set; } = new List<ChoiceAssignmentQuestion>();
         public string Description { get; set; } = "";
         public string Title { get; set; } = "";

@@ -153,7 +153,12 @@
     <Compile Include="Models\Course\Assignment\Programming\ProgrammingAssignmentConfig.cs" />
     <Compile Include="Models\Course\Assignment\Programming\ProgrammingStandard.cs" />
     <Compile Include="Models\Course\Assignment\Report\ReportAssignmentConfig.cs" />
+    <Compile Include="Models\Submission\SubmitAnswerModel.cs" />
+    <Compile Include="Models\Submission\Answer\ChoiceAnswer.cs" />
+    <Compile Include="Models\Submission\Course\CourseSubmissionInfoModel.cs" />
+    <Compile Include="Models\Submission\SubmissionDetailsModel.cs" />
     <Compile Include="Models\Submission\SubmissionModel.cs" />
+    <Compile Include="Models\Submission\SubmitPostModel.cs" />
     <Compile Include="Models\User\CaptchaDataModel.cs" />
     <Compile Include="Models\Config\Configuration.cs" />
     <Compile Include="Models\Course\Assignment\CourseAssignmentDetailsModel.cs" />

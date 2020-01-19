@@ -3,6 +3,7 @@
 using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using Windows.UI.Xaml.Media.Animation;
 
 namespace MatrixUWP.Views.Parameters
 {
@@ -12,9 +13,9 @@ namespace MatrixUWP.Views.Parameters
         public UserDataModel UserData { get; set; }
         public Action<string> ShowMessage { get; set; }
         /// <summary>
-        /// PageType, ParameterType, Parameter, Cache
+        /// PageType, ParameterType, Parameter, TransitionInfo?
         /// </summary>
-        public Action<Type, Type, object> NavigateToPage { get; set; }
+        public Action<Type, Type, object, NavigationTransitionInfo?> NavigateToPage { get; set; }
 
         public CommonParameters(CommonParameters param)
         {
@@ -25,7 +26,7 @@ namespace MatrixUWP.Views.Parameters
         }
 
         public CommonParameters(Action<UserDataModel> updateUserData, UserDataModel userData,
-            Action<string> showMessage, Action<Type, Type, object> navigateToPage)
+            Action<string> showMessage, Action<Type, Type, object, NavigationTransitionInfo?> navigateToPage)
         {
             UpdateUserData = updateUserData;
             UserData = userData;

@@ -37,7 +37,7 @@ namespace MatrixUWP.Models.Course.Assignment.Choice
         public string CaseStatus { get; set; } = "";
         [JsonProperty("choice_type")]
         public string ChoiceType { get; set; } = "";
-        public bool MultiChoice => ChoiceType == "multi";
+        public bool IsMultipleChoice => ChoiceType == "multi";
         [JsonProperty("description")]
         public string Description { get; set; } = "";
         [JsonProperty("explanation")]

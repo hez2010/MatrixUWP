@@ -8,6 +8,7 @@ using System;
 using System.Diagnostics;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
@@ -66,15 +67,7 @@ namespace MatrixUWP.Views.General.Course
         }
 
         private void Page_SizeChanged(object sender, SizeChangedEventArgs e) => AdjustElementsSize();
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            if (parameters is null) return;
-            parameters.NavigateToPage(typeof(CourseAssignments),
-                typeof(CourseAssignmentsParameters),
-                new { parameters.CourseId });
-        }
-
+        
         private async void MarkdownTextBlock_LinkClicked(object sender, Microsoft.Toolkit.Uwp.UI.Controls.LinkClickedEventArgs e)
         {
             await Windows.System.Launcher.LaunchUriAsync(new Uri(e.Link));
@@ -83,6 +76,14 @@ namespace MatrixUWP.Views.General.Course
         private async void MarkdownTextBlock_ImageClicked(object sender, Microsoft.Toolkit.Uwp.UI.Controls.LinkClickedEventArgs e)
         {
             await Windows.System.Launcher.LaunchUriAsync(new Uri(e.Link));
+        }
+
+        private void ViewAssignment_Click(object sender, RoutedEventArgs e)
+        {
+            parameters?.NavigateToPage(typeof(CourseAssignments),
+                typeof(CourseAssignmentsParameters),
+                new { parameters.CourseId },
+                new EntranceNavigationTransitionInfo());
         }
     }
 }

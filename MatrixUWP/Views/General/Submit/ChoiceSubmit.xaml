@@ -9,12 +9,14 @@
     xmlns:controls="using:Microsoft.UI.Xaml.Controls"
     xmlns:choice="using:MatrixUWP.Models.Course.Assignment.Choice"
     xmlns:controls1="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:controls2="using:MatrixUWP.Controls"
     mc:Ignorable="d"
-    Background="{ThemeResource SystemControlAcrylicWindowMediumHighBrush}">
+    Background="{ThemeResource SystemControlAcrylicWindowMediumHighBrush}" Loaded="Page_Loaded">
+
     <Grid>
         <TextBlock Margin="8" FontSize="22" Text="{x:Bind viewModel.Title, Mode=OneWay}"></TextBlock>
-        <Button Margin="0,8,16,0" CornerRadius="3" Content="提交" VerticalAlignment="Top" HorizontalAlignment="Right"></Button>
-        <Grid Margin="8,38">
+        <Button Margin="0,8,8,0" CornerRadius="3" Content="提交" VerticalAlignment="Top" HorizontalAlignment="Right" Click="Submit_Click"></Button>
+        <Grid Margin="8,54,8,8">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition />
@@ -40,7 +42,7 @@
                 <controls:ItemsRepeater x:Name="QuestionContainer" ItemsSource="{x:Bind viewModel.Questions, Mode=OneWay}">
                     <controls:ItemsRepeater.ItemTemplate>
                         <DataTemplate x:DataType="choice:ChoiceAssignmentQuestion">
-                            <StackPanel Margin="8">
+                            <StackPanel Margin="8,8,0,0">
                                 <controls1:WrapPanel Orientation="Horizontal" HorizontalAlignment="Left">
                                     <TextBlock Margin="0,0,0,0" Text="{x:Bind Id, Converter={StaticResource IndexOffsetConverter}}"></TextBlock>
                                     <TextBlock Margin="0,0,8,0" Text="."></TextBlock>
@@ -54,44 +56,46 @@
                                         <TextBlock Foreground="Gray" Text="{x:Bind Explanation}"></TextBlock>
                                     </StackPanel>
                                 </controls1:WrapPanel>
-                                <controls:ItemsRepeater ItemsSource="{x:Bind Choices}">
-                                    <controls:ItemsRepeater.ItemTemplate>
-                                        <DataTemplate x:DataType="choice:ChoiceAssignmentElement">
-                                            <RadioButton Visibility="{x:Bind Question.MultiChoice, Converter={StaticResource NotVisibilityConverter}}" IsChecked="{x:Bind IsChecked, Mode=TwoWay}">
-                                                <controls1:WrapPanel Orientation="Horizontal" VerticalAlignment="Bottom">
-                                                    <TextBlock Text="{x:Bind Id, Converter={StaticResource NumberLetterConverter}}"></TextBlock>
-                                                    <TextBlock Text="."></TextBlock>
-                                                    <controls1:MarkdownTextBlock Margin="8,0,0,0"
-                                                        LinkClicked="MarkdownTextBlock_LinkClicked"
-                                                        ImageClicked="MarkdownTextBlock_ImageClicked"
-                                                        Background="Transparent"
-                                                        UriPrefix="{x:Bind root:App.MatrixHttpClient.BaseUri.AbsoluteUri}"
-                                                        Text="{x:Bind Description}"></controls1:MarkdownTextBlock>
-                                                </controls1:WrapPanel>
-                                            </RadioButton>
-                                        </DataTemplate>
-                                    </controls:ItemsRepeater.ItemTemplate>
-                                </controls:ItemsRepeater>
-                                <controls:ItemsRepeater ItemsSource="{x:Bind Choices, Mode=OneWay}">
-                                    <controls:ItemsRepeater.ItemTemplate>
-                                        <DataTemplate x:DataType="choice:ChoiceAssignmentElement">
-                                            <CheckBox Visibility="{x:Bind Question.MultiChoice}" IsChecked="{x:Bind IsChecked, Mode=TwoWay}">
-                                                <controls1:WrapPanel Orientation="Horizontal" VerticalAlignment="Bottom">
-                                                    <TextBlock Text="{x:Bind Id, Converter={StaticResource NumberLetterConverter}}"></TextBlock>
-                                                    <TextBlock Text="."></TextBlock>
-                                                    <controls1:MarkdownTextBlock Margin="8,0,0,0"
-                                                        LinkClicked="MarkdownTextBlock_LinkClicked"
-                                                        ImageClicked="MarkdownTextBlock_ImageClicked"
-                                                        Background="Transparent"
-                                                        UriPrefix="{x:Bind root:App.MatrixHttpClient.BaseUri.AbsoluteUri}"
-                                                        Text="{x:Bind Description}"></controls1:MarkdownTextBlock>
-                                                </controls1:WrapPanel>
-                                            </CheckBox>
-                                        </DataTemplate>
-                                    </controls:ItemsRepeater.ItemTemplate>
-                                </controls:ItemsRepeater>
+                                <StackPanel>
+                                    <controls:ItemsRepeater x:Name="MultipleChoicePanel" x:Load="{x:Bind IsMultipleChoice}" Margin="20,0,0,0" ItemsSource="{x:Bind Choices}">
+                                        <controls:ItemsRepeater.ItemTemplate>
+                                            <DataTemplate x:DataType="choice:ChoiceAssignmentElement">
+                                                <CheckBox IsThreeState="False" IsChecked="{x:Bind IsChecked, Mode=TwoWay}">
+                                                    <controls1:WrapPanel Orientation="Horizontal" VerticalAlignment="Bottom">
+                                                        <TextBlock Text="{x:Bind Id, Converter={StaticResource NumberLetterConverter}}"></TextBlock>
+                                                        <TextBlock Text="."></TextBlock>
+                                                        <controls1:MarkdownTextBlock Margin="8,0,0,0"
+                                                            LinkClicked="MarkdownTextBlock_LinkClicked"
+                                                            ImageClicked="MarkdownTextBlock_ImageClicked"
+                                                            Background="Transparent"
+                                                            UriPrefix="{x:Bind root:App.MatrixHttpClient.BaseUri.AbsoluteUri}"
+                                                            Text="{x:Bind Description}"></controls1:MarkdownTextBlock>
+                                                    </controls1:WrapPanel>
+                                                </CheckBox>
+                                            </DataTemplate>
+                                        </controls:ItemsRepeater.ItemTemplate>
+                                    </controls:ItemsRepeater>
+                                    <controls:ItemsRepeater x:Name="SingleChoicePanel" x:Load="{x:Bind IsMultipleChoice, Converter={StaticResource NotConverter}}" Margin="20,0,0,0" ItemsSource="{x:Bind Choices}">
+                                        <controls:ItemsRepeater.ItemTemplate>
+                                            <DataTemplate x:DataType="choice:ChoiceAssignmentElement">
+                                                <RadioButton GroupName="{x:Bind Question.Id}" IsChecked="{x:Bind IsChecked, Mode=TwoWay}">
+                                                    <controls1:WrapPanel Orientation="Horizontal" VerticalAlignment="Bottom">
+                                                        <TextBlock Text="{x:Bind Id, Converter={StaticResource NumberLetterConverter}}"></TextBlock>
+                                                        <TextBlock Text="."></TextBlock>
+                                                        <controls1:MarkdownTextBlock Margin="8,0,0,0"
+                                                            LinkClicked="MarkdownTextBlock_LinkClicked"
+                                                            ImageClicked="MarkdownTextBlock_ImageClicked"
+                                                            Background="Transparent"
+                                                            UriPrefix="{x:Bind root:App.MatrixHttpClient.BaseUri.AbsoluteUri}"
+                                                            Text="{x:Bind Description}"></controls1:MarkdownTextBlock>
+                                                    </controls1:WrapPanel>
+                                                </RadioButton>
+                                            </DataTemplate>
+                                        </controls:ItemsRepeater.ItemTemplate>
+                                    </controls:ItemsRepeater>
+                                </StackPanel>
                                 <Grid>
-                                    <TextBlock Foreground="Gray" Text="{x:Bind StandardAnswerDisplayText}"></TextBlock>
+                                    <TextBlock Margin="20,0,0,0" Foreground="Gray" Text="{x:Bind StandardAnswerDisplayText}"></TextBlock>
                                     <Button CornerRadius="3" Content="重置" HorizontalAlignment="Right" Click="Reset_Click" Tag="{x:Bind ResetSelection, Mode=OneWay}"></Button>
                                 </Grid>
                             </StackPanel>
@@ -100,5 +104,17 @@
                 </controls:ItemsRepeater>
             </ScrollViewer>
         </Grid>
+        <ProgressRing HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-50,0,0" Width="60" Height="60" IsActive="{x:Bind viewModel.Loading, Mode=OneWay}"></ProgressRing>
+        <ContentDialog
+            x:Name="LoadPreviousSubmissionDialog"
+            Title="是否加载上次提交内容？"
+            PrimaryButtonText="是"
+            SecondaryButtonText="否"
+            DefaultButton="Primary">
+
+            <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                <TextBlock Text="提示：加载后将覆盖当前答题状态"></TextBlock>
+            </StackPanel>
+        </ContentDialog>
     </Grid>
 </Page>

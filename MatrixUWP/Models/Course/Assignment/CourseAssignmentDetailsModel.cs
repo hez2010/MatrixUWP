@@ -16,6 +16,17 @@ namespace MatrixUWP.Models.Course.Assignment
 
         [JsonProperty("type")]
         public string Type { get; set; } = "";
+        public string TypeDisplayText => ProblemTypeId switch
+        {
+            0 => "编程题",
+            1 => "选择题",
+            2 => "报告题",
+            3 => "文件上传题",
+            4 => "程序输出题",
+            5 => "程序填空题",
+            6 => "简答题",
+            _ => Type
+        };
 
         [JsonProperty("course_id")]
         public int CourseId { get; set; }

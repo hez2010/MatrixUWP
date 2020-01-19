@@ -2,6 +2,7 @@
 ﻿using MatrixUWP.Extensions;
 using MatrixUWP.Models.User;
 using MatrixUWP.ViewModels;
+using MatrixUWP.Views.General.Course;
 using MatrixUWP.Views.Parameters;
 using MatrixUWP.Views.Parameters.Course;
 using System;
@@ -119,12 +120,12 @@ namespace MatrixUWP.Views
             lastSelectedItemIndex = index;
         }
 
-        private void NavigateToPage(Type pageType, Type parameterType, object parameter)
+        private void NavigateToPage(Type pageType, Type parameterType, object parameter, NavigationTransitionInfo? transitionInfo)
         {
             var param = parameterType.GetConstructor(new[] { typeof(CommonParameters) })
                 .Invoke(new[] { new CommonParameters(UpdateUserData, viewModel.UserData, ShowMessage, NavigateToPage) });
             parameter.CopyTo(param);
-            NaviContent.Navigate(pageType, param, new DrillInNavigationTransitionInfo());
+            NaviContent.Navigate(pageType, param, transitionInfo ?? new DrillInNavigationTransitionInfo());
         }
 
         private void UpdateUserData(UserDataModel userData)
@@ -132,8 +133,11 @@ namespace MatrixUWP.Views
             userData.CopyTo(viewModel.UserData);
             if (!(userData?.SignedIn ?? false))
             {
-                navimenuNaviHistory.Clear();
                 NavigateToPage(HomeNaviPage, false, NaviMenu.PaneDisplayMode);
+                // clear all states
+                navimenuNaviHistory.Clear();
+                NaviContent.BackStack.Clear();
+                CourseAssignments.LastState = (-1, -1);
             }
         }
 

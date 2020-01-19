@@ -19,6 +19,7 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
@@ -36,7 +37,7 @@ namespace MatrixUWP.Views.General.Course
         {
             NullValueHandling = NullValueHandling.Ignore
         };
-        private static (int CourseId, int SelectedIndex) lastState = (-1, -1);
+        public static (int CourseId, int SelectedIndex) LastState = (-1, -1);
 
         public CourseAssignments()
         {
@@ -46,7 +47,7 @@ namespace MatrixUWP.Views.General.Course
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
             base.OnNavigatingFrom(e);
-            lastState = (parameters?.CourseId ?? -1, viewModel.Assignments?.FindIndex(i => i == AssignmentView.SelectedItem) ?? -1);
+            LastState = (parameters?.CourseId ?? -1, viewModel.Assignments?.FindIndex(i => i == AssignmentView.SelectedItem) ?? -1);
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -69,12 +70,12 @@ namespace MatrixUWP.Views.General.Course
                     return;
                 }
                 viewModel.Assignments = response.Data;
-                if (lastState.CourseId == parameters?.CourseId &&
-                    lastState.SelectedIndex != -1 &&
+                if (LastState.CourseId == parameters?.CourseId &&
+                    LastState.SelectedIndex != -1 &&
                     viewModel.Assignments != null &&
-                    lastState.SelectedIndex < viewModel.Assignments.Count)
+                    LastState.SelectedIndex < viewModel.Assignments.Count)
                 {
-                    AssignmentView.SelectedItem = viewModel.Assignments[lastState.SelectedIndex];
+                    AssignmentView.SelectedItem = viewModel.Assignments[LastState.SelectedIndex];
                     var child = AssignmentView.FindChildOfType<ListView>();
                     child?.ScrollIntoView(AssignmentView.SelectedItem);
                 }
@@ -139,10 +140,10 @@ namespace MatrixUWP.Views.General.Course
                     Debug.WriteLine(asgnConfig.SerializeJson());
                     break;
                 case ChoiceAssignmentConfig asgnConfig:
-                    parameters?.NavigateToPage(
-                        typeof(ChoiceSubmit),
+                    parameters?.NavigateToPage(typeof(ChoiceSubmit),
                         typeof(ChoiceSubmitParameters),
-                        new { asgnConfig.Questions, model.Title, model.Description });
+                        new { asgnConfig.Questions, model.Title, model.Description, model.CourseId, AssignmentId = model.CourseAssignmentId },
+                        new EntranceNavigationTransitionInfo());
                     break;
                 case ReportAssignmentConfig asgnConfig:
                     Debug.WriteLine(asgnConfig.SerializeJson());
