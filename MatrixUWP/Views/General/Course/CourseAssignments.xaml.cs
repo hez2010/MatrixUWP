@@ -49,12 +49,20 @@ namespace MatrixUWP.Views.General.Course
         {
             base.OnNavigatingFrom(e);
             LastCourseId = parameters?.CourseId ?? -1;
+
+            if (e.SourcePageType == typeof(CourseDetails))
+            {
+                var animation = ConnectedAnimationService.GetForCurrentView();
+                animation.PrepareToAnimate("CourseTitleViewer", TitleViewer);
+            }
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
             parameters = e.Parameter as CourseAssignmentsParameters;
+            if (parameters != null)
+                viewModel.Title = parameters.Title;
 
             // Conntected Animations
             var animation = ConnectedAnimationService.GetForCurrentView();
@@ -72,6 +80,8 @@ namespace MatrixUWP.Views.General.Course
                 var title = AssignmentView.FindChildOfName<TextBlock>("TitleViewer");
                 if (title != null) titleAnimation.TryStart(title);
             }
+
+            animation.GetAnimation("CourseTitleViewer")?.TryStart(TitleViewer);
         }
 
         private async void Page_Loaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)

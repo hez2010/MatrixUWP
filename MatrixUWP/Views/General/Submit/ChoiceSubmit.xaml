@@ -13,10 +13,10 @@
     mc:Ignorable="d"
     Background="{ThemeResource SystemControlAcrylicWindowMediumHighBrush}" Loaded="Page_Loaded">
 
-    <Grid>
+    <Grid Margin="8,0">
         <TextBlock x:Name="TitleViewer" Margin="8" FontSize="22" Text="{x:Bind viewModel.Title, Mode=OneWay}"></TextBlock>
         <Button x:Name="Submit" Margin="0,8,8,0" CornerRadius="3" Content="提交" VerticalAlignment="Top" HorizontalAlignment="Right" Click="Submit_Click"></Button>
-        <Grid Margin="8,54,8,8">
+        <Grid Margin="8,54,8,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition />

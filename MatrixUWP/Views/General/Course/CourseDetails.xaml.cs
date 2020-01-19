@@ -27,10 +27,24 @@ namespace MatrixUWP.Views.General.Course
             InitializeComponent();
         }
 
+        protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
+        {
+            base.OnNavigatingFrom(e);
+
+            if (e.SourcePageType == typeof(CourseAssignments))
+            {
+                var animation = ConnectedAnimationService.GetForCurrentView();
+                animation.PrepareToAnimate("CourseTitleViewer", TitleViewer);
+            }
+        }
+
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
             parameters = e.Parameter as CourseDetailsParameters;
+
+            var animation = ConnectedAnimationService.GetForCurrentView();
+            animation.GetAnimation("CourseTitleViewer")?.TryStart(TitleViewer);
         }
 
         private async void Page_Loaded(object sender, RoutedEventArgs e)
@@ -82,7 +96,7 @@ namespace MatrixUWP.Views.General.Course
         {
             parameters?.NavigateToPage(typeof(CourseAssignments),
                 typeof(CourseAssignmentsParameters),
-                new { parameters.CourseId },
+                new { parameters.CourseId, Title = viewModel.Course?.CourseName },
                 new EntranceNavigationTransitionInfo());
         }
     }

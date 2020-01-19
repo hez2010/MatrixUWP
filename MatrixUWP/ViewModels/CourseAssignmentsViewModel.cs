@@ -10,7 +10,7 @@ namespace MatrixUWP.ViewModels
     {
         private bool loading;
         private List<CourseAssignmentDetailsModel>? assignments;
-
+        public string? Title { get; set; }
         public List<CourseAssignmentDetailsModel>? Assignments
         {
             get => assignments;

@@ -14,7 +14,7 @@
         <StackPanel x:Name="Container" Margin="24">
             <RelativePanel>
                 <StackPanel Orientation="Horizontal" Margin="8">
-                    <TextBlock FontSize="24" Text="{x:Bind viewModel.Course.CourseName, Mode=OneWay}"></TextBlock>
+                    <TextBlock x:Name="TitleViewer" FontSize="24" Text="{x:Bind viewModel.Course.CourseName, Mode=OneWay}"></TextBlock>
                     <StackPanel Margin="16,0" Orientation="Horizontal">
                         <Ellipse VerticalAlignment="Bottom" Margin="0,2" Height="12" Width="12">
                             <Ellipse.Fill>
