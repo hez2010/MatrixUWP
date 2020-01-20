@@ -172,13 +172,19 @@ namespace MatrixUWP.Views.General.Course
                     {
                         void SetContent(int index, string content)
                         {
-                            if (asgnConfig.SubmitContents is null || index >= asgnConfig.SubmitContents.Count) return;
+                            if (asgnConfig.SubmitContents is null || index >= asgnConfig.SubmitContents.Count || index < 0) return;
                             asgnConfig.SubmitContents[index] = content;
                         }
 
-                        string? GetContent(int index)
+                        string GetContent(int index, bool isSupportFile)
                         {
-                            if (asgnConfig.SubmitContents is null || index >= asgnConfig.SubmitContents.Count) return null;
+                            if (index < 0) return "";
+                            if (isSupportFile)
+                            {
+                                if (asgnConfig.SupportFileContents is null || index >= asgnConfig.SupportFileContents.Count) return "";
+                                return asgnConfig.SupportFileContents[index];
+                            }
+                            if (asgnConfig.SubmitContents is null || index >= asgnConfig.SubmitContents.Count) return "";
                             return asgnConfig.SubmitContents[index];
                         }
 
@@ -194,7 +200,7 @@ namespace MatrixUWP.Views.General.Course
                                 model.Description,
                                 model.CourseId,
                                 AssignmentId = model.CourseAssignmentId,
-                                GetContent = (Func<int, string?>)GetContent,
+                                GetContent = (Func<int, bool, string>)GetContent,
                                 SetContent = (Action<int, string>)SetContent
                             },
                             new EntranceNavigationTransitionInfo());

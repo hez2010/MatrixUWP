@@ -8,9 +8,12 @@ namespace MatrixUWP.ViewModels
 {
     public class ProgrammingFileModel : INotifyPropertyChanged
     {
-        public Func<int, string?>? GetContent;
+        /// <summary>
+        /// Index, IsSupportFile, Result
+        /// </summary>
+        public Func<int, bool, string>? GetContent;
         public Action<int, string>? SetContent;
-        public int Index;
+        public int Index { get; set; }
         public bool SuppressSetDispatcher;
         private IEditorConstructionOptions? editorOptions;
 
@@ -26,7 +29,7 @@ namespace MatrixUWP.ViewModels
         public string FileName { get; set; } = "";
         public string? Content
         {
-            get => GetContent?.Invoke(Index);
+            get => GetContent?.Invoke(Index, !NeedsSubmit);
             set
             {
                 if (!SuppressSetDispatcher)

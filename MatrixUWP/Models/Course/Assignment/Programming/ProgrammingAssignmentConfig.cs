@@ -8,6 +8,7 @@ namespace MatrixUWP.Models.Course.Assignment.Programming
     class ProgrammingAssignmentConfig
     {
         private List<string>? submission;
+        private ProgrammingStandard? standard;
 
         [JsonProperty("limits")]
         public ProgrammingAssignmentLimits? Limits { get; set; }
@@ -19,7 +20,24 @@ namespace MatrixUWP.Models.Course.Assignment.Programming
         public List<string>? Language { get; set; }
 
         [JsonProperty("standard")]
-        public ProgrammingStandard? Standard { get; set; }
+        public ProgrammingStandard? Standard
+        {
+            get => standard;
+            set
+            {
+                standard = value;
+                if (standard != null)
+                {
+                    SupportFileContents?.Clear();
+                    SupportFileContents = new List<string>();
+                    if (standard.Support is null) return;
+                    for (var i = 0; i < standard.Support.Count; i++)
+                    {
+                        SupportFileContents.Add(standard.Support[i]);
+                    }
+                }
+            }
+        }
         [JsonProperty("compilers")]
         public List<string>? Compilers { get; set; }
         [JsonProperty("submission")]
@@ -30,7 +48,10 @@ namespace MatrixUWP.Models.Course.Assignment.Programming
             {
                 submission = value;
                 if (submission != null)
+                {
+                    SubmitContents?.Clear();
                     SubmitContents = Enumerable.Repeat("", submission.Count).ToList();
+                }
             }
         }
         [JsonProperty("google tests info")]
@@ -42,5 +63,6 @@ namespace MatrixUWP.Models.Course.Assignment.Programming
         [JsonProperty("standard_language")]
         public string StandardLanguage { get; set; } = "";
         public List<string>? SubmitContents { get; private set; }
+        public List<string>? SupportFileContents { get; private set; }
     }
 }

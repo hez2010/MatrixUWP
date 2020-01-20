@@ -48,7 +48,7 @@
                 CursorBehavior="ChangeOnSplitterHover"
                 Width="16">
             </controls1:GridSplitter>
-            <controls1:TabView x:Name="EditorContainer" Margin="16,0,0,0" Grid.Column="1" ItemsSource="{x:Bind viewModel.Files, Mode=OneWay}">
+            <controls1:TabView x:Name="EditorContainer" SelectionMode="Single" SelectionChanged="EditorContainer_SelectionChanged" Margin="16,0,0,0" Grid.Column="1" ItemsSource="{x:Bind viewModel.Files, Mode=OneWay}">
                 <controls1:TabView.ItemHeaderTemplate>
                     <DataTemplate x:DataType="viewmodels:ProgrammingFileModel">
                         <TextBlock Text="{x:Bind FileName}"></TextBlock>
@@ -57,10 +57,11 @@
                 <controls1:TabView.ItemTemplate>
                     <DataTemplate x:DataType="viewmodels:ProgrammingFileModel">
                         <monaco:CodeEditor
+                            x:Name="MainCodeEditor"
                             RequestedTheme="{x:Bind root:App.AppConfiguration.AppTheme, Converter={StaticResource EnumConverter},Mode=OneWay}" 
                             Text="{x:Bind Content, Mode=TwoWay}"
                             CodeLanguage="{Binding ElementName=LanguageBox, Path=SelectedItem, Mode=OneWay, Converter={StaticResource LanguageConverter}}"
-                            Options="{x:Bind EditorOptions, Mode=OneWay}">
+                            Options="{x:Bind EditorOptions, Mode=OneWay}" Loaded="MainCodeEditor_Loaded">
 
                         </monaco:CodeEditor>
                     </DataTemplate>
