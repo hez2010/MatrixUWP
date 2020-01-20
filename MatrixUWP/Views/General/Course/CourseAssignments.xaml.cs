@@ -16,6 +16,7 @@ using MatrixUWP.Views.Parameters.Submit;
 using Microsoft.Toolkit.Uwp.UI.Controls;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Windows.UI.Xaml.Controls;
@@ -186,6 +187,17 @@ namespace MatrixUWP.Views.General.Course
                             }
                             if (asgnConfig.SubmitContents is null || index >= asgnConfig.SubmitContents.Count) return "";
                             return asgnConfig.SubmitContents[index];
+                        }
+                        if (asgnConfig.SupportFileContents is null)
+                        {
+                            asgnConfig.SupportFileContents = new List<string>();
+                            if (asgnConfig.Standard?.Support != null)
+                            {
+                                foreach (var i in asgnConfig.Standard.Support)
+                                {
+                                    asgnConfig.SupportFileContents.Add(model.Files.FirstOrDefault(f => f.Name == i)?.Code ?? "");
+                                }
+                            }
                         }
 
                         parameters?.NavigateToPage(typeof(ProgrammingSubmit),

@@ -154,6 +154,7 @@
     <Compile Include="Models\Course\Assignment\Programming\ProgrammingAssignmentConfig.cs" />
     <Compile Include="Models\Course\Assignment\Programming\ProgrammingStandard.cs" />
     <Compile Include="Models\Course\Assignment\Report\ReportAssignmentConfig.cs" />
+    <Compile Include="Models\Submission\Programming\ProgrammingAnswer.cs" />
     <Compile Include="Models\Submission\SubmitAnswerModel.cs" />
     <Compile Include="Models\Submission\Answer\ChoiceAnswer.cs" />
     <Compile Include="Models\Submission\Course\CourseSubmissionInfoModel.cs" />

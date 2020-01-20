@@ -1,5 +1,9 @@
 ﻿#nullable enable
 using MatrixUWP.Converters;
+using MatrixUWP.Extensions;
+using MatrixUWP.Models;
+using MatrixUWP.Models.Submission;
+using MatrixUWP.Models.Submission.Programming;
 using MatrixUWP.Utils;
 using MatrixUWP.ViewModels;
 using MatrixUWP.Views.General.Course;
@@ -111,19 +115,126 @@ namespace MatrixUWP.Views.General.Submit
             await Windows.System.Launcher.LaunchUriAsync(new Uri(e.Link));
         }
 
-        private void LoadSubmission_Clicked(Microsoft.UI.Xaml.Controls.TeachingTip sender, object args)
+        private async void LoadSubmission_Clicked(Microsoft.UI.Xaml.Controls.TeachingTip sender, object args)
         {
+            LoadPreviousSubmissionTip.IsOpen = false;
+            if (parameters is null) return;
+            viewModel.Loading = true;
+            await Dispatcher.YieldAsync();
+            try
+            {
+                var response = await SubmissionModel.FetchCourseSubmissionListAsync(parameters.CourseId, parameters.AssignmentId);
+                if (response.Status != StatusCode.OK)
+                {
+                    parameters.ShowMessage(response.Message);
+                    return;
+                }
+                var latestSubmission = response.Data.OrderByDescending(i => i.SubmitAt).FirstOrDefault();
+                if (latestSubmission is null) return;
+                var submissionDetails =
+                    await SubmissionModel.FetchCourseSubmissionAsync<List<ProgrammingAnswer>, object>(parameters.CourseId,
+                        parameters.AssignmentId,
+                        latestSubmission.SubmissionId);
+                if (submissionDetails.Status != StatusCode.OK)
+                {
+                    parameters.ShowMessage(response.Message);
+                    return;
+                }
+                var answers = submissionDetails.Data.Answers;
+                if (answers is null || viewModel.Files is null) return;
+
+                foreach (var i in viewModel.Files)
+                {
+                    if (i.NeedsSubmit)
+                        i.Content = answers.FirstOrDefault(a => a.Name == i.FileName)?.Code ?? "";
+                }
+
+                parameters.ShowMessage("已加载上次提交内容");
+            }
+            catch (Exception ex)
+            {
+                Debug.Fail(ex.Message, ex.StackTrace);
+                parameters.ShowMessage(ex.Message);
+            }
+            finally
+            {
+                viewModel.Loading = false;
+            }
 
         }
 
-        private void Submit_Click(object sender, RoutedEventArgs e)
+        private async void Submit_Click(object sender, RoutedEventArgs e)
         {
+            if (parameters is null) return;
+            if (viewModel.Files is null) return;
 
+            viewModel.Loading = true;
+            await Dispatcher.YieldAsync();
+
+            var content = new SubmitPostModel<List<ProgrammingAnswer>>();
+            content.Detail.Answers = new List<ProgrammingAnswer>();
+            foreach (var i in viewModel.Files.Where(i => i.NeedsSubmit))
+            {
+                content.Detail.Answers.Add(new ProgrammingAnswer
+                {
+                    Name = i.FileName,
+                    Code = i.Content
+                });
+            }
+
+            try
+            {
+                var response = await SubmissionModel.SubmitForCourseAssignment(parameters.CourseId, parameters.AssignmentId, content);
+                parameters.ShowMessage(response.Message);
+            }
+            catch (Exception ex)
+            {
+                Debug.Fail(ex.Message, ex.StackTrace);
+                parameters.ShowMessage(ex.Message);
+            }
+            finally
+            {
+                viewModel.Loading = false;
+            }
         }
 
-        private void Page_Loaded(object sender, RoutedEventArgs e)
+        private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
-
+            if (parameters is null) return;
+            viewModel.Loading = true;
+            await Dispatcher.YieldAsync();
+            try
+            {
+                var response = await SubmissionModel.FetchCourseSubmissionListAsync(parameters.CourseId, parameters.AssignmentId);
+                if (response.Status != StatusCode.OK)
+                {
+                    parameters.ShowMessage(response.Message);
+                    return;
+                }
+                var latestSubmission = response.Data.OrderByDescending(i => i.SubmitAt).FirstOrDefault();
+                if (latestSubmission is null) return;
+                var submissionDetails =
+                    await SubmissionModel.FetchCourseSubmissionAsync<List<ProgrammingAnswer>, object>(parameters.CourseId,
+                        parameters.AssignmentId,
+                        latestSubmission.SubmissionId);
+                if (submissionDetails.Status != StatusCode.OK)
+                {
+                    parameters.ShowMessage(response.Message);
+                    return;
+                }
+                var answers = submissionDetails.Data.Answers;
+                if (answers is null) return;
+                LoadPreviousSubmissionTip.IsOpen = true;
+            }
+            catch (Exception ex)
+            {
+                Debug.Fail(ex.Message, ex.StackTrace);
+                parameters.ShowMessage(ex.Message);
+            }
+            finally
+            {
+                viewModel.Loading = false;
+            }
         }
 
         private void EditorContainer_SelectionChanged(object sender, SelectionChangedEventArgs e)
