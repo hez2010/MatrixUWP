@@ -86,7 +86,7 @@ namespace MatrixUWP.Models.User
                 {
                     try
                     {
-                        bitmap.UriSource = new Uri(MatrixJsonHttpRequestBuilder.BaseUri, $"/api/users/profile/avatar?username={UserName}");
+                        bitmap.UriSource = new Uri(AppModel.MatrixHttpClient.BaseUri, $"/api/users/profile/avatar?username={UserName}");
                     }
                     catch
                     {

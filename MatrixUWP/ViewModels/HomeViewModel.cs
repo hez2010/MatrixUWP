@@ -1,4 +1,5 @@
 #nullable enable
+using MatrixUWP.Models;
 using MatrixUWP.Utils;
 using System;
 using System.ComponentModel;
@@ -70,7 +71,7 @@ namespace MatrixUWP.ViewModels
                 {
                     try
                     {
-                        bitmap.UriSource = new Uri(MatrixJsonHttpRequestBuilder.BaseUri, $"/api/users/profile/avatar?username={userName}");
+                        bitmap.UriSource = new Uri(AppModel.MatrixHttpClient.BaseUri, $"/api/users/profile/avatar?username={userName}");
                     }
                     catch
                     {
