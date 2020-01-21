@@ -52,7 +52,6 @@ namespace MatrixUWP.Views.General.Submit
                     {
                         viewModel.Files.Add(new ProgrammingFileModel
                         {
-                            SuppressSetDispatcher = true,
                             FileName = i,
                             EditorOptions = new IEditorConstructionOptions
                             {
@@ -71,7 +70,6 @@ namespace MatrixUWP.Views.General.Submit
                     {
                         viewModel.Files.Add(new ProgrammingFileModel
                         {
-                            SuppressSetDispatcher = true,
                             FileName = i,
                             EditorOptions = new IEditorConstructionOptions
                             {

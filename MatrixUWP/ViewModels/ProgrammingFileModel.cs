@@ -16,7 +16,7 @@ namespace MatrixUWP.ViewModels
         /// FileName, Content
         /// </summary>
         public Action<string, string>? SetContent;
-        public bool SuppressSetDispatcher;
+        public bool SuppressSetDispatcher = false;
         private IEditorConstructionOptions? editorOptions;
 
         public IEditorConstructionOptions? EditorOptions
