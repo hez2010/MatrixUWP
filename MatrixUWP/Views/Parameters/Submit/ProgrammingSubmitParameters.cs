@@ -1,5 +1,4 @@
 ﻿#nullable enable
-using MatrixUWP.ViewModels;
 using System;
 using System.Collections.Generic;
 
@@ -18,8 +17,7 @@ namespace MatrixUWP.Views.Parameters.Submit
         public List<string>? Submissions { get; set; }
         public List<string>? Supports { get; set; }
         public List<string>? Languages { get; set; }
-        public List<string>? SubmitContents { get; set; }
-        public Func<int, bool, string>? GetContent { get; set; }
-        public Action<int, string>? SetContent { get; set; }
+        public Func<string, bool, string>? GetContent { get; set; }
+        public Action<string, string>? SetContent { get; set; }
     }
 }

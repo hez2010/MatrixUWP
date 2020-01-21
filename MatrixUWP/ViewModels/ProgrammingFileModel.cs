@@ -9,11 +9,13 @@ namespace MatrixUWP.ViewModels
     public class ProgrammingFileModel : INotifyPropertyChanged
     {
         /// <summary>
-        /// Index, IsSupportFile, Result
+        /// FileName, IsSupportFile, Result
         /// </summary>
-        public Func<int, bool, string>? GetContent;
-        public Action<int, string>? SetContent;
-        public int Index { get; set; }
+        public Func<string, bool, string>? GetContent;
+        /// <summary>
+        /// FileName, Content
+        /// </summary>
+        public Action<string, string>? SetContent;
         public bool SuppressSetDispatcher;
         private IEditorConstructionOptions? editorOptions;
 
@@ -29,19 +31,19 @@ namespace MatrixUWP.ViewModels
         public string FileName { get; set; } = "";
         public string? Content
         {
-            get => GetContent?.Invoke(Index, !NeedsSubmit);
+            get => GetContent?.Invoke(FileName, !IsSupportFile);
             set
             {
                 if (!SuppressSetDispatcher)
                 {
                     if (!(EditorOptions?.ReadOnly ?? false))
-                        SetContent?.Invoke(Index, value ?? "");
+                        SetContent?.Invoke(FileName, value ?? "");
                 }
                 else SuppressSetDispatcher = false;
                 OnPropertyChanged();
             }
         }
-        public bool NeedsSubmit { get; set; }
+        public bool IsSupportFile { get; set; }
 
         public event PropertyChangedEventHandler? PropertyChanged;
         protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)

@@ -7,8 +7,6 @@ namespace MatrixUWP.Models.Course.Assignment.Programming
 {
     class ProgrammingAssignmentConfig
     {
-        private List<string>? submission;
-
         [JsonProperty("limits")]
         public ProgrammingAssignmentLimits? Limits { get; set; }
 
@@ -23,19 +21,7 @@ namespace MatrixUWP.Models.Course.Assignment.Programming
         [JsonProperty("compilers")]
         public List<string>? Compilers { get; set; }
         [JsonProperty("submission")]
-        public List<string>? Submission
-        {
-            get => submission;
-            set
-            {
-                submission = value;
-                if (submission != null)
-                {
-                    SubmitContents?.Clear();
-                    SubmitContents = Enumerable.Repeat("", submission.Count).ToList();
-                }
-            }
-        }
+        public List<string>? Submission { get; set; }
         [JsonProperty("google tests info")]
         public Dictionary<string, string>? GoogleTestsInfo { get; set; }
 
@@ -44,7 +30,7 @@ namespace MatrixUWP.Models.Course.Assignment.Programming
 
         [JsonProperty("standard_language")]
         public string StandardLanguage { get; set; } = "";
-        public List<string>? SubmitContents { get; private set; }
-        public List<string>? SupportFileContents { get; set; }
+        public Dictionary<string, string> SubmitContents { get; private set; } = new Dictionary<string, string>();
+        public Dictionary<string, string> SupportContents { get; private set; } = new Dictionary<string, string>();
     }
 }

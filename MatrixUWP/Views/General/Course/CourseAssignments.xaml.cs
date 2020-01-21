@@ -171,32 +171,25 @@ namespace MatrixUWP.Views.General.Course
             {
                 case ProgrammingAssignmentConfig asgnConfig:
                     {
-                        void SetContent(int index, string content)
+                        void SetContent(string fileName, string content)
                         {
-                            if (asgnConfig.SubmitContents is null || index >= asgnConfig.SubmitContents.Count || index < 0) return;
-                            asgnConfig.SubmitContents[index] = content;
+                            asgnConfig.SubmitContents[fileName] = content;
                         }
 
-                        string GetContent(int index, bool isSupportFile)
+                        string GetContent(string fileName, bool isSupportFile)
                         {
-                            if (index < 0) return "";
-                            if (isSupportFile)
+                            return isSupportFile switch
                             {
-                                if (asgnConfig.SupportFileContents is null || index >= asgnConfig.SupportFileContents.Count) return "";
-                                return asgnConfig.SupportFileContents[index];
-                            }
-                            if (asgnConfig.SubmitContents is null || index >= asgnConfig.SubmitContents.Count) return "";
-                            return asgnConfig.SubmitContents[index];
+                                true => (asgnConfig.SupportContents?.ContainsKey(fileName) ?? false) ? asgnConfig.SupportContents[fileName] : "",
+                                false => asgnConfig.SubmitContents.ContainsKey(fileName) ? asgnConfig.SubmitContents[fileName] : ""
+                            };
                         }
-                        if (asgnConfig.SupportFileContents is null)
+
+                        if (asgnConfig.Standard?.Support != null)
                         {
-                            asgnConfig.SupportFileContents = new List<string>();
-                            if (asgnConfig.Standard?.Support != null)
+                            foreach (var i in asgnConfig.Standard.Support)
                             {
-                                foreach (var i in asgnConfig.Standard.Support)
-                                {
-                                    asgnConfig.SupportFileContents.Add(model.Files.FirstOrDefault(f => f.Name == i)?.Code ?? "");
-                                }
+                                asgnConfig.SupportContents[i] = model.Files.FirstOrDefault(f => f.Name == i)?.Code ?? "";
                             }
                         }
 
@@ -207,13 +200,12 @@ namespace MatrixUWP.Views.General.Course
                                 Submissions = asgnConfig.Submission,
                                 Supports = asgnConfig.Standard?.Support,
                                 Languages = asgnConfig.Language,
-                                asgnConfig.SubmitContents,
                                 model.Title,
                                 model.Description,
                                 model.CourseId,
                                 AssignmentId = model.CourseAssignmentId,
-                                GetContent = (Func<int, bool, string>)GetContent,
-                                SetContent = (Action<int, string>)SetContent
+                                GetContent = (Func<string, bool, string>)GetContent,
+                                SetContent = (Action<string, string>)SetContent
                             },
                             new EntranceNavigationTransitionInfo());
                         break;

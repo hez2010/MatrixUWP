@@ -46,22 +46,20 @@ namespace MatrixUWP.Views.General.Submit
                 viewModel.Languages = p.Languages;
                 viewModel.Files = new List<ProgrammingFileModel>();
                 var languageConverter = new LanguageConverter();
-                if (p.Submissions != null && p.SubmitContents != null && p.Submissions.Count == p.SubmitContents.Count)
+                if (p.Submissions != null)
                 {
-                    for (var i = 0; i < p.Submissions.Count; i++)
+                    foreach (var i in p.Submissions)
                     {
                         viewModel.Files.Add(new ProgrammingFileModel
                         {
                             SuppressSetDispatcher = true,
-                            Index = i,
-                            FileName = p.Submissions[i],
+                            FileName = i,
                             EditorOptions = new IEditorConstructionOptions
                             {
                                 ReadOnly = true,
                                 Language = languageConverter.Convert(p.Languages?.FirstOrDefault()!, typeof(string), null!, null!)?.ToString() ?? ""
                             },
-                            NeedsSubmit = true,
-                            Content = p.SubmitContents[i],
+                            IsSupportFile = true,
                             SetContent = p.SetContent,
                             GetContent = p.GetContent
                         });
@@ -69,19 +67,18 @@ namespace MatrixUWP.Views.General.Submit
                 }
                 if (p.Supports != null)
                 {
-                    for (var i = 0; i < p.Supports.Count; i++)
+                    foreach (var i in p.Supports)
                     {
                         viewModel.Files.Add(new ProgrammingFileModel
                         {
-                            Index = i,
                             SuppressSetDispatcher = true,
-                            FileName = p.Supports[i],
+                            FileName = i,
                             EditorOptions = new IEditorConstructionOptions
                             {
                                 ReadOnly = true,
                                 Language = languageConverter.Convert(p.Languages?.FirstOrDefault()!, typeof(string), null!, null!)?.ToString() ?? ""
                             },
-                            NeedsSubmit = false,
+                            IsSupportFile = false,
                             GetContent = p.GetContent
                         });
                     }
@@ -145,7 +142,7 @@ namespace MatrixUWP.Views.General.Submit
 
                 foreach (var i in viewModel.Files)
                 {
-                    if (i.NeedsSubmit)
+                    if (i.IsSupportFile)
                         i.Content = answers.FirstOrDefault(a => a.Name == i.FileName)?.Code ?? "";
                 }
 
@@ -173,7 +170,7 @@ namespace MatrixUWP.Views.General.Submit
 
             var content = new SubmitPostModel<List<ProgrammingAnswer>>();
             content.Detail.Answers = new List<ProgrammingAnswer>();
-            foreach (var i in viewModel.Files.Where(i => i.NeedsSubmit))
+            foreach (var i in viewModel.Files.Where(i => i.IsSupportFile))
             {
                 content.Detail.Answers.Add(new ProgrammingAnswer
                 {
@@ -237,40 +234,35 @@ namespace MatrixUWP.Views.General.Submit
             }
         }
 
+        private void SetCodeEditorState(UIElement sender, ProgrammingFileModel model)
+        {
+            var editor = sender.FindChildOfName<CodeEditor>("SingleCodeEditor");
+            if (editor != null)
+            {
+                editor.Options.ReadOnly = null;
+                editor.Options.ReadOnly = !model.IsSupportFile;
+                editor.Text = model.GetContent?.Invoke(model.FileName, !model.IsSupportFile);
+            }
+            if (model.EditorOptions != null)
+            {
+                model.EditorOptions.ReadOnly = null;
+                model.EditorOptions.ReadOnly = !model.IsSupportFile;
+            }
+        }
+
         private void EditorContainer_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (!(sender is TabView tv)) return;
             var item = e.AddedItems.FirstOrDefault();
             if (!(item is ProgrammingFileModel model)) return;
-            var editor = tv.FindChildOfName<CodeEditor>("SingleCodeEditor");
-            if (editor != null)
-            {
-                editor.Options.ReadOnly = null;
-                editor.Options.ReadOnly = !model.NeedsSubmit;
-                editor.Text = model.GetContent?.Invoke(model.Index, !model.NeedsSubmit);
-            }
-            if (model.EditorOptions != null)
-            {
-                model.EditorOptions.ReadOnly = null;
-                model.EditorOptions.ReadOnly = !model.NeedsSubmit;
-            }
+            SetCodeEditorState(tv, model);
         }
 
         private void MainCodeEditor_Loaded(object sender, RoutedEventArgs e)
         {
             if (!(sender is CodeEditor editor)) return;
             if (!(EditorContainer.SelectedItem is ProgrammingFileModel model)) return;
-            if (editor != null)
-            {
-                editor.Options.ReadOnly = null;
-                editor.Options.ReadOnly = !model.NeedsSubmit;
-                editor.Text = model.GetContent?.Invoke(model.Index, !model.NeedsSubmit);
-            }
-            if (model.EditorOptions != null)
-            {
-                model.EditorOptions.ReadOnly = null;
-                model.EditorOptions.ReadOnly = !model.NeedsSubmit;
-            }
+            SetCodeEditorState(editor, model);
         }
     }
 }
