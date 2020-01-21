@@ -108,7 +108,7 @@ namespace MatrixUWP.Views
             else transition = new DrillInNavigationTransitionInfo();
 
             // Navigate to page
-            NaviContent.Navigate(targetInfo, transition);
+            NaviContent.Navigate(targetInfo, null, transition);
 
             // Set current selected item for navimenu
             NaviMenu.SelectedItem = naviItem;
