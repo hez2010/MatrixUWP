@@ -27,10 +27,9 @@ namespace MatrixUWP.Utils
             httpClient.DefaultRequestHeaders.UserAgent.ParseAdd(userAgent);
             httpClient.DefaultRequestHeaders.Referer = baseUri;
             httpClient.DefaultRequestHeaders.IfModifiedSince = DateTimeOffset.Now;
-            httpClient.DefaultRequestHeaders.Add("RequestClient", "UWP");
 
             var version = Package.Current.Id.Version;
-            httpClient.DefaultRequestHeaders.Add("RequestClientVersion", $"{ version.Major}.{ version.Minor}.{ version.Build}.{ version.Revision}");
+            httpClient.DefaultRequestHeaders.Add("Client", $"UWP {version.Major}.{version.Minor}.{version.Build}.{version.Revision}");
         }
 
         public MatrixJsonHttpRequestClient Build()
