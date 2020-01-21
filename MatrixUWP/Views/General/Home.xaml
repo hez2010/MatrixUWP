@@ -5,12 +5,13 @@
     xmlns:local="using:MatrixUWP.Views.General"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:user="using:MatrixUWP.Models.User"
     mc:Ignorable="d"
     xmlns:tookit="using:Microsoft.Toolkit.Uwp.UI.Controls"
-    Background="{ThemeResource SystemControlAcrylicWindowMediumHighBrush}">
+    Background="{ThemeResource SystemControlAcrylicWindowMediumHighBrush}" Loaded="Page_Loaded">
 
     <Grid>
-        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="{x:Bind parameters.UserData.SignedIn, Mode=OneWay, Converter={StaticResource NotVisibilityConverter}}">
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="{x:Bind user:UserModel.CurrentUser.SignedIn, Mode=OneWay, Converter={StaticResource NotVisibilityConverter}}">
             <Image Height="100" Source="{ThemeResource MatrixLogo}"></Image>
             <Border Margin="0,0,0,50" Background="{ThemeResource SystemControlAcrylicWindowBrush}" BorderBrush="LightGray" BorderThickness="1" CornerRadius="10">
                 <StackPanel>
@@ -21,7 +22,7 @@
                     </Ellipse>
                     <TextBox Margin="48,8" Width="200" x:Uid="Home_TextBox_UserName" CornerRadius="3" Text="{x:Bind viewModel.UserName, Mode=TwoWay, UpdateSourceTrigger=Default}" KeyDown="Login_KeyDown"></TextBox>
                     <PasswordBox Margin="48,8" Width="200" x:Uid="Home_PasswordBox_Password" CornerRadius="3" Password="{x:Bind viewModel.Password, Mode=TwoWay, UpdateSourceTrigger=Default}" KeyDown="Login_KeyDown"></PasswordBox>
-                    <StackPanel Orientation="Horizontal" Width="200" Visibility="{x:Bind parameters.UserData.Captcha, Mode=OneWay}" Margin="48,8">
+                    <StackPanel Orientation="Horizontal" Width="200" Visibility="{x:Bind viewModel.CaptchaNeeded, Mode=OneWay}" Margin="48,8">
                         <TextBox Width="100" HorizontalAlignment="Left" x:Uid="Home_TextBox_Captcha" CornerRadius="3" Text="{x:Bind viewModel.Captcha, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" KeyDown="Login_KeyDown"></TextBox>
                         <Border Background="WhiteSmoke" CornerRadius="3">
                             <Image Width="100" Height="30" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stretch="Uniform" x:Name="CaptchaImage" Source="{x:Bind viewModel.CaptchaData, Mode=OneWay}"/>
@@ -36,9 +37,9 @@
                 </StackPanel>
             </Border>
         </StackPanel>
-        <StackPanel VerticalAlignment="Center" Orientation="Horizontal" HorizontalAlignment="Center" Visibility="{x:Bind parameters.UserData.SignedIn, Mode=OneWay}">
+        <StackPanel VerticalAlignment="Center" Orientation="Horizontal" HorizontalAlignment="Center" Visibility="{x:Bind user:UserModel.CurrentUser.SignedIn, Mode=OneWay}">
             <TextBlock Text="欢迎回来，" FontSize="30"></TextBlock>
-            <TextBlock Text="{x:Bind parameters.UserData.NickName, Mode=OneWay}" FontSize="30"></TextBlock>
+            <TextBlock Text="{x:Bind user:UserModel.CurrentUser.NickName, Mode=OneWay}" FontSize="30"></TextBlock>
         </StackPanel>
     </Grid>
 </Page>

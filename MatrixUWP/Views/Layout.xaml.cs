@@ -1,10 +1,7 @@
 #nullable enable
-﻿using MatrixUWP.Extensions;
+using MatrixUWP.Models;
 using MatrixUWP.Models.User;
 using MatrixUWP.ViewModels;
-using MatrixUWP.Views.General.Course;
-using MatrixUWP.Views.Parameters;
-using MatrixUWP.Views.Parameters.Course;
 using System;
 using System.Collections.Generic;
 using Windows.UI.Xaml;
@@ -22,14 +19,25 @@ namespace MatrixUWP.Views
 
         public Layout()
         {
+            AppModel.ShowMessage = ShowMessage;
+            AppModel.NavigateToPage = NavigateToPage;
+
             InitializeComponent();
 
             Window.Current.SetTitleBar(MyTitleBar);
             Windows.UI.Core.SystemNavigationManager.GetForCurrentView().BackRequested += App_BackRequested;
+        }
 
-            NaviContent.Navigated += NaviContent_Navigated;
-            // Navigate to Home
+        private void UserData_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (!(sender is UserDataModel userData)) return;
+            if (userData?.SignedIn ?? false) return;
+
             NavigateToPage(HomeNaviPage, false, NaviMenu.PaneDisplayMode);
+            // clear all states
+            navimenuNaviHistory.Clear();
+            NaviContent.BackStack.Clear();
+            General.Course.CourseAssignments.LastCourseId = -1;
         }
 
         private void NaviContent_Navigated(object sender, Windows.UI.Xaml.Navigation.NavigationEventArgs e)
@@ -45,7 +53,7 @@ namespace MatrixUWP.Views
         /// <param name="naviPageName"></param>
         /// <param name="isSettingsPage"></param>
         /// <returns></returns>
-        private (Type? Page, object? Parameter) GetTargetNaviInfo(string naviPageName, bool isSettingsPage)
+        private Type? GetTargetNaviInfo(string naviPageName, bool isSettingsPage)
         {
             // Get target page
             var page = (naviPageName, isSettingsPage) switch
@@ -62,20 +70,7 @@ namespace MatrixUWP.Views
                 _ => null
             };
 
-            UserModel.CurrentUser?.CopyTo(viewModel.UserData);
-            var commonParameter =
-                new CommonParameters(UpdateUserData, viewModel.UserData, ShowMessage, NavigateToPage);
-
-            // Get parameters needed
-            var parameter = (naviPageName, isSettingsPage) switch
-            {
-                (nameof(HomeNaviPage), _) => new HomeParameters(commonParameter),
-                (nameof(ProfileNaviPage), _) => new ProfileParameters(commonParameter),
-                (nameof(CourseNaviPage), _) => new CourseParameters(commonParameter),
-                _ => commonParameter
-            };
-
-            return (page, parameter);
+            return page;
         }
 
         /// <summary>
@@ -91,13 +86,13 @@ namespace MatrixUWP.Views
             if (!(naviItem is NavigationViewItem item)) return;
 
             var targetInfo = GetTargetNaviInfo(item.Name, isSettingsPage);
-            if (targetInfo.Page == null || targetInfo.Page == NaviContent.Content?.GetType()) return;
+            if (targetInfo == null || targetInfo == NaviContent.Content?.GetType()) return;
 
             // Get current selected index of navimenu
             var index = NaviMenu.MenuItems.IndexOf(item);
             if (isSettingsPage)
             {
-                item.Content = App.CultureResource.GetString("NaviMenu_Item_Settings/Content");
+                item.Content = AppModel.CultureResource.GetString("NaviMenu_Item_Settings/Content");
                 index = NaviMenu.MenuItems.Count;
             }
 
@@ -113,32 +108,16 @@ namespace MatrixUWP.Views
             else transition = new DrillInNavigationTransitionInfo();
 
             // Navigate to page
-            NaviContent.Navigate(targetInfo.Page, targetInfo.Parameter, transition);
+            NaviContent.Navigate(targetInfo, transition);
 
             // Set current selected item for navimenu
             NaviMenu.SelectedItem = naviItem;
             lastSelectedItemIndex = index;
         }
 
-        private void NavigateToPage(Type pageType, Type parameterType, object parameter, NavigationTransitionInfo? transitionInfo)
+        private void NavigateToPage(Type pageType, object parameter, NavigationTransitionInfo? transitionInfo)
         {
-            var param = parameterType.GetConstructor(new[] { typeof(CommonParameters) })
-                .Invoke(new[] { new CommonParameters(UpdateUserData, viewModel.UserData, ShowMessage, NavigateToPage) });
-            parameter.CopyTo(param);
-            NaviContent.Navigate(pageType, param, transitionInfo ?? new DrillInNavigationTransitionInfo());
-        }
-
-        private void UpdateUserData(UserDataModel userData)
-        {
-            userData.CopyTo(viewModel.UserData);
-            if (!(userData?.SignedIn ?? false))
-            {
-                NavigateToPage(HomeNaviPage, false, NaviMenu.PaneDisplayMode);
-                // clear all states
-                navimenuNaviHistory.Clear();
-                NaviContent.BackStack.Clear();
-                CourseAssignments.LastCourseId = -1;
-            }
+            NaviContent.Navigate(pageType, parameter, transitionInfo ?? new DrillInNavigationTransitionInfo());
         }
 
         private void ShowMessage(string message)
@@ -177,6 +156,18 @@ namespace MatrixUWP.Views
         private void NaviMenu_BackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args)
         {
             NavigateBack();
+        }
+
+        private void Page_Unloaded(object sender, RoutedEventArgs e)
+        {
+            viewModel.UserData.PropertyChanged -= UserData_PropertyChanged;
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            // Navigate to Home
+            NavigateToPage(HomeNaviPage, false, NaviMenu.PaneDisplayMode);
+            viewModel.UserData.PropertyChanged += UserData_PropertyChanged;
         }
     }
 }

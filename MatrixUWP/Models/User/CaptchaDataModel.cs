@@ -1,7 +1,7 @@
 #nullable enable
-﻿using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using Newtonsoft.Json;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace MatrixUWP.Models.User
 {

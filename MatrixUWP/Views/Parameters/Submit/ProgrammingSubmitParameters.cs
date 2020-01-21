@@ -4,12 +4,8 @@ using System.Collections.Generic;
 
 namespace MatrixUWP.Views.Parameters.Submit
 {
-    class ProgrammingSubmitParameters : CommonParameters
+    class ProgrammingSubmitParameters
     {
-        public ProgrammingSubmitParameters(CommonParameters param) : base(param)
-        {
-        }
-
         public string Description { get; set; } = "";
         public string Title { get; set; } = "";
         public int CourseId { get; set; }

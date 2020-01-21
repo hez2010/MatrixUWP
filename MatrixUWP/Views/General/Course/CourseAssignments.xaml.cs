@@ -16,7 +16,6 @@ using MatrixUWP.Views.Parameters.Submit;
 using Microsoft.Toolkit.Uwp.UI.Controls;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Windows.UI.Xaml.Controls;
@@ -102,14 +101,14 @@ namespace MatrixUWP.Views.General.Course
                 var response = await CourseAssignmentModel.FetchCourseAssignmentListAsync(parameters?.CourseId ?? 0);
                 if (response.Status != StatusCode.OK)
                 {
-                    parameters?.ShowMessage(response.Message);
+                    AppModel.ShowMessage?.Invoke(response.Message);
                     return;
                 }
                 viewModel.Assignments = response.Data;
             }
             catch (Exception ex)
             {
-                parameters?.ShowMessage(ex.Message);
+                AppModel.ShowMessage?.Invoke(ex.Message);
                 Debug.Fail(ex.Message, ex.StackTrace);
             }
             finally
@@ -133,7 +132,7 @@ namespace MatrixUWP.Views.General.Course
                         selectedItem.CourseAssignmentId);
                 if (response.Status != StatusCode.OK)
                 {
-                    parameters.ShowMessage(response.Message);
+                    AppModel.ShowMessage?.Invoke(response.Message);
                     return;
                 }
                 response.Data.CopyTo(selectedItem);
@@ -142,7 +141,7 @@ namespace MatrixUWP.Views.General.Course
             catch (Exception ex)
             {
                 Debug.Fail(ex.Message, ex.StackTrace);
-                parameters.ShowMessage(ex.Message);
+                AppModel.ShowMessage?.Invoke(ex.Message);
             }
             finally
             {
@@ -193,32 +192,30 @@ namespace MatrixUWP.Views.General.Course
                             }
                         }
 
-                        parameters?.NavigateToPage(typeof(ProgrammingSubmit),
-                            typeof(ProgrammingSubmitParameters),
-                            new
+                        AppModel.NavigateToPage?.Invoke(typeof(ProgrammingSubmit),
+                            new ProgrammingSubmitParameters
                             {
                                 Submissions = asgnConfig.Submission,
                                 Supports = asgnConfig.Standard?.Support,
                                 Languages = asgnConfig.Language,
-                                model.Title,
-                                model.Description,
-                                model.CourseId,
+                                Title = model.Title,
+                                Description = model.Description,
+                                CourseId = model.CourseId,
                                 AssignmentId = model.CourseAssignmentId,
-                                GetContent = (Func<string, bool, string>)GetContent,
-                                SetContent = (Action<string, string>)SetContent
+                                GetContent = GetContent,
+                                SetContent = SetContent
                             },
                             new EntranceNavigationTransitionInfo());
                         break;
                     }
                 case ChoiceAssignmentConfig asgnConfig:
-                    parameters?.NavigateToPage(typeof(ChoiceSubmit),
-                        typeof(ChoiceSubmitParameters),
-                        new
+                    AppModel.NavigateToPage?.Invoke(typeof(ChoiceSubmit),
+                        new ChoiceSubmitParameters
                         {
-                            asgnConfig.Questions,
-                            model.Title,
-                            model.Description,
-                            model.CourseId,
+                            Questions = asgnConfig.Questions,
+                            Title = model.Title,
+                            Description = model.Description,
+                            CourseId = model.CourseId,
                             AssignmentId = model.CourseAssignmentId
                         },
                         new EntranceNavigationTransitionInfo());
@@ -263,7 +260,7 @@ namespace MatrixUWP.Views.General.Course
                     model.DeserialzedConfig = model.Config.ToObject(model.ConfigType, jsonSerializer);
                 if (model.DeserialzedConfig is null)
                 {
-                    parameters?.ShowMessage("题目配置错误");
+                    AppModel.ShowMessage?.Invoke("题目配置错误");
                     return;
                 }
                 ShowSubmitPage(model.DeserialzedConfig, model);
@@ -271,7 +268,7 @@ namespace MatrixUWP.Views.General.Course
             catch (Exception ex)
             {
                 Debug.Fail(ex.Message, ex.StackTrace);
-                parameters?.ShowMessage(ex.Message);
+                AppModel.ShowMessage?.Invoke(ex.Message);
             }
         }
 

@@ -1,5 +1,5 @@
 #nullable enable
-﻿using MatrixUWP.Utils;
+using MatrixUWP.Utils;
 using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -11,6 +11,7 @@ namespace MatrixUWP.ViewModels
     class HomeViewModel : INotifyPropertyChanged
     {
         private SvgImageSource captchaData = new SvgImageSource();
+        private bool captchaNeeded = false;
         private string userName = "";
         private string password = "";
         private string captcha = "";
@@ -93,6 +94,16 @@ namespace MatrixUWP.ViewModels
         }
 
         public bool SignInButtonEnabled => !loading && !string.IsNullOrEmpty(userName) && !string.IsNullOrEmpty(password);
+
+        public bool CaptchaNeeded
+        {
+            get => captchaNeeded;
+            set
+            {
+                captchaNeeded = value;
+                OnPropertyChanged();
+            }
+        }
 
         public event PropertyChangedEventHandler? PropertyChanged;
         protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)

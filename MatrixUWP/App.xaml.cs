@@ -1,12 +1,9 @@
 #nullable enable
-﻿using MatrixUWP.Models.Config;
-using MatrixUWP.Utils;
 using MatrixUWP.Views;
 using System;
 using System.Diagnostics;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
-using Windows.ApplicationModel.Resources;
 using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -30,16 +27,6 @@ namespace MatrixUWP
             UnhandledException += OnUnhandledException;
         }
 
-        /// <summary>
-        /// Culture strings resource
-        /// </summary>
-        internal static readonly ResourceLoader CultureResource = ResourceLoader.GetForCurrentView();
-
-        internal static readonly Configuration AppConfiguration = new Configuration();
-
-        private static readonly MatrixJsonHttpRequestBuilder MatrixHttpClientBuilder = new MatrixJsonHttpRequestBuilder();
-
-        internal static MatrixJsonHttpRequestClient MatrixHttpClient = MatrixHttpClientBuilder.Build();
         /// Invoked when the application is launched normally by the end user.  Other entry points
         /// will be used such as when the application is launched to open a specific file.
         /// </summary>

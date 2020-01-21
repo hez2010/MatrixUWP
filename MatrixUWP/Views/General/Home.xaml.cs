@@ -1,15 +1,14 @@
 #nullable enable
-﻿using MatrixUWP.Extensions;
+using MatrixUWP.Extensions;
+using MatrixUWP.Models;
 using MatrixUWP.Models.User;
 using MatrixUWP.ViewModels;
-using MatrixUWP.Views.Parameters;
 using System;
 using System.Diagnostics;
 using System.IO;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Imaging;
-using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -22,30 +21,10 @@ namespace MatrixUWP.Views.General
     public sealed partial class Home : Page
     {
         private readonly HomeViewModel viewModel = new HomeViewModel();
-        private HomeParameters? parameters;
 
         public Home()
         {
             InitializeComponent();
-        }
-
-        protected override void OnNavigatedTo(NavigationEventArgs e)
-        {
-            base.OnNavigatedTo(e);
-            if (e.Parameter is HomeParameters param)
-            {
-                parameters = param;
-                parameters.UserData.Captcha = false;
-            }
-            if (!(parameters?.UserData?.SignedIn ?? false))
-            {
-                viewModel.UserName = App.AppConfiguration.SavedUserName;
-                viewModel.Password = App.AppConfiguration.SavedPassword;
-                if (!string.IsNullOrEmpty(viewModel.UserName) && !string.IsNullOrEmpty(viewModel.Password))
-                {
-                    SignIn_Click(this, null);
-                }
-            }
         }
 
         private async void SignIn_Click(object sender, RoutedEventArgs? e)
@@ -55,13 +34,13 @@ namespace MatrixUWP.Views.General
             try
             {
                 var result = await (string.IsNullOrEmpty(viewModel.Captcha) ? UserModel.SignInAsync(viewModel.UserName, viewModel.Password)
-                : UserModel.SignInAsync(viewModel.UserName, viewModel.Password, viewModel.Captcha));
+                    : UserModel.SignInAsync(viewModel.UserName, viewModel.Password, viewModel.Captcha));
 
                 if (result?.Data == null) throw new InvalidOperationException("Network Error");
 
-                parameters?.ShowMessage?.Invoke(result.Message);
-                parameters?.UpdateUserData?.Invoke(result.Data);
-
+                AppModel.ShowMessage?.Invoke(result.Message);
+                UserModel.UpdateUserData(result.Data);
+                viewModel.CaptchaNeeded = result.Data.Captcha;
                 if (!result.Data.Captcha) return;
                 var captcha = await UserModel.FetchCaptchaAsync();
 
@@ -77,9 +56,9 @@ namespace MatrixUWP.Views.General
             }
             catch (Exception ex)
             {
-                App.AppConfiguration.SavedUserName = "";
-                App.AppConfiguration.SavedPassword = "";
-                parameters?.ShowMessage?.Invoke(ex.Message);
+                AppModel.AppConfiguration.SavedUserName = "";
+                AppModel.AppConfiguration.SavedPassword = "";
+                AppModel.ShowMessage?.Invoke(ex.Message);
                 Debug.Fail(ex.Message, ex.StackTrace);
             }
             finally
@@ -93,6 +72,19 @@ namespace MatrixUWP.Views.General
             if (e.Key != Windows.System.VirtualKey.Enter) return;
             if (!viewModel.SignInButtonEnabled) return;
             SignIn_Click(this, null);
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (!UserModel.CurrentUser.SignedIn)
+            {
+                viewModel.UserName = AppModel.AppConfiguration.SavedUserName;
+                viewModel.Password = AppModel.AppConfiguration.SavedPassword;
+                if (!string.IsNullOrEmpty(viewModel.UserName) && !string.IsNullOrEmpty(viewModel.Password))
+                {
+                    SignIn_Click(this, null);
+                }
+            }
         }
     }
 }

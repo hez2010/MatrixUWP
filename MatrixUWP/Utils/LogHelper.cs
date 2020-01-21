@@ -1,5 +1,5 @@
 #nullable enable
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Diagnostics.Tracing;
 using Windows.Foundation.Diagnostics;

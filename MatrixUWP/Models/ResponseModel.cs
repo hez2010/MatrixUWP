@@ -1,6 +1,6 @@
 #nullable enable
-﻿using System;
 using Newtonsoft.Json;
+using System;
 
 namespace MatrixUWP.Models
 {

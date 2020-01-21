@@ -1,5 +1,5 @@
 #nullable enable
-﻿using MatrixUWP.Models.Course;
+using MatrixUWP.Models.Course;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 

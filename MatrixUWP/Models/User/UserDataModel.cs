@@ -1,12 +1,12 @@
 #nullable enable
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 
 namespace MatrixUWP.Models.User
 {
     public class UserDataModel : UserEssentialDataModel
     {
-        private bool captcha;
         private int userId;
+        private bool captcha;
         private string nickName = "";
         private int isValid;
         private object? userAddition;

@@ -154,6 +154,7 @@
     <Compile Include="Models\Course\Assignment\Programming\ProgrammingAssignmentConfig.cs" />
     <Compile Include="Models\Course\Assignment\Programming\ProgrammingStandard.cs" />
     <Compile Include="Models\Course\Assignment\Report\ReportAssignmentConfig.cs" />
+    <Compile Include="Models\AppModel.cs" />
     <Compile Include="Models\Submission\Programming\ProgrammingAnswer.cs" />
     <Compile Include="Models\Submission\SubmitAnswerModel.cs" />
     <Compile Include="Models\Submission\Answer\ChoiceAnswer.cs" />
@@ -198,7 +199,6 @@
     <Compile Include="Views\General\Submit\ProgrammingSubmit.xaml.cs">
       <DependentUpon>ProgrammingSubmit.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Parameters\CommonParameters.cs" />
     <Compile Include="Utils\HttpJsonContent.cs" />
     <Compile Include="Utils\MatrixJsonHttpRequestBuilder.cs" />
     <Compile Include="Utils\MatrixJsonHttpRequestClient.cs" />
@@ -218,8 +218,6 @@
     </Compile>
     <Compile Include="Views\Parameters\Course\CourseAssignmentsParameters.cs" />
     <Compile Include="Views\Parameters\Course\CourseDetailsParameters.cs" />
-    <Compile Include="Views\Parameters\Course\CourseParameters.cs" />
-    <Compile Include="Views\Parameters\HomeParameters.cs" />
     <Compile Include="Views\General\Library.xaml.cs">
       <DependentUpon>Library.xaml</DependentUpon>
     </Compile>
@@ -235,7 +233,6 @@
     <Compile Include="Views\Layout.xaml.cs">
       <DependentUpon>Layout.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Parameters\ProfileParameters.cs" />
     <Compile Include="Views\Parameters\Submit\ChoiceSubmitParameters.cs" />
     <Compile Include="Views\Parameters\Submit\ProgrammingSubmitParameters.cs" />
     <Compile Include="Views\Settings.xaml.cs">

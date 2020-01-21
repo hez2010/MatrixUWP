@@ -1,11 +1,11 @@
 #nullable enable
-﻿using System;
+using MatrixUWP.Utils;
+using Newtonsoft.Json;
+using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using Newtonsoft.Json;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
-using MatrixUWP.Utils;
 
 namespace MatrixUWP.Models.User
 {

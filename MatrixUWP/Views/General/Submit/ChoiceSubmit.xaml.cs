@@ -83,7 +83,7 @@ namespace MatrixUWP.Views.General.Submit
                 var response = await SubmissionModel.FetchCourseSubmissionListAsync(parameters.CourseId, parameters.AssignmentId);
                 if (response.Status != StatusCode.OK)
                 {
-                    parameters.ShowMessage(response.Message);
+                    AppModel.ShowMessage?.Invoke(response.Message);
                     return;
                 }
                 var latestSubmission = response.Data.OrderByDescending(i => i.SubmitAt).FirstOrDefault();
@@ -94,7 +94,7 @@ namespace MatrixUWP.Views.General.Submit
                         latestSubmission.SubmissionId);
                 if (submissionDetails.Status != StatusCode.OK)
                 {
-                    parameters.ShowMessage(response.Message);
+                    AppModel.ShowMessage?.Invoke(response.Message);
                     return;
                 }
                 var answers = submissionDetails.Data.Answers;
@@ -104,7 +104,7 @@ namespace MatrixUWP.Views.General.Submit
             catch (Exception ex)
             {
                 Debug.Fail(ex.Message, ex.StackTrace);
-                parameters.ShowMessage(ex.Message);
+                AppModel.ShowMessage?.Invoke(ex.Message);
             }
             finally
             {
@@ -134,12 +134,12 @@ namespace MatrixUWP.Views.General.Submit
             try
             {
                 var response = await SubmissionModel.SubmitForCourseAssignment(parameters.CourseId, parameters.AssignmentId, content);
-                parameters.ShowMessage(response.Message);
+                AppModel.ShowMessage?.Invoke(response.Message);
             }
             catch (Exception ex)
             {
                 Debug.Fail(ex.Message, ex.StackTrace);
-                parameters.ShowMessage(ex.Message);
+                AppModel.ShowMessage?.Invoke(ex.Message);
             }
             finally
             {
@@ -158,7 +158,7 @@ namespace MatrixUWP.Views.General.Submit
                 var response = await SubmissionModel.FetchCourseSubmissionListAsync(parameters.CourseId, parameters.AssignmentId);
                 if (response.Status != StatusCode.OK)
                 {
-                    parameters.ShowMessage(response.Message);
+                    AppModel.ShowMessage?.Invoke(response.Message);
                     return;
                 }
                 var latestSubmission = response.Data.OrderByDescending(i => i.SubmitAt).FirstOrDefault();
@@ -169,7 +169,7 @@ namespace MatrixUWP.Views.General.Submit
                         latestSubmission.SubmissionId);
                 if (submissionDetails.Status != StatusCode.OK)
                 {
-                    parameters.ShowMessage(response.Message);
+                    AppModel.ShowMessage?.Invoke(response.Message);
                     return;
                 }
                 var answers = submissionDetails.Data.Answers;
@@ -187,12 +187,12 @@ namespace MatrixUWP.Views.General.Submit
                     foreach (var c in question.Choices
                         .Where(x => i.ChoiceId.Contains(x.Id))) c.IsChecked = true;
                 }
-                parameters.ShowMessage("已加载上次提交内容");
+                AppModel.ShowMessage?.Invoke("已加载上次提交内容");
             }
             catch (Exception ex)
             {
                 Debug.Fail(ex.Message, ex.StackTrace);
-                parameters.ShowMessage(ex.Message);
+                AppModel.ShowMessage?.Invoke(ex.Message);
             }
             finally
             {

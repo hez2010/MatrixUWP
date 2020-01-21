@@ -6,10 +6,10 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ctl="using:MatrixUWP.Controls"
-    xmlns:root="using:MatrixUWP"
+    xmlns:app="using:MatrixUWP.Models"
     mc:Ignorable="d"
-    RequestedTheme="{x:Bind root:App.AppConfiguration.AppThemeValue, Mode=OneWay}"
-    Background="{ThemeResource SystemControlChromeHighAcrylicWindowMediumBrush}">
+    RequestedTheme="{x:Bind app:AppModel.AppConfiguration.AppThemeValue, Mode=OneWay}"
+    Background="{ThemeResource SystemControlChromeHighAcrylicWindowMediumBrush}" Unloaded="Page_Unloaded" Loaded="Page_Loaded">
 
     <Grid>
         <VisualStateManager.VisualStateGroups>
@@ -55,7 +55,7 @@
                     <NavigationViewItem x:Name="FeedbackNaviPage" Icon="Send" x:Uid="NaviMenu_Item_Feedback" Visibility="{x:Bind viewModel.UserData.SignedIn, Mode=OneWay}"></NavigationViewItem>
                 </ctl:MyNavigationView.MenuItems>
                 <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                    <Frame VerticalContentAlignment="Stretch" x:Name="NaviContent"/>
+                    <Frame VerticalContentAlignment="Stretch" x:Name="NaviContent" Navigated="NaviContent_Navigated"/>
                     <Border Visibility="{x:Bind viewModel.ShowMessage, Mode=OneWay}" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="50" Background="{ThemeResource SystemControlAccentAcrylicElementAccentMediumHighBrush}" Padding="15,5" CornerRadius="5" Opacity="50">
                         <TextBlock Foreground="White" Text="{x:Bind viewModel.Message, Mode=OneWay}"/>
                     </Border>

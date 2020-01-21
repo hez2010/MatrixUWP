@@ -1,5 +1,5 @@
 #nullable enable
-﻿using MatrixUWP.Models.User;
+using MatrixUWP.Models.User;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
@@ -8,9 +8,9 @@ namespace MatrixUWP.ViewModels
     class ProfileViewModel : INotifyPropertyChanged
     {
         private bool loading;
-        private UserDataModel userData = new UserDataModel();
+        private UserDataModel? userData;
 
-        public UserDataModel UserData
+        public UserDataModel? UserData
         {
             get => userData;
             set

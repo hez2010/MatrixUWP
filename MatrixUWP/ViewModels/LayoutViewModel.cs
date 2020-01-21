@@ -1,5 +1,5 @@
 #nullable enable
-﻿using MatrixUWP.Models.User;
+using MatrixUWP.Models.User;
 using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -18,7 +18,7 @@ namespace MatrixUWP.ViewModels
         private string message = "";
         private readonly DispatcherTimer messageTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(3) };
 
-        public UserDataModel UserData { get; } = new UserDataModel();
+        public UserDataModel UserData { get; } = UserModel.CurrentUser;
         public bool ShowMessage
         {
             get => showMessage;

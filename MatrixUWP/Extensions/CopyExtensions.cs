@@ -1,5 +1,5 @@
 #nullable enable
-﻿using System.Linq;
+using System.Linq;
 
 namespace MatrixUWP.Extensions
 {

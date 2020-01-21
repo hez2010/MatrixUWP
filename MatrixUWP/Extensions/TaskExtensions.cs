@@ -1,5 +1,5 @@
 #nullable enable
-﻿using System;
+using System;
 using System.Threading.Tasks;
 
 namespace MatrixUWP.Extensions

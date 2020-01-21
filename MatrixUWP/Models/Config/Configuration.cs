@@ -1,5 +1,5 @@
 #nullable enable
-﻿using System;
+using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Windows.Globalization;

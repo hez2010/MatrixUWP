@@ -1,5 +1,5 @@
 #nullable enable
-﻿using System;
+using System;
 #if FXJSON
 using System.Text.Json.Serialization;
 #else

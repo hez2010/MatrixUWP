@@ -1,5 +1,5 @@
 #nullable enable
-﻿using System;
+using System;
 using Windows.Web.Http;
 using Windows.Web.Http.Filters;
 
@@ -28,6 +28,9 @@ namespace MatrixUWP.Utils
             httpClient.DefaultRequestHeaders.IfModifiedSince = DateTimeOffset.Now;
         }
 
-        public MatrixJsonHttpRequestClient Build() => new MatrixJsonHttpRequestClient(httpClient, BaseUri);
+        public MatrixJsonHttpRequestClient Build()
+        {
+            return new MatrixJsonHttpRequestClient(httpClient, BaseUri);
+        }
     }
 }

@@ -1,5 +1,5 @@
 #nullable enable
-﻿namespace MatrixUWP.Models
+namespace MatrixUWP.Models
 {
     public enum StatusCode
     {

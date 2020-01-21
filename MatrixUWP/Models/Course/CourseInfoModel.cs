@@ -1,5 +1,5 @@
 #nullable enable
-﻿using MatrixUWP.Models.User;
+using MatrixUWP.Models.User;
 using Newtonsoft.Json;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -25,10 +25,7 @@ namespace MatrixUWP.Models.Course
                 _ => "未知"
             };
 
-            set
-            {
-                status = value;
-            }
+            set => status = value;
         }
 
         [JsonIgnore]
@@ -74,10 +71,7 @@ namespace MatrixUWP.Models.Course
                 "admin" => "管理员",
                 _ => "未知"
             };
-            set
-            {
-                role = value;
-            }
+            set => role = value;
         }
 
         [JsonProperty("student_num")]

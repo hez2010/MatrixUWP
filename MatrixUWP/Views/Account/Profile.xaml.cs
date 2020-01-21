@@ -1,9 +1,8 @@
 #nullable enable
-﻿using MatrixUWP.Extensions;
+using MatrixUWP.Extensions;
 using MatrixUWP.Models;
 using MatrixUWP.Models.User;
 using MatrixUWP.ViewModels;
-using MatrixUWP.Views.Parameters;
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
@@ -11,7 +10,6 @@ using Windows.Storage.Pickers;
 using Windows.Storage.Streams;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Navigation;
 
 namespace MatrixUWP.Views.Account
 {
@@ -21,20 +19,11 @@ namespace MatrixUWP.Views.Account
     public sealed partial class Profile : Page
     {
         private readonly ProfileViewModel viewModel = new ProfileViewModel();
-        private ProfileParameters? parameters;
         public Profile()
         {
             InitializeComponent();
-        }
-
-        protected override void OnNavigatedTo(NavigationEventArgs e)
-        {
-            base.OnNavigatedTo(e);
-            if (e.Parameter is ProfileParameters p)
-            {
-                parameters = p;
-                viewModel.UserData = p.UserData;
-            }
+            viewModel.UserData = new UserDataModel();
+            UserModel.CurrentUser?.CopyTo(viewModel.UserData);
         }
 
         private async void SignOut_Click(object sender, RoutedEventArgs e)
@@ -45,12 +34,12 @@ namespace MatrixUWP.Views.Account
             {
                 var result = await UserModel.SignOutAsync();
 
-                parameters?.ShowMessage?.Invoke(result.Message);
-                parameters?.UpdateUserData?.Invoke(new UserDataModel());
+                AppModel.ShowMessage?.Invoke(result.Message);
+                UserModel.UpdateUserData(new UserDataModel());
             }
             catch (Exception ex)
             {
-                parameters?.ShowMessage?.Invoke(ex.Message);
+                AppModel.ShowMessage?.Invoke(ex.Message);
                 Debug.Fail(ex.Message, ex.StackTrace);
             }
             finally
@@ -71,12 +60,13 @@ namespace MatrixUWP.Views.Account
             using var stream = await file.OpenSequentialReadAsync();
             viewModel.Loading = true;
             await Dispatcher.YieldAsync();
-            parameters?.ShowMessage(await UpdateProfile(stream));
+            AppModel.ShowMessage?.Invoke(await UpdateProfile(stream));
             viewModel.Loading = false;
         }
 
         private async ValueTask<string> UpdateProfile(IInputStream? stream = null)
         {
+            if (viewModel.UserData is null) throw new NullReferenceException("UserData cannot be null.");
             try
             {
                 var result = stream switch
@@ -94,15 +84,7 @@ namespace MatrixUWP.Views.Account
 
                 if (result.Status == StatusCode.OK)
                 {
-                    var model = UserModel.CurrentUser;
-                    if (model is null) throw new NullReferenceException("CurrentUser cannot be null.");
-                    model.Phone = viewModel.UserData.Phone;
-                    model.NickName = viewModel.UserData.NickName;
-                    model.HomePage = viewModel.UserData.HomePage;
-                    model.MailConfig = viewModel.UserData.MailConfig;
-                    model.Email = viewModel.UserData.Email;
-                    parameters?.UpdateUserData(model);
-                    UserModel.CurrentUser = model;
+                    UserModel.UpdateUserData(viewModel.UserData);
                 }
                 return result.Message;
             }
@@ -117,7 +99,7 @@ namespace MatrixUWP.Views.Account
         {
             viewModel.Loading = true;
             await Dispatcher.YieldAsync();
-            parameters?.ShowMessage(await UpdateProfile());
+            AppModel.ShowMessage?.Invoke(await UpdateProfile());
             viewModel.Loading = false;
         }
     }

@@ -21,55 +21,49 @@ msbuild MatrixUWP.sln /p:Configuration=Release /p:AppxBundlePlatforms="x86|x64|A
 ### Null 安全
 Null 安全默认是不启用的，因此需要手动 opt-in，由于 UWP 目前不支持项目级别的 opt-in，因此需要在每个 `.cs` 文件头部添加一行 `#nullable enable`。  
 ### HTTP 请求
-全局使用同一个 `HttpClient` `App.MatrixHttpClient`，因为在 `HttpClient` 中保存有 `cookies` 信息。  
+全局使用同一个 `HttpClient` `AppModel.MatrixHttpClient`，因为在 `HttpClient` 中保存有 `cookies` 信息。  
 所有的请求响应可使用 `ResponseExtensions` 中定义的扩展方法 `JsonAsync<T>`, `TextAsync`, `BlobAsync` 解析数据。  
 对于响应可以使用 `ResponseModel<T>` 来进行包装，其中 `T` 为响应数据类型。  
 一个请求例子：
 ```csharp
 public static async ValueTask<ResponseModel<CourseInfoModel>> FetchCourseAsync(int courseId) =>
-    await App.MatrixHttpClient.GetAsync($"/api/courses/{courseId}")
+    await AppModel.MatrixHttpClient.GetAsync($"/api/courses/{courseId}")
         .JsonAsync<ResponseModel<CourseInfoModel>>();
 ```
+### UserModel
+用于用户数据和状态的保存和更新，通过 `UserModel` 中的 `CurrentUser` 和 `UpdateUserData` 来实现。
+
+- `CurrentUser`: 用户数据，只读，该对象为单例对象，全局共用一个，对其中属性任何的更改都会触发 UI 变更通知
+- `UpdateUserData`: 更新用户数据的委托，当需要替换原有的全局 `CurrentUser` 对象时调用此委托可更新全局的用户状态
+
+### AppModel
+用于应用数据和状态的保存和更新，如资源、主题、设置等。  
+除此之外还提供了两个方法：
+
+- `ShowMessage`: 用于在界面下方显示一段消息
+- `NavigateToPage`: 导航到页面，参数分别是：目标的页面类型、`Parameter` 数据、页面导航动画信息 (可为 null)，具体使用参考下方关于页面导航的说明。
+
 ### 页面导航
 页面之间的导航通过 `Layout.xaml` 中的 `Frame` 实现。  
 其中每个页面都有一个虚方法 `protected virtual void OnNavigatedTo(NavigationEventArgs e)`，`e` 中包含了导航页面时传递的参数信息 `Parameter`，该方法会在页面被导航且在 `Load` 事件之前被调用。  
-编写一个页面的 `Parameter` 类型时，将其继承 `CommonParameter`，并添加构造函数 `public ClassName(CommonParameters param) : base(param) { }`，该 `CommonParameter` 包含以下内容：
-
-- `UserData`: 用户数据，该对象为单例对象，全局共用一个，对其中属性任何的更改都会触发 UI 变更通知
-- `UpdateUserData`: 更新用户数据的委托，当需要替换原有的全局 `UserData` 对象时调用此委托可更新全局的用户状态
-- `ShowMessage`: 用于在界面下方显示一段消息
-- `NavigateToPage`: 导航到页面，参数分别是：目标的页面类型、目标页面的 `Parameter` 类型、`Parameter` 数据、页面导航动画信息 (可为 null)  
-
+除此之外，还有 `protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)`，该方法在当前页面即将被切出时被调用， `e` 中包含目标页面的类型 `SourcePageType`。  
+  
 手动导航时，可调用 `parameter` 的 `NavigateToPage` 委托，并传入相关参数即可。  
-例如从 `A` 页面导航到 `B` 页面：  
 
-A 页面参数类型 ParametersA.cs
-```csharp
-class ParametersA : CommonParameters
-{
-    public ParametersA(CommonParameters param) : base(param) { }
-}
-```
+例如从 `A` 页面导航到 `B` 页面：  
 B 页面参数类型 ParametersB.cs
 ```csharp
-class ParametersA : CommonParameters
+class ParametersB
 {
-    public ParametersA(CommonParameters param) : base(param) { }
     public int CourseId { get; set; }
 }
 ```
 
 A 页面逻辑代码 PageA.xaml.cs
 ```csharp
-private ParametersA? parameters;
-protected override void OnNavigatedTo(NavigationEventArgs e)
-{
-    if (e.Parameter is ParameterA para) parameters = para; // 保存参数信息，以供后续使用
-}
-
 private void Navigate_Clicked(object sender, Windows.UI.Xaml.RoutedEventArgs e) // 点击某个按钮的事件处理函数
 {
-    parameters?.NavigateToPage(typeof(PageB), typeof(ParametersB), new { CourseId = 123 }, null);
+    parameters?.NavigateToPage(typeof(PageB), new ParametersB { CourseId = 123 }, null);
 }
 ```
 

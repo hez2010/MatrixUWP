@@ -1,5 +1,5 @@
 #nullable enable
-﻿#if FXJSON
+#if FXJSON
 using System.Text.Json.Serialization;
 #else
 using Newtonsoft.Json;

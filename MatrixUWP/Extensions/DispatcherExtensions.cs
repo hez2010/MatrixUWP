@@ -1,5 +1,5 @@
 #nullable enable
-﻿using System;
+using System;
 using System.Runtime.CompilerServices;
 using Windows.UI.Core;
 
@@ -24,7 +24,10 @@ namespace MatrixUWP.Extensions
                 this.priority = priority;
             }
 
-            public DispatcherPriorityAwaiter GetAwaiter() => new DispatcherPriorityAwaiter(dispatcher, priority);
+            public DispatcherPriorityAwaiter GetAwaiter()
+            {
+                return new DispatcherPriorityAwaiter(dispatcher, priority);
+            }
         }
 
         /// <summary>
@@ -56,7 +59,10 @@ namespace MatrixUWP.Extensions
         /// </summary>
         /// <param name="dispatcher">Dispatcher of a thread to yield</param>
         /// <param name="priority">Dispatcher execution priority, default is low</param>
-        public static DispatcherPriorityAwaitable YieldAsync(this CoreDispatcher dispatcher, CoreDispatcherPriority priority = CoreDispatcherPriority.Low) => new DispatcherPriorityAwaitable(dispatcher, priority);
+        public static DispatcherPriorityAwaitable YieldAsync(this CoreDispatcher dispatcher, CoreDispatcherPriority priority = CoreDispatcherPriority.Low)
+        {
+            return new DispatcherPriorityAwaitable(dispatcher, priority);
+        }
     }
 
 }

@@ -1,5 +1,5 @@
 #nullable enable
-﻿namespace MatrixUWP.Models.Config
+namespace MatrixUWP.Models.Config
 {
     enum Language : int
     {

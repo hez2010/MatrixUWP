@@ -1,5 +1,5 @@
 #nullable enable
-﻿using MatrixUWP.Extensions;
+using MatrixUWP.Extensions;
 using MatrixUWP.Models;
 using MatrixUWP.Models.Course;
 using MatrixUWP.ViewModels;
@@ -57,14 +57,14 @@ namespace MatrixUWP.Views.General.Course
                 var response = await CourseModel.FetchCourseAsync(parameters?.CourseId ?? 0);
                 if (response.Status != StatusCode.OK)
                 {
-                    parameters?.ShowMessage(response.Message);
+                    AppModel.ShowMessage?.Invoke(response.Message);
                     return;
                 }
                 viewModel.Course = response.Data;
             }
             catch (Exception ex)
             {
-                parameters?.ShowMessage(ex.Message);
+                AppModel.ShowMessage?.Invoke(ex.Message);
                 Debug.Fail(ex.Message, ex.StackTrace);
             }
             finally
@@ -80,8 +80,11 @@ namespace MatrixUWP.Views.General.Course
             DescriptionViewer.MaxWidth = Math.Max(Container.ActualWidth - 16, 0);
         }
 
-        private void Page_SizeChanged(object sender, SizeChangedEventArgs e) => AdjustElementsSize();
-        
+        private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            AdjustElementsSize();
+        }
+
         private async void MarkdownTextBlock_LinkClicked(object sender, Microsoft.Toolkit.Uwp.UI.Controls.LinkClickedEventArgs e)
         {
             await Windows.System.Launcher.LaunchUriAsync(new Uri(e.Link));
@@ -94,9 +97,9 @@ namespace MatrixUWP.Views.General.Course
 
         private void ViewAssignment_Click(object sender, RoutedEventArgs e)
         {
-            parameters?.NavigateToPage(typeof(CourseAssignments),
-                typeof(CourseAssignmentsParameters),
-                new { parameters.CourseId, Title = viewModel.Course?.CourseName },
+            if (parameters is null) return;
+            AppModel.NavigateToPage?.Invoke(typeof(CourseAssignments),
+                new CourseAssignmentsParameters { CourseId = parameters.CourseId, Title = viewModel.Course?.CourseName },
                 new EntranceNavigationTransitionInfo());
         }
     }
