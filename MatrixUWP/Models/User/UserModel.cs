@@ -14,7 +14,7 @@ namespace MatrixUWP.Models.User
             userData.CopyTo(CurrentUser);
         }
 
-        public static UserDataModel CurrentUser { get; set; } = new UserDataModel();
+        public static UserDataModel CurrentUser { get; } = new UserDataModel();
         public static async ValueTask<ResponseModel<UserDataModel>> SignInAsync(string userName, string password, string captcha = "")
         {
             var result = await (string.IsNullOrEmpty(captcha) ?
@@ -25,7 +25,7 @@ namespace MatrixUWP.Models.User
             {
                 AppModel.AppConfiguration.SavedUserName = userName;
                 AppModel.AppConfiguration.SavedPassword = password;
-                CurrentUser = result.Data;
+                result.Data.CopyTo(CurrentUser);
             }
             else
             {
@@ -37,9 +37,8 @@ namespace MatrixUWP.Models.User
 
         public static ValueTask<ResponseModel<CaptchaDataModel>> FetchCaptchaAsync()
         {
-            return AppModel.MatrixHttpClient.GetAsync(
-"/api/captcha"
-).JsonAsync<ResponseModel<CaptchaDataModel>>();
+            return AppModel.MatrixHttpClient.GetAsync("/api/captcha")
+                .JsonAsync<ResponseModel<CaptchaDataModel>>();
         }
 
         public static ValueTask<ResponseModel> SignOutAsync()

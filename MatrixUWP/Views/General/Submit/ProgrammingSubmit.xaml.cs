@@ -59,7 +59,7 @@ namespace MatrixUWP.Views.General.Submit
                                 ReadOnly = true,
                                 Language = languageConverter.Convert(p.Languages?.FirstOrDefault()!, typeof(string), null!, null!)?.ToString() ?? ""
                             },
-                            IsSupportFile = true,
+                            IsSupportFile = false,
                             SetContent = p.SetContent,
                             GetContent = p.GetContent
                         });
@@ -78,7 +78,7 @@ namespace MatrixUWP.Views.General.Submit
                                 ReadOnly = true,
                                 Language = languageConverter.Convert(p.Languages?.FirstOrDefault()!, typeof(string), null!, null!)?.ToString() ?? ""
                             },
-                            IsSupportFile = false,
+                            IsSupportFile = true,
                             GetContent = p.GetContent
                         });
                     }
@@ -142,7 +142,7 @@ namespace MatrixUWP.Views.General.Submit
 
                 foreach (var i in viewModel.Files)
                 {
-                    if (i.IsSupportFile)
+                    if (!i.IsSupportFile)
                         i.Content = answers.FirstOrDefault(a => a.Name == i.FileName)?.Code ?? "";
                 }
 
@@ -170,7 +170,7 @@ namespace MatrixUWP.Views.General.Submit
 
             var content = new SubmitPostModel<List<ProgrammingAnswer>>();
             content.Detail.Answers = new List<ProgrammingAnswer>();
-            foreach (var i in viewModel.Files.Where(i => i.IsSupportFile))
+            foreach (var i in viewModel.Files.Where(i => !i.IsSupportFile))
             {
                 content.Detail.Answers.Add(new ProgrammingAnswer
                 {
@@ -240,13 +240,13 @@ namespace MatrixUWP.Views.General.Submit
             if (editor != null)
             {
                 editor.Options.ReadOnly = null;
-                editor.Options.ReadOnly = !model.IsSupportFile;
-                editor.Text = model.GetContent?.Invoke(model.FileName, !model.IsSupportFile);
+                editor.Options.ReadOnly = model.IsSupportFile;
+                editor.Text = model.GetContent?.Invoke(model.FileName, model.IsSupportFile);
             }
             if (model.EditorOptions != null)
             {
                 model.EditorOptions.ReadOnly = null;
-                model.EditorOptions.ReadOnly = !model.IsSupportFile;
+                model.EditorOptions.ReadOnly = model.IsSupportFile;
             }
         }
 

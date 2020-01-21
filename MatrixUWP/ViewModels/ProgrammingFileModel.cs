@@ -31,7 +31,7 @@ namespace MatrixUWP.ViewModels
         public string FileName { get; set; } = "";
         public string? Content
         {
-            get => GetContent?.Invoke(FileName, !IsSupportFile);
+            get => GetContent?.Invoke(FileName, IsSupportFile);
             set
             {
                 if (!SuppressSetDispatcher)

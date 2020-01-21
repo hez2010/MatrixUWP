@@ -39,7 +39,6 @@ namespace MatrixUWP.Views.General
                 if (result?.Data == null) throw new InvalidOperationException("Network Error");
 
                 AppModel.ShowMessage?.Invoke(result.Message);
-                UserModel.UpdateUserData(result.Data);
                 viewModel.CaptchaNeeded = result.Data.Captcha;
                 if (!result.Data.Captcha) return;
                 var captcha = await UserModel.FetchCaptchaAsync();

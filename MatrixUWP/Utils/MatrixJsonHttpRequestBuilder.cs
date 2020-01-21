@@ -1,5 +1,6 @@
 #nullable enable
 using System;
+using Windows.ApplicationModel;
 using Windows.Web.Http;
 using Windows.Web.Http.Filters;
 
@@ -21,11 +22,15 @@ namespace MatrixUWP.Utils
             var filter = new MatrixHttpFilter(new HttpBaseProtocolFilter()); // Adds a custom header to every request and response message.
             httpClient = new HttpClient(filter);
 
-            var userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3907.0 Safari/537.36 Edg/79.0.279.0";
+            var userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36 Edg/79.0.309.68";
 
             httpClient.DefaultRequestHeaders.UserAgent.ParseAdd(userAgent);
             httpClient.DefaultRequestHeaders.Referer = baseUri;
             httpClient.DefaultRequestHeaders.IfModifiedSince = DateTimeOffset.Now;
+            httpClient.DefaultRequestHeaders.Add("RequestClient", "UWP");
+
+            var version = Package.Current.Id.Version;
+            httpClient.DefaultRequestHeaders.Add("RequestClientVersion", $"{ version.Major}.{ version.Minor}.{ version.Build}.{ version.Revision}");
         }
 
         public MatrixJsonHttpRequestClient Build()

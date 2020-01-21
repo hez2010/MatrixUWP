@@ -1,9 +1,10 @@
 #nullable enable
 using Newtonsoft.Json;
+using System.ComponentModel;
 
 namespace MatrixUWP.Models.User
 {
-    public class UserDataModel : UserEssentialDataModel
+    public class UserDataModel : UserEssentialDataModel, INotifyPropertyChanged
     {
         private int userId;
         private bool captcha;
