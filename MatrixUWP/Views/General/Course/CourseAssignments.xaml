@@ -13,9 +13,9 @@
     Loaded="Page_Loaded">
 
     <Grid>
-        <TextBlock x:Name="TitleViewer" VerticalAlignment="Top" Margin="20,8,0,0" FontSize="22" Text="{x:Bind viewModel.Title, Mode=OneWay}"></TextBlock>
+        <TextBlock x:Name="TitleViewer" VerticalAlignment="Top" Margin="12,8,0,0" FontSize="22" Text="{x:Bind viewModel.Title, Mode=OneWay}"></TextBlock>
         <controls:MasterDetailsView
-            Margin="8,48,8,0"
+            Margin="0,48,0,0"
             BorderBrush="{ThemeResource MasterDetailsViewBorderBrush}"
             BackButtonBehavior="Manual"
             Background="{ThemeResource SystemControlAcrylicWindowMediumHighBrush}" 

@@ -8,6 +8,7 @@ using MatrixUWP.Models.Course.Assignment.File;
 using MatrixUWP.Models.Course.Assignment.Output;
 using MatrixUWP.Models.Course.Assignment.Programming;
 using MatrixUWP.Models.Course.Assignment.Report;
+using MatrixUWP.Models.Submission;
 using MatrixUWP.Utils;
 using MatrixUWP.ViewModels;
 using MatrixUWP.Views.General.Submit;
@@ -18,6 +19,8 @@ using Newtonsoft.Json;
 using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
+using Windows.Storage.Pickers;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
@@ -162,7 +165,7 @@ namespace MatrixUWP.Views.General.Course
             await Windows.System.Launcher.LaunchUriAsync(new Uri(e.Link));
         }
 
-        private void ShowSubmitPage(object config, CourseAssignmentDetailsModel model)
+        private async Task ShowSubmitPage(object config, CourseAssignmentDetailsModel model)
         {
             var animation = ConnectedAnimationService.GetForCurrentView();
             var description = AssignmentView.FindChildOfName<ScrollViewer>("DescriptionViewer");
@@ -225,21 +228,49 @@ namespace MatrixUWP.Views.General.Course
                         new EntranceNavigationTransitionInfo());
                     break;
                 case ReportAssignmentConfig asgnConfig:
-                    Debug.WriteLine(asgnConfig.SerializeJson());
+                    AppModel.ShowMessage?.Invoke($"不支持的题目配置:\n{asgnConfig.SerializeJson()}");
                     break;
                 case FileAssignmentConfig asgnConfig:
-                    Debug.WriteLine(asgnConfig.SerializeJson());
-                    break;
+                    {
+                        var filePicker = new FileOpenPicker();
+                        filePicker.FileTypeFilter.Add("*");
+                        var file = await filePicker.PickSingleFileAsync();
+                        if (file is null) break;
+                        if (file.Name != asgnConfig.FileName)
+                        {
+                            AppModel.ShowMessage?.Invoke($"文件名不正确，命名格式为：{asgnConfig.FileName}");
+                            break;
+                        }
+                        viewModel.Loading = true;
+                        await Dispatcher.YieldAsync();
+                        try
+                        {
+                            var response = await SubmissionModel.SubmitFileForCourseAssignment(model.CourseId, model.CourseAssignmentId, file);
+                            AppModel.ShowMessage?.Invoke(response.Message);
+                        }
+                        catch (Exception ex)
+                        {
+#if DEBUG
+                            Debug.Fail(ex.Message, ex.StackTrace);
+#endif
+                            AppModel.ShowMessage?.Invoke(ex.Message);
+                        }
+                        finally
+                        {
+                            viewModel.Loading = false;
+                        }
+                        break;
+                    }
                 case OutputAssignmentConfig asgnConfig:
-                    Debug.WriteLine(asgnConfig.SerializeJson());
+                    AppModel.ShowMessage?.Invoke($"不支持的题目配置:\n{asgnConfig.SerializeJson()}");
                     break;
                 case AnswerAssignmentConfig asgnConfig:
-                    Debug.WriteLine(asgnConfig.SerializeJson());
+                    AppModel.ShowMessage?.Invoke($"不支持的题目配置:\n{asgnConfig.SerializeJson()}");
                     break;
             }
         }
 
-        private void Submit_Clicked(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        private async void Submit_Clicked(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
             if (!(AssignmentView.SelectedItem is CourseAssignmentDetailsModel model)) return;
             if (model.Config is null) return;
@@ -267,7 +298,7 @@ namespace MatrixUWP.Views.General.Course
                     AppModel.ShowMessage?.Invoke("题目配置错误");
                     return;
                 }
-                ShowSubmitPage(model.DeserialzedConfig, model);
+                await ShowSubmitPage(model.DeserialzedConfig, model);
             }
             catch (Exception ex)
             {

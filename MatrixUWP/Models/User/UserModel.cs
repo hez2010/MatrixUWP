@@ -1,9 +1,8 @@
 #nullable enable
 using MatrixUWP.Extensions;
-using System.Collections.Generic;
+using System;
 using System.Threading.Tasks;
-using Windows.Storage.Streams;
-using Windows.Web.Http;
+using Windows.Storage;
 
 namespace MatrixUWP.Models.User
 {
@@ -55,15 +54,10 @@ namespace MatrixUWP.Models.User
                 .JsonAsync<ResponseModel>();
         }
 
-        public static async ValueTask<ResponseModel> UpdateAvatarAsync(IInputStream stream)
+        public static async ValueTask<ResponseModel> UpdateAvatarAsync(StorageFile file)
         {
-            using var content = new HttpStreamContent(stream);
-            content.Headers.ContentType = new Windows.Web.Http.Headers.HttpMediaTypeHeaderValue("image/jpeg");
-            var data = new Dictionary<string, IHttpContent>
-            {
-                ["avatar"] = content
-            };
-            return await AppModel.MatrixHttpClient.PostMultiPartAsync("/api/users/profile", data)
+            var buffer = await FileIO.ReadBufferAsync(file);
+            return await AppModel.MatrixHttpClient.PostFileAsync("/api/users/profile", "avatar", file)
                 .JsonAsync<ResponseModel>();
         }
     }

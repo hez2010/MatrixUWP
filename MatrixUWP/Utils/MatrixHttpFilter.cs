@@ -21,24 +21,24 @@ namespace MatrixUWP.Utils
         public IAsyncOperationWithProgress<HttpResponseMessage, HttpProgress> SendRequestAsync(HttpRequestMessage request)
         {
             return AsyncInfo.Run<HttpResponseMessage, HttpProgress>(async (cancellationToken, progress) =>
-{
-    cancellationToken.ThrowIfCancellationRequested();
+            {
+                cancellationToken.ThrowIfCancellationRequested();
 
-    var uri = request.RequestUri;
+                var uri = request.RequestUri;
 
-    var filter = new HttpBaseProtocolFilter();
-    var cookieCollection = filter.CookieManager.GetCookies(uri);
+                var filter = new HttpBaseProtocolFilter();
+                var cookieCollection = filter.CookieManager.GetCookies(uri);
 
-    var csrf = cookieCollection.FirstOrDefault(cookie => cookie.Name == "X-CSRF-Token");
-    if (csrf != null) request.Headers.Add(csrf.Name, csrf.Value);
+                var csrf = cookieCollection.FirstOrDefault(cookie => cookie.Name == "X-CSRF-Token");
+                if (csrf != null) request.Headers.Add(csrf.Name, csrf.Value);
 
-    var response = await innerFilter.SendRequestAsync(request).AsTask(cancellationToken, progress);
-
-    Debug.WriteLine(
-    $"Sent request: {request.Method.Method} {uri}, with data: {(request.Content == null ? "null" : await request.Content.ReadAsStringAsync())}, with headers: {request.Headers.SerializeJson()}");
-
-    return response;
-});
+                var response = await innerFilter.SendRequestAsync(request).AsTask(cancellationToken, progress);
+#if DEBUG
+                Debug.WriteLine(
+                    $"Sent request: {request.Method.Method} {uri}, with data: {(request.Content == null ? "null" : await request.Content.ReadAsStringAsync())}, with headers: {request.Headers.SerializeJson()}");
+#endif
+                return response;
+            });
         }
 
         public void Dispose()

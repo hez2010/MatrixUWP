@@ -6,8 +6,8 @@ using MatrixUWP.ViewModels;
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using Windows.Storage;
 using Windows.Storage.Pickers;
-using Windows.Storage.Streams;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -56,24 +56,22 @@ namespace MatrixUWP.Views.Account
             picker.FileTypeFilter.Add(".jpg");
             picker.FileTypeFilter.Add(".jpeg");
             picker.FileTypeFilter.Add(".png");
-            picker.FileTypeFilter.Add(".gif");
             var file = await picker.PickSingleFileAsync();
-            if (file == null) return;
-            using var stream = await file.OpenSequentialReadAsync();
+            if (file is null) return;
             viewModel.Loading = true;
             await Dispatcher.YieldAsync();
-            AppModel.ShowMessage?.Invoke(await UpdateProfile(stream));
+            AppModel.ShowMessage?.Invoke(await UpdateProfile(file));
             viewModel.Loading = false;
         }
 
-        private async ValueTask<string> UpdateProfile(IInputStream? stream = null)
+        private async ValueTask<string> UpdateProfile(StorageFile? file = null)
         {
             if (viewModel.UserData is null) throw new NullReferenceException("UserData cannot be null.");
             try
             {
-                var result = stream switch
+                var result = file switch
                 {
-                    IInputStream _ => await UserModel.UpdateAvatarAsync(stream),
+                    StorageFile _ => await UserModel.UpdateAvatarAsync(file),
                     _ => await UserModel.UpdateProfileAsync(new ProfileUpdateModel
                     {
                         Email = viewModel.UserData.Email,
@@ -83,7 +81,7 @@ namespace MatrixUWP.Views.Account
                         MailConfig = viewModel.UserData.MailConfig
                     })
                 };
-
+                if (file != null) viewModel.UserData.OnPropertyChanged(nameof(viewModel.UserData.Avatar));
                 if (result.Status == StatusCode.OK)
                 {
                     UserModel.UpdateUserData(viewModel.UserData);

@@ -1,8 +1,9 @@
 #nullable enable
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
+using Windows.Storage;
 using Windows.Web.Http;
+using Windows.Web.Http.Headers;
 
 namespace MatrixUWP.Utils
 {
@@ -48,16 +49,14 @@ namespace MatrixUWP.Utils
             return await httpClient.PostAsync(uri, jsonContent);
         }
 
-        public async ValueTask<HttpResponseMessage> PostMultiPartAsync(string path, IDictionary<string, IHttpContent> contents)
+        public async ValueTask<HttpResponseMessage> PostFileAsync(string path, string name, StorageFile file)
         {
             await EnsureTokenSavedAsync();
             var uri = new Uri(BaseUri, path);
             using var multipartData = new HttpMultipartFormDataContent();
-            foreach (var i in contents)
-            {
-                if (string.IsNullOrEmpty(i.Key)) multipartData.Add(i.Value);
-                else multipartData.Add(i.Value, i.Key);
-            }
+            using var content = new HttpBufferContent(await FileIO.ReadBufferAsync(file));
+            content.Headers.ContentType = HttpMediaTypeHeaderValue.Parse(file.ContentType);
+            multipartData.Add(content, name, file.Name);
             return await httpClient.PostAsync(uri, multipartData);
         }
     }

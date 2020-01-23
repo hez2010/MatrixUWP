@@ -11,6 +11,6 @@ namespace MatrixUWP.Models.Course.Assignment.Output
         [JsonProperty("standard_score")]
         public int StandardScore { get; set; }
         [JsonProperty("standard_answers")]
-        public List<int>? StandardAnswers { get; set; }
+        public List<string>? StandardAnswers { get; set; }
     }
 }

@@ -1,5 +1,4 @@
 #nullable enable
-using MatrixUWP.Utils;
 using Newtonsoft.Json;
 using System;
 using System.ComponentModel;
@@ -86,7 +85,7 @@ namespace MatrixUWP.Models.User
                 {
                     try
                     {
-                        bitmap.UriSource = new Uri(AppModel.MatrixHttpClient.BaseUri, $"/api/users/profile/avatar?username={UserName}");
+                        bitmap.UriSource = new Uri(AppModel.MatrixHttpClient.BaseUri, $"/api/users/profile/avatar?username={UserName}&t={DateTime.Now.Ticks}");
                     }
                     catch
                     {
@@ -98,7 +97,7 @@ namespace MatrixUWP.Models.User
             }
         }
 
-        protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+        public virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
