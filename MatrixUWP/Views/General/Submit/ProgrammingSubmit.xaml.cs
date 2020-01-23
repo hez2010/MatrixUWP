@@ -53,11 +53,8 @@ namespace MatrixUWP.Views.General.Submit
                         viewModel.Files.Add(new ProgrammingFileModel
                         {
                             FileName = i,
-                            EditorOptions = new IEditorConstructionOptions
-                            {
-                                ReadOnly = true,
-                                Language = languageConverter.Convert(p.Languages?.FirstOrDefault()!, typeof(string), null!, null!)?.ToString() ?? ""
-                            },
+                            ReadOnly = false,
+                            Language = languageConverter.Convert(p.Languages?.FirstOrDefault()!, typeof(string), null!, null!)?.ToString() ?? "",
                             IsSupportFile = false,
                             SetContent = p.SetContent,
                             GetContent = p.GetContent
@@ -71,11 +68,8 @@ namespace MatrixUWP.Views.General.Submit
                         viewModel.Files.Add(new ProgrammingFileModel
                         {
                             FileName = i,
-                            EditorOptions = new IEditorConstructionOptions
-                            {
-                                ReadOnly = true,
-                                Language = languageConverter.Convert(p.Languages?.FirstOrDefault()!, typeof(string), null!, null!)?.ToString() ?? ""
-                            },
+                            ReadOnly = true,
+                            Language = languageConverter.Convert(p.Languages?.FirstOrDefault()!, typeof(string), null!, null!)?.ToString() ?? "",
                             IsSupportFile = true,
                             GetContent = p.GetContent
                         });
@@ -230,37 +224,6 @@ namespace MatrixUWP.Views.General.Submit
             {
                 viewModel.Loading = false;
             }
-        }
-
-        private void SetCodeEditorState(UIElement sender, ProgrammingFileModel model)
-        {
-            var editor = sender.FindChildOfName<CodeEditor>("SingleCodeEditor");
-            if (editor != null)
-            {
-                editor.Options.ReadOnly = null;
-                editor.Options.ReadOnly = model.IsSupportFile;
-                editor.Text = model.GetContent?.Invoke(model.FileName, model.IsSupportFile);
-            }
-            if (model.EditorOptions != null)
-            {
-                model.EditorOptions.ReadOnly = null;
-                model.EditorOptions.ReadOnly = model.IsSupportFile;
-            }
-        }
-
-        private void EditorContainer_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (!(sender is TabView tv)) return;
-            var item = e.AddedItems.FirstOrDefault();
-            if (!(item is ProgrammingFileModel model)) return;
-            SetCodeEditorState(tv, model);
-        }
-
-        private void MainCodeEditor_Loaded(object sender, RoutedEventArgs e)
-        {
-            if (!(sender is CodeEditor editor)) return;
-            if (!(EditorContainer.SelectedItem is ProgrammingFileModel model)) return;
-            SetCodeEditorState(editor, model);
         }
     }
 }

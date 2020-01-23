@@ -17,14 +17,26 @@ namespace MatrixUWP.ViewModels
         /// </summary>
         public Action<string, string>? SetContent;
         public bool SuppressSetDispatcher = false;
-        private IEditorConstructionOptions? editorOptions;
+        private string? language;
 
-        public IEditorConstructionOptions? EditorOptions
+        public string? Language
         {
-            get => editorOptions;
+            get => language;
             set
             {
-                editorOptions = value;
+                language = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool readOnly;
+
+        public bool ReadOnly
+        {
+            get => readOnly;
+            set
+            {
+                readOnly = value;
                 OnPropertyChanged();
             }
         }
@@ -36,7 +48,7 @@ namespace MatrixUWP.ViewModels
             {
                 if (!SuppressSetDispatcher)
                 {
-                    if (!(EditorOptions?.ReadOnly ?? false))
+                    if (!ReadOnly)
                         SetContent?.Invoke(FileName, value ?? "");
                 }
                 else SuppressSetDispatcher = false;
