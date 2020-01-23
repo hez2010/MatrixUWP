@@ -40,7 +40,9 @@ namespace MatrixUWP.Views.Account
             catch (Exception ex)
             {
                 AppModel.ShowMessage?.Invoke(ex.Message);
+#if DEBUG
                 Debug.Fail(ex.Message, ex.StackTrace);
+#endif
             }
             finally
             {
@@ -90,7 +92,9 @@ namespace MatrixUWP.Views.Account
             }
             catch (Exception ex)
             {
+#if DEBUG
                 Debug.Fail(ex.Message, ex.StackTrace);
+#endif
                 return ex.Message;
             }
         }

@@ -99,7 +99,9 @@ namespace MatrixUWP
 
         private void OnUnhandledException(object sender, Windows.UI.Xaml.UnhandledExceptionEventArgs e)
         {
+#if DEBUG
             Debug.Fail(e.Message, e.Exception.StackTrace);
+#endif
             e.Handled = true;
         }
     }
