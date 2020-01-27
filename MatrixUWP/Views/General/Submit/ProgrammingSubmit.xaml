@@ -24,7 +24,7 @@
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
-            <Button x:Name="Submit" Margin="8,0,0,0" CornerRadius="3" Content="提交" Click="Submit_Click"></Button>
+            <Button x:Name="Submit" Margin="8,0,0,0" Content="提交" Click="Submit_Click"></Button>
         </StackPanel>
         <Grid Margin="8,54,8,0">
             <Grid.ColumnDefinitions>
@@ -61,7 +61,7 @@
                             RequestedTheme="{x:Bind app:AppModel.AppConfiguration.AppTheme, Converter={StaticResource EnumConverter},Mode=OneWay}" 
                             Text="{x:Bind Content, Mode=TwoWay}"
                             ReadOnly="{x:Bind ReadOnly, Mode=OneWay}"
-                            CodeLanguage="{Binding ElementName=LanguageBox, Path=SelectedItem, Mode=OneWay, Converter={StaticResource LanguageConverter}}">
+                            CodeLanguage="{Binding ElementName=LanguageBox, Path=SelectedItem, Mode=OneWay, Converter={StaticResource LanguageConverter}}" Loaded="MainCodeEditor_Loaded">
 
                         </monaco:CodeEditor>
                     </DataTemplate>

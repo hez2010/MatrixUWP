@@ -34,11 +34,13 @@ namespace MatrixUWP.Models.User
             return result;
         }
 
+        public static ValueTask<ResponseModel<UserDataModel>> GetUserProfile()
+            => AppModel.MatrixHttpClient.GetAsync("/api/users/profile")
+                .JsonAsync<ResponseModel<UserDataModel>>();
+
         public static ValueTask<ResponseModel<CaptchaDataModel>> FetchCaptchaAsync()
-        {
-            return AppModel.MatrixHttpClient.GetAsync("/api/captcha")
+            => AppModel.MatrixHttpClient.GetAsync("/api/captcha")
                 .JsonAsync<ResponseModel<CaptchaDataModel>>();
-        }
 
         public static ValueTask<ResponseModel> SignOutAsync()
         {
@@ -48,17 +50,12 @@ namespace MatrixUWP.Models.User
             return AppModel.MatrixHttpClient.PostJsonAsync("/api/users/logout", new { }).JsonAsync<ResponseModel>();
         }
 
-        public static async ValueTask<ResponseModel> UpdateProfileAsync(ProfileUpdateModel model)
-        {
-            return await AppModel.MatrixHttpClient.PostJsonAsync("/api/users/profile", model)
+        public static ValueTask<ResponseModel> UpdateProfileAsync(ProfileUpdateModel model)
+            => AppModel.MatrixHttpClient.PostJsonAsync("/api/users/profile", model)
                 .JsonAsync<ResponseModel>();
-        }
 
-        public static async ValueTask<ResponseModel> UpdateAvatarAsync(StorageFile file)
-        {
-            var buffer = await FileIO.ReadBufferAsync(file);
-            return await AppModel.MatrixHttpClient.PostFileAsync("/api/users/profile", "avatar", file)
+        public static ValueTask<ResponseModel> UpdateAvatarAsync(StorageFile file)
+            => AppModel.MatrixHttpClient.PostFileAsync("/api/users/profile", "avatar", file)
                 .JsonAsync<ResponseModel>();
-        }
     }
 }

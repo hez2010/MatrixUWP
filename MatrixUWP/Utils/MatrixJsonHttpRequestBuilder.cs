@@ -1,4 +1,5 @@
 #nullable enable
+using MatrixUWP.Models;
 using System;
 using Windows.ApplicationModel;
 using Windows.Web.Http;
@@ -19,7 +20,8 @@ namespace MatrixUWP.Utils
         {
             // HttpClient functionality can be extended by plugging multiple filters together and providing
             // HttpClient with the configured filter pipeline.
-            var filter = new MatrixHttpFilter(new HttpBaseProtocolFilter()); // Adds a custom header to every request and response message.
+            var protocolFilter = new HttpBaseProtocolFilter();
+            var filter = new MatrixHttpFilter(protocolFilter); // Adds a custom header to every request and response message.
             httpClient = new HttpClient(filter);
 
             var version = Package.Current.Id.Version;

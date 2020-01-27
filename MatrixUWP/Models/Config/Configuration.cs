@@ -1,4 +1,5 @@
 #nullable enable
+using Newtonsoft.Json;
 using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -76,14 +77,21 @@ namespace MatrixUWP.Models.Config
 
         protected void SaveConfiguration<T>(T value, [CallerMemberName] string? propertyName = null)
         {
-            ApplicationData.Current.LocalSettings.Values[propertyName] = value;
+            ApplicationData.Current.LocalSettings.Values[propertyName] = JsonConvert.SerializeObject(value);
         }
 
         protected static T GetConfiguration<T>([CallerMemberName] string? propertyName = null, T defaultValue = default!)
         {
             var value = ApplicationData.Current.LocalSettings.Values[propertyName];
             if (value is null) return defaultValue;
-            return (T)value;
+            try
+            {
+                return JsonConvert.DeserializeObject<T>(value.ToString());
+            }
+            catch
+            {
+                return defaultValue;
+            }
         }
     }
 }

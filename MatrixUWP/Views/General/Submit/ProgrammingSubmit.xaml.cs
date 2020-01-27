@@ -8,10 +8,14 @@ using MatrixUWP.ViewModels;
 using MatrixUWP.Views.General.Course;
 using MatrixUWP.Views.Parameters.Submit;
 using Microsoft.Toolkit.Uwp.UI.Controls;
+using Monaco;
+using Monaco.Languages;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
@@ -227,6 +231,13 @@ namespace MatrixUWP.Views.General.Submit
             {
                 viewModel.Loading = false;
             }
+        }
+
+        private async void MainCodeEditor_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (!(sender is CodeEditor editor)) return;
+            var languages = new LanguagesHelper(editor);
+            var avaliableLanguages = await languages.GetLanguagesAsync();
         }
     }
 }

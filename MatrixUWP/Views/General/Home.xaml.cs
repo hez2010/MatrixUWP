@@ -81,10 +81,6 @@ namespace MatrixUWP.Views.General
             {
                 viewModel.UserName = AppModel.AppConfiguration.SavedUserName;
                 viewModel.Password = AppModel.AppConfiguration.SavedPassword;
-                if (!string.IsNullOrEmpty(viewModel.UserName) && !string.IsNullOrEmpty(viewModel.Password))
-                {
-                    SignIn_Click(this, null);
-                }
             }
         }
     }

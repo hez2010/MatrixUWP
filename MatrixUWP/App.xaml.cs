@@ -1,7 +1,10 @@
 #nullable enable
+using MatrixUWP.Models;
+using MatrixUWP.Models.User;
 using MatrixUWP.Views;
 using System;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.UI;
@@ -31,7 +34,7 @@ namespace MatrixUWP
         /// will be used such as when the application is launched to open a specific file.
         /// </summary>
         /// <param name="e">Details about the launch request and process.</param>
-        protected override void OnLaunched(LaunchActivatedEventArgs e)
+        protected override async void OnLaunched(LaunchActivatedEventArgs e)
         {
             // Do not repeat app initialization when the Window already has content,
             // just ensure that the window is active
@@ -68,6 +71,16 @@ namespace MatrixUWP
                 var titleBar = appView.TitleBar;
                 titleBar.ButtonBackgroundColor = Colors.Transparent;
                 titleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
+
+                try
+                {
+                    var response = await UserModel.GetUserProfile();
+                    if (response.Status == StatusCode.OK)
+                    {
+                        UserModel.UpdateUserData(response.Data);
+                    }
+                }
+                catch { /* ignored */ }
 
                 Window.Current.Activate();
             }
