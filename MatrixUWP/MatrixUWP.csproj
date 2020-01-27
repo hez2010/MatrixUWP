@@ -138,8 +138,13 @@
     <Compile Include="Converters\NumberLetterConverter.cs" />
     <Compile Include="Extensions\CopyExtensions.cs" />
     <Compile Include="Extensions\DispatcherExtensions.cs" />
+    <Compile Include="Extensions\JsonExtensions.cs" />
     <Compile Include="Extensions\ResponseExtensions.cs" />
     <Compile Include="Extensions\TaskExtensions.cs" />
+    <Compile Include="Models\AppModel.cs" />
+    <Compile Include="Models\Config\Configuration.cs" />
+    <Compile Include="Models\Config\Language.cs" />
+    <Compile Include="Models\Config\Theme.cs" />
     <Compile Include="Models\Course\Assignment\Answer\AnswerAssignmentConfig.cs" />
     <Compile Include="Models\Course\Assignment\Answer\AnswerAssignmentQuestion.cs" />
     <Compile Include="Models\Course\Assignment\Choice\ChoiceAssignmentQuestion.cs" />
@@ -154,7 +159,6 @@
     <Compile Include="Models\Course\Assignment\Programming\ProgrammingAssignmentConfig.cs" />
     <Compile Include="Models\Course\Assignment\Programming\ProgrammingStandard.cs" />
     <Compile Include="Models\Course\Assignment\Report\ReportAssignmentConfig.cs" />
-    <Compile Include="Models\AppModel.cs" />
     <Compile Include="Models\Submission\Programming\ProgrammingAnswer.cs" />
     <Compile Include="Models\Submission\SubmitAnswerModel.cs" />
     <Compile Include="Models\Submission\Answer\ChoiceAnswer.cs" />
@@ -163,22 +167,23 @@
     <Compile Include="Models\Submission\SubmissionModel.cs" />
     <Compile Include="Models\Submission\SubmitPostModel.cs" />
     <Compile Include="Models\User\CaptchaDataModel.cs" />
-    <Compile Include="Models\Config\Configuration.cs" />
     <Compile Include="Models\Course\Assignment\CourseAssignmentDetailsModel.cs" />
     <Compile Include="Models\Course\Assignment\CourseAssignmentModel.cs" />
     <Compile Include="Models\Course\CourseInfoModel.cs" />
     <Compile Include="Models\Course\CourseModel.cs" />
-    <Compile Include="Models\Config\Language.cs" />
     <Compile Include="Models\User\MailConfig.cs" />
     <Compile Include="Models\User\ProfileUpdateModel.cs" />
     <Compile Include="Models\ResponseModel.cs" />
     <Compile Include="Models\StatusCode.cs" />
-    <Compile Include="Models\Config\Theme.cs" />
     <Compile Include="Models\User\UserDataModel.cs" />
     <Compile Include="Models\User\UserEssentialDataModel.cs" />
     <Compile Include="Models\User\UserModel.cs" />
-    <Compile Include="Extensions\JsonExtensions.cs" />
+    <Compile Include="Utils\BackgroundServiceHelper.cs" />
+    <Compile Include="Utils\HttpJsonContent.cs" />
     <Compile Include="Utils\LogHelper.cs" />
+    <Compile Include="Utils\MatrixHttpFilter.cs" />
+    <Compile Include="Utils\MatrixJsonHttpRequestBuilder.cs" />
+    <Compile Include="Utils\MatrixJsonHttpRequestClient.cs" />
     <Compile Include="Utils\VisualTreeUtils.cs" />
     <Compile Include="ViewModels\ChoiceSubmitViewModel.cs" />
     <Compile Include="ViewModels\CourseAssignmentsViewModel.cs" />
@@ -199,9 +204,6 @@
     <Compile Include="Views\General\Submit\ProgrammingSubmit.xaml.cs">
       <DependentUpon>ProgrammingSubmit.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Utils\HttpJsonContent.cs" />
-    <Compile Include="Utils\MatrixJsonHttpRequestBuilder.cs" />
-    <Compile Include="Utils\MatrixJsonHttpRequestClient.cs" />
     <Compile Include="ViewModels\HomeViewModel.cs" />
     <Compile Include="ViewModels\LayoutViewModel.cs" />
     <Compile Include="Views\Account\Profile.xaml.cs">
@@ -239,7 +241,6 @@
       <DependentUpon>Settings.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Utils\MatrixHttpFilter.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -418,6 +419,12 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MatrixUWP.BackgroundService\MatrixUWP.BackgroundService.csproj">
+      <Project>{10123298-a4bf-4b75-8b05-e6e025c928e7}</Project>
+      <Name>MatrixUWP.BackgroundService</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

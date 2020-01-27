@@ -1,7 +1,7 @@
 #nullable enable
 using Newtonsoft.Json;
 
-namespace MatrixUWP.Extensions
+namespace MatrixUWP.BackgroundService.Extensions
 {
     static class JsonExtensions
     {

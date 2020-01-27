@@ -1,5 +1,5 @@
 #nullable enable
-using MatrixUWP.Extensions;
+using MatrixUWP.BackgroundService.Extensions;
 using System;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
@@ -8,7 +8,7 @@ using Windows.Storage.Streams;
 using Windows.Web.Http;
 using Windows.Web.Http.Headers;
 
-namespace MatrixUWP.Utils
+namespace MatrixUWP.BackgroundService.Utils
 {
     class HttpJsonContent<T> : IHttpContent, IDisposable
     {

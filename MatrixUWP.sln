@@ -13,6 +13,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Misc", "Misc", "{8DB1995C-D
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MatrixUWP.BackgroundService", "MatrixUWP.BackgroundService\MatrixUWP.BackgroundService.csproj", "{10123298-A4BF-4B75-8B05-E6E025C928E7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -79,6 +81,26 @@ Global
 		{74460715-3A78-4EE8-9E83-446F130B6C1A}.Release|x86.ActiveCfg = Release|x86
 		{74460715-3A78-4EE8-9E83-446F130B6C1A}.Release|x86.Build.0 = Release|x86
 		{74460715-3A78-4EE8-9E83-446F130B6C1A}.Release|x86.Deploy.0 = Release|x86
+		{10123298-A4BF-4B75-8B05-E6E025C928E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10123298-A4BF-4B75-8B05-E6E025C928E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10123298-A4BF-4B75-8B05-E6E025C928E7}.Debug|ARM.ActiveCfg = Debug|ARM
+		{10123298-A4BF-4B75-8B05-E6E025C928E7}.Debug|ARM.Build.0 = Debug|ARM
+		{10123298-A4BF-4B75-8B05-E6E025C928E7}.Debug|ARM64.ActiveCfg = Debug|ARM64
+		{10123298-A4BF-4B75-8B05-E6E025C928E7}.Debug|ARM64.Build.0 = Debug|ARM64
+		{10123298-A4BF-4B75-8B05-E6E025C928E7}.Debug|x64.ActiveCfg = Debug|x64
+		{10123298-A4BF-4B75-8B05-E6E025C928E7}.Debug|x64.Build.0 = Debug|x64
+		{10123298-A4BF-4B75-8B05-E6E025C928E7}.Debug|x86.ActiveCfg = Debug|x86
+		{10123298-A4BF-4B75-8B05-E6E025C928E7}.Debug|x86.Build.0 = Debug|x86
+		{10123298-A4BF-4B75-8B05-E6E025C928E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10123298-A4BF-4B75-8B05-E6E025C928E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{10123298-A4BF-4B75-8B05-E6E025C928E7}.Release|ARM.ActiveCfg = Release|ARM
+		{10123298-A4BF-4B75-8B05-E6E025C928E7}.Release|ARM.Build.0 = Release|ARM
+		{10123298-A4BF-4B75-8B05-E6E025C928E7}.Release|ARM64.ActiveCfg = Release|ARM64
+		{10123298-A4BF-4B75-8B05-E6E025C928E7}.Release|ARM64.Build.0 = Release|ARM64
+		{10123298-A4BF-4B75-8B05-E6E025C928E7}.Release|x64.ActiveCfg = Release|x64
+		{10123298-A4BF-4B75-8B05-E6E025C928E7}.Release|x64.Build.0 = Release|x64
+		{10123298-A4BF-4B75-8B05-E6E025C928E7}.Release|x86.ActiveCfg = Release|x86
+		{10123298-A4BF-4B75-8B05-E6E025C928E7}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -4,7 +4,7 @@ using Windows.ApplicationModel;
 using Windows.Web.Http;
 using Windows.Web.Http.Filters;
 
-namespace MatrixUWP.Utils
+namespace MatrixUWP.BackgroundService.Utils
 {
     class MatrixJsonHttpRequestBuilder
     {

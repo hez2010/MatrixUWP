@@ -5,7 +5,7 @@ using Windows.Storage;
 using Windows.Web.Http;
 using Windows.Web.Http.Headers;
 
-namespace MatrixUWP.Utils
+namespace MatrixUWP.BackgroundService.Utils
 {
     class MatrixJsonHttpRequestClient
     {

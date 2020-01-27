@@ -1,6 +1,7 @@
 #nullable enable
 using MatrixUWP.Models;
 using MatrixUWP.Models.User;
+using MatrixUWP.Utils;
 using MatrixUWP.Views;
 using System;
 using System.Diagnostics;
@@ -28,6 +29,8 @@ namespace MatrixUWP
             InitializeComponent();
             Suspending += OnSuspending;
             UnhandledException += OnUnhandledException;
+            BackgroundServiceHelper.UnregistBackgroundTasks();
+            BackgroundServiceHelper.RegistBackgroundTasks();
         }
 
         /// Invoked when the application is launched normally by the end user.  Other entry points

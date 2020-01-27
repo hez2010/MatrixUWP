@@ -1,6 +1,5 @@
 #nullable enable
 using MatrixUWP.Extensions;
-using System;
 using System.Threading.Tasks;
 using Windows.Storage;
 
