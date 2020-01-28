@@ -5,7 +5,6 @@ using MatrixUWP.Utils;
 using MatrixUWP.Views;
 using System;
 using System.Diagnostics;
-using System.Runtime.CompilerServices;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.UI;
@@ -29,8 +28,6 @@ namespace MatrixUWP
             InitializeComponent();
             Suspending += OnSuspending;
             UnhandledException += OnUnhandledException;
-            BackgroundServiceHelper.UnregistBackgroundTasks();
-            BackgroundServiceHelper.RegistBackgroundTasks();
         }
 
         /// Invoked when the application is launched normally by the end user.  Other entry points
@@ -58,6 +55,9 @@ namespace MatrixUWP
 
             if (e.PrelaunchActivated == false)
             {
+                BackgroundServiceHelper.UnregistBackgroundTasks();
+                await BackgroundServiceHelper.RegistBackgroundTasksAsync();
+
                 if (rootFrame.Content == null)
                 {
                     // When the navigation stack isn't restored navigate to the first page,

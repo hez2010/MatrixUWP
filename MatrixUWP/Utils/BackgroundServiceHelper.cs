@@ -3,6 +3,7 @@ using MatrixUWP.BackgroundService;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Windows.ApplicationModel.Background;
 
 namespace MatrixUWP.Utils
@@ -10,16 +11,13 @@ namespace MatrixUWP.Utils
     static class BackgroundServiceHelper
     {
         public static readonly List<IBackgroundTaskRegistration> BackgroundTasks = BackgroundTaskRegistration.AllTasks.Values.ToList();
-        private static readonly string[] allTasks =
-            new[]
-            {
-                nameof(BackgroundService.Tasks.SampleBackgroundTask)
-            };
-        private static readonly string taskPath =
-            $"{nameof(MatrixUWP)}.{nameof(BackgroundService)}.{nameof(BackgroundService.Tasks)}";
 
         private static string[] GetUnregistTasks()
         {
+            var allTasks = typeof(IAutoRegistBackgroundTask).Assembly
+                .GetExportedTypes()
+                .Where(i => i.GetInterface(nameof(IAutoRegistBackgroundTask)) != null)
+                .Select(i => i.Name);
             var tasks = allTasks.ToDictionary(i => i, i => false);
             foreach (var i in BackgroundTasks)
             {
@@ -28,32 +26,26 @@ namespace MatrixUWP.Utils
             return tasks.Where(i => !i.Value).Select(i => i.Key).ToArray();
         }
 
-        private static void RegistTask(Type taskType)
+        private static async ValueTask RegistTaskAsync(Type taskType)
         {
             var constructor = taskType.GetConstructor(Array.Empty<Type>());
             var task = (IAutoRegistBackgroundTask)constructor.Invoke(Array.Empty<object>());
-            var builder = new BackgroundTaskBuilder
-            {
-                Name = taskType.Name,
-                TaskEntryPoint = taskType.FullName
-            };
-            foreach (var trigger in task.GetTriggers()) builder.SetTrigger(trigger);
-            foreach (var condition in task.GetConditions()) builder.AddCondition(condition);
-
-            BackgroundTasks.Add(builder.Register());
+            var result = await task.RegistAsync();
+            if (result != null)
+                BackgroundTasks.Add(result);
         }
 
-        public static void RegistBackgroundTask<T>() where T : IAutoRegistBackgroundTask
+        public static ValueTask RegistBackgroundTaskAsync<T>() where T : IAutoRegistBackgroundTask
         {
-            RegistTask(typeof(T));
+            return RegistTaskAsync(typeof(T));
         }
 
-        public static void RegistBackgroundTasks()
+        public static async ValueTask RegistBackgroundTasksAsync()
         {
             var tasks = typeof(IAutoRegistBackgroundTask).Assembly
                 .GetExportedTypes()
                 .Where(i => i.GetInterface(nameof(IAutoRegistBackgroundTask)) != null);
-            foreach (var taskType in tasks) RegistTask(taskType);
+            foreach (var taskType in tasks) await RegistTaskAsync(taskType);
             return;
         }
 

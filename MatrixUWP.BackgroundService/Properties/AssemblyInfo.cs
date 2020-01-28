@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("Matrix UWP Background Service")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Matrix")]
-[assembly: AssemblyProduct("MatrixUWP.BackgroundService")]
+[assembly: AssemblyProduct("Matrix UWP")]
 [assembly: AssemblyCopyright("Copyright ©  2020")]
 [assembly: AssemblyTrademark("Matrix")]
 [assembly: AssemblyCulture("")]
