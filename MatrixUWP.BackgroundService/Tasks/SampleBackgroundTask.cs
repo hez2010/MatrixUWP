@@ -1,13 +1,28 @@
 ﻿#nullable enable
 using Microsoft.Toolkit.Uwp.Notifications;
 using System;
+using System.Collections.Generic;
 using Windows.ApplicationModel.Background;
 using Windows.UI.Notifications;
 
 namespace MatrixUWP.BackgroundService.Tasks
 {
-    public sealed class SampleBackgroundTask : IBackgroundTask
+    public sealed class SampleBackgroundTask : IAutoRegistBackgroundTask
     {
+        public IBackgroundCondition[] GetConditions()
+        {
+            var list = new List<IBackgroundCondition>();
+            return list.ToArray();
+        }
+        public IBackgroundTrigger[] GetTriggers()
+        {
+            var list = new List<IBackgroundTrigger>
+            {
+                new TimeTrigger(15, false)
+            };
+            return list.ToArray();
+        }
+
         private BackgroundTaskDeferral? _deferral;
         private static int count = 0;
         public void Run(IBackgroundTaskInstance taskInstance)

@@ -1,4 +1,6 @@
 ﻿#nullable enable
+using MatrixUWP.BackgroundService;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Windows.ApplicationModel.Background;
@@ -26,47 +28,43 @@ namespace MatrixUWP.Utils
             return tasks.Where(i => !i.Value).Select(i => i.Key).ToArray();
         }
 
-        private static IBackgroundTrigger[] GetTriggers(string taskName)
+        private static void RegistTask(Type taskType)
         {
-            var list = new List<IBackgroundTrigger>();
-            switch (taskName)
-            {
-                case nameof(BackgroundService.Tasks.SampleBackgroundTask):
-                    list.Add(new TimeTrigger(15, false));
-                    break;
-            }
-            return list.ToArray();
-        }
-
-        private static IBackgroundCondition[] GetConditions(string taskName)
-        {
-            var list = new List<IBackgroundCondition>();
-            switch (taskName)
-            {
-                case nameof(BackgroundService.Tasks.SampleBackgroundTask):
-                    list.Add(new SystemCondition(SystemConditionType.UserPresent));
-                    break;
-            }
-            return list.ToArray();
-        }
-
-        private static void RegistTask(string taskName)
-        {
+            var constructor = taskType.GetConstructor(Array.Empty<Type>());
+            var task = (IAutoRegistBackgroundTask)constructor.Invoke(Array.Empty<object>());
             var builder = new BackgroundTaskBuilder
             {
-                Name = taskName,
-                TaskEntryPoint = $"{taskPath}.{taskName}"
+                Name = taskType.Name,
+                TaskEntryPoint = taskType.FullName
             };
-            foreach (var i in GetTriggers(taskName)) builder.SetTrigger(i);
-            foreach (var i in GetConditions(taskName)) builder.AddCondition(i);
+            foreach (var trigger in task.GetTriggers()) builder.SetTrigger(trigger);
+            foreach (var condition in task.GetConditions()) builder.AddCondition(condition);
+
             BackgroundTasks.Add(builder.Register());
+        }
+
+        public static void RegistBackgroundTask<T>() where T : IAutoRegistBackgroundTask
+        {
+            RegistTask(typeof(T));
         }
 
         public static void RegistBackgroundTasks()
         {
-            foreach (var i in GetUnregistTasks())
+            var tasks = typeof(IAutoRegistBackgroundTask).Assembly
+                .GetExportedTypes()
+                .Where(i => i.GetInterface(nameof(IAutoRegistBackgroundTask)) != null);
+            foreach (var taskType in tasks) RegistTask(taskType);
+            return;
+        }
+
+        public static void UnregistBackgroundTask<T>() where T : IAutoRegistBackgroundTask
+        {
+            var name = typeof(T).Name;
+            var tasks = BackgroundTasks.Where(i => i.Name == name).ToList();
+            foreach (var task in tasks)
             {
-                RegistTask(i);
+                task.Unregister(true);
+                BackgroundTasks.Remove(task);
             }
         }
 
