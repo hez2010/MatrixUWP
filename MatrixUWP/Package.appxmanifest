@@ -50,7 +50,8 @@
         <uap:InitialRotationPreference>
           <uap:Rotation Preference="landscape"/>
           <uap:Rotation Preference="portrait"/>
-          <uap:Rotation Preference="landscapeFlipped"/></uap:InitialRotationPreference>
+          <uap:Rotation Preference="landscapeFlipped"/>
+        </uap:InitialRotationPreference>
       </uap:VisualElements>
       <Extensions>
         <Extension Category="windows.backgroundTasks" EntryPoint="MatrixUWP.BackgroundService.Tasks.NotificationBackgroundTask" Executable="$targetnametoken$.exe">
@@ -73,5 +74,7 @@
     <Capability Name="privateNetworkClientServer"/>
     <Capability Name="internetClientServer"/>
     <Capability Name="codeGeneration"/>
+    <Capability Name="internetClient"/>
   </Capabilities>
+
 </Package>

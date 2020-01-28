@@ -2,13 +2,11 @@
 using MatrixUWP.BackgroundService.Extensions;
 using MatrixUWP.BackgroundService.Models;
 using Microsoft.Toolkit.Uwp.Notifications;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Background;
-using Windows.ApplicationModel.Core;
 using Windows.Foundation;
 using Windows.Networking.Sockets;
 using Windows.UI.Notifications;
@@ -17,9 +15,8 @@ namespace MatrixUWP.BackgroundService.Tasks
 {
     public sealed class NotificationBackgroundTask : IAutoRegistBackgroundTask
     {
-        private MessageWebSocket? socketClient;
-        const string channelId = "matrixUwpNotifications";
-        const string WebSocketKeepAliveTask = "Windows.Networking.Sockets.WebSocketKeepAlive";
+        private static MessageWebSocket? socketClient;
+        private const string channelId = "matrixUwpNotifications";
 
 #if DEBUG
         private static readonly Uri baseUri = new Uri("wss://test.vmatrix.org.cn/");
@@ -30,6 +27,7 @@ namespace MatrixUWP.BackgroundService.Tasks
 
         private async Task<BackgroundTaskRegistration?> RegistTaskAsync()
         {
+            var type = typeof(WebSocketKeepAlive);
             socketClient = new MessageWebSocket();
             socketClient.MessageReceived += SocketClient_MessageReceived;
 
@@ -38,7 +36,7 @@ namespace MatrixUWP.BackgroundService.Tasks
             var keepAliveBuilder = new BackgroundTaskBuilder
             {
                 Name = nameof(WebSocketKeepAlive),
-                TaskEntryPoint = WebSocketKeepAliveTask,
+                TaskEntryPoint = typeof(WebSocketKeepAlive).FullName,
                 IsNetworkRequested = true
             };
             keepAliveBuilder.SetTrigger(channel.KeepAliveTrigger);
@@ -67,13 +65,6 @@ namespace MatrixUWP.BackgroundService.Tasks
             return task;
         }
 
-        private Task UnregistTaskAsync()
-        {
-            if (socketClient != null)
-                socketClient.Close(0, "");
-            return Task.CompletedTask;
-        }
-
         private void SocketClient_MessageReceived(MessageWebSocket sender, MessageWebSocketMessageReceivedEventArgs args)
         {
             if (args.IsMessageComplete)
@@ -89,8 +80,9 @@ namespace MatrixUWP.BackgroundService.Tasks
             return RegistTaskAsync().AsAsyncOperation();
         }
 
-        public void Run(IBackgroundTaskInstance taskInstance)
+        public async void Run(IBackgroundTaskInstance taskInstance)
         {
+            var deferral = taskInstance.GetDeferral();
             while (messageQueue.TryDequeue(out var result))
             {
                 if (result.Data.Type == "system")
@@ -130,11 +122,7 @@ namespace MatrixUWP.BackgroundService.Tasks
                     ToastNotificationManager.CreateToastNotifier().Show(toast);
                 }
             }
-        }
-
-        public IAsyncAction UnregistAsync()
-        {
-            return UnregistTaskAsync().AsAsyncAction();
+            deferral.Complete();
         }
     }
 }
