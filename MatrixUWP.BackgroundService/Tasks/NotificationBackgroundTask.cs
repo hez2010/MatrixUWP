@@ -18,7 +18,8 @@ namespace MatrixUWP.BackgroundService.Tasks
     public sealed class NotificationBackgroundTask : IBackgroundTask
     {
         private static MessageWebSocket? socketClient;
-        private const string channelId = "matrixUwpNotifications";
+        private static ControlChannelTrigger? channel;
+        private const string channelId = "MatrixUWP_Notifications";
 
 #if DEBUG
         private static readonly Uri baseUri = new Uri("wss://test.vmatrix.org.cn/");
@@ -40,7 +41,7 @@ namespace MatrixUWP.BackgroundService.Tasks
                 socketClient = new MessageWebSocket();
                 socketClient.MessageReceived += SocketClient_MessageReceived;
 
-                var channel = new ControlChannelTrigger(channelId, 15);
+                channel = new ControlChannelTrigger(channelId, 15, ControlChannelTriggerResourceType.RequestHardwareSlot);
 
                 var keepAliveBuilder = new BackgroundTaskBuilder
                 {
