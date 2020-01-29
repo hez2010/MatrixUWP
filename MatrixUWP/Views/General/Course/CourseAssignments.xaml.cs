@@ -112,7 +112,7 @@ namespace MatrixUWP.Views.General.Course
             catch (Exception ex)
             {
                 AppModel.ShowMessage?.Invoke(ex.Message);
-#if DEBUG
+#if FAIL_ON_DEBUG
                 Debug.Fail(ex.Message, ex.StackTrace);
 #endif
             }
@@ -145,7 +145,7 @@ namespace MatrixUWP.Views.General.Course
             }
             catch (Exception ex)
             {
-#if DEBUG
+#if FAIL_ON_DEBUG
                 Debug.Fail(ex.Message, ex.StackTrace);
 #endif
                 AppModel.ShowMessage?.Invoke(ex.Message);
@@ -250,7 +250,7 @@ namespace MatrixUWP.Views.General.Course
                         }
                         catch (Exception ex)
                         {
-#if DEBUG
+#if FAIL_ON_DEBUG
                             Debug.Fail(ex.Message, ex.StackTrace);
 #endif
                             AppModel.ShowMessage?.Invoke(ex.Message);
@@ -302,7 +302,7 @@ namespace MatrixUWP.Views.General.Course
             }
             catch (Exception ex)
             {
-#if DEBUG
+#if FAIL_ON_DEBUG
                 Debug.Fail(ex.Message, ex.StackTrace);
 #endif
                 AppModel.ShowMessage?.Invoke(ex.Message);

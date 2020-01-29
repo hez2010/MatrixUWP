@@ -58,7 +58,7 @@ namespace MatrixUWP.Views.General
                 AppModel.AppConfiguration.SavedUserName = "";
                 AppModel.AppConfiguration.SavedPassword = "";
                 AppModel.ShowMessage?.Invoke(ex.Message);
-#if DEBUG
+#if FAIL_ON_DEBUG
                 Debug.Fail(ex.Message, ex.StackTrace);
 #endif
             }

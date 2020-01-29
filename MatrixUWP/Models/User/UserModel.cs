@@ -1,5 +1,7 @@
 #nullable enable
+using MatrixUWP.BackgroundService.Tasks;
 using MatrixUWP.Extensions;
+using System;
 using System.Threading.Tasks;
 using Windows.Storage;
 
@@ -24,6 +26,7 @@ namespace MatrixUWP.Models.User
                 AppModel.AppConfiguration.SavedUserName = userName;
                 AppModel.AppConfiguration.SavedPassword = password;
                 result.Data.CopyTo(CurrentUser);
+                await NotificationBackgroundTask.RegistAsync();
             }
             else
             {
@@ -41,12 +44,13 @@ namespace MatrixUWP.Models.User
             => AppModel.MatrixHttpClient.GetAsync("/api/captcha")
                 .JsonAsync<ResponseModel<CaptchaDataModel>>();
 
-        public static ValueTask<ResponseModel> SignOutAsync()
+        public static async ValueTask<ResponseModel> SignOutAsync()
         {
             AppModel.AppConfiguration.SavedUserName = "";
             AppModel.AppConfiguration.SavedPassword = "";
             new UserDataModel().CopyTo(CurrentUser);
-            return AppModel.MatrixHttpClient.PostJsonAsync("/api/users/logout", new { }).JsonAsync<ResponseModel>();
+            await NotificationBackgroundTask.UnregistAsync();
+            return await AppModel.MatrixHttpClient.PostJsonAsync("/api/users/logout", new { }).JsonAsync<ResponseModel>();
         }
 
         public static ValueTask<ResponseModel> UpdateProfileAsync(ProfileUpdateModel model)

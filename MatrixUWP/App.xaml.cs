@@ -1,10 +1,11 @@
 #nullable enable
+using MatrixUWP.BackgroundService.Tasks;
 using MatrixUWP.Models;
 using MatrixUWP.Models.User;
-using MatrixUWP.Utils;
 using MatrixUWP.Views;
 using System;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.UI;
@@ -55,9 +56,6 @@ namespace MatrixUWP
 
             if (e.PrelaunchActivated == false)
             {
-                BackgroundServiceHelper.UnregistBackgroundTasks();
-                await BackgroundServiceHelper.RegistBackgroundTasksAsync();
-
                 if (rootFrame.Content == null)
                 {
                     // When the navigation stack isn't restored navigate to the first page,
@@ -115,7 +113,7 @@ namespace MatrixUWP
 
         private void OnUnhandledException(object sender, Windows.UI.Xaml.UnhandledExceptionEventArgs e)
         {
-#if DEBUG
+#if FAIL_ON_DEBUG
             Debug.Fail(e.Message, e.Exception.StackTrace);
 #endif
             e.Handled = true;

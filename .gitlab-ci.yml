@@ -15,7 +15,7 @@ build-debug:
         - develop
     script:
         - msbuild MatrixUWP/MatrixUWP.csproj /t:restore /m
-        - msbuild MatrixUWP/MatrixUWP.csproj /p:Configuration=Debug /p:AppxBundlePlatforms="x86|x64|ARM" /p:AppxPackageDir="AppxPackages" /p:AppxBundle=Always /p:UapAppxPackageBuildMode=StoreUpload /m /verbosity:m
+        - msbuild MatrixUWP/MatrixUWP.csproj /p:Configuration=Debug /p:AppxBundlePlatforms="x86|x64|ARM" /p:AppxPackageDir="AppxPackages" /p:AppxBundle=Always /p:UapAppxPackageBuildMode=StoreUpload /m /verbosity:m /p:DefineConstants="TRACE;DEBUG;NETFX_CORE;WINDOWS_UWP"
     tags: ["windows"]
     artifacts:
       paths:

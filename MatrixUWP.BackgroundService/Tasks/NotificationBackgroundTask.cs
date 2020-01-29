@@ -1,10 +1,12 @@
 ﻿#nullable enable
 using MatrixUWP.BackgroundService.Extensions;
 using MatrixUWP.BackgroundService.Models;
+using MatrixUWP.BackgroundService.Models.Notification;
 using Microsoft.Toolkit.Uwp.Notifications;
 using System;
 using System.Collections.Concurrent;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Background;
 using Windows.Foundation;
@@ -13,7 +15,7 @@ using Windows.UI.Notifications;
 
 namespace MatrixUWP.BackgroundService.Tasks
 {
-    public sealed class NotificationBackgroundTask : IAutoRegistBackgroundTask
+    public sealed class NotificationBackgroundTask : IBackgroundTask
     {
         private static MessageWebSocket? socketClient;
         private const string channelId = "matrixUwpNotifications";
@@ -23,75 +25,121 @@ namespace MatrixUWP.BackgroundService.Tasks
 #else
         private static readonly Uri baseUri = new Uri("wss://vmatrix.org.cn/");
 #endif
-        private static readonly ConcurrentQueue<ResponseModel<dynamic>> messageQueue = new ConcurrentQueue<ResponseModel<dynamic>>();
+        private static readonly ConcurrentQueue<ResponseModel<NotificationModel>> messageQueue = new ConcurrentQueue<ResponseModel<NotificationModel>>();
 
-        private async Task<BackgroundTaskRegistration?> RegistTaskAsync()
+        private static async Task RegistTaskAsync()
         {
-            var type = typeof(WebSocketKeepAlive);
-            socketClient = new MessageWebSocket();
-            socketClient.MessageReceived += SocketClient_MessageReceived;
-
-            var channel = new ControlChannelTrigger(channelId, 15);
-
-            var keepAliveBuilder = new BackgroundTaskBuilder
+            await UnregistAsync();
+            try
             {
-                Name = nameof(WebSocketKeepAlive),
-                TaskEntryPoint = typeof(WebSocketKeepAlive).FullName,
-                IsNetworkRequested = true
-            };
-            keepAliveBuilder.SetTrigger(channel.KeepAliveTrigger);
-            keepAliveBuilder.Register();
+                var access = await BackgroundExecutionManager.RequestAccessAsync();
+                if (access == BackgroundAccessStatus.DeniedBySystemPolicy ||
+                    access == BackgroundAccessStatus.DeniedByUser ||
+                    access == BackgroundAccessStatus.Unspecified) return;
+                var type = typeof(WebSocketKeepAlive);
+                socketClient = new MessageWebSocket();
+                socketClient.MessageReceived += SocketClient_MessageReceived;
 
-            var builder = new BackgroundTaskBuilder
-            {
-                Name = nameof(NotificationBackgroundTask),
-                TaskEntryPoint = typeof(NotificationBackgroundTask).FullName,
-                IsNetworkRequested = true
-            };
+                var channel = new ControlChannelTrigger(channelId, 15);
 
-            builder.SetTrigger(channel.PushNotificationTrigger);
-            var task = builder.Register();
+                var keepAliveBuilder = new BackgroundTaskBuilder
+                {
+                    Name = nameof(WebSocketKeepAlive),
+                    TaskEntryPoint = typeof(WebSocketKeepAlive).FullName,
+                    IsNetworkRequested = true
+                };
+                keepAliveBuilder.SetTrigger(channel.KeepAliveTrigger);
+                keepAliveBuilder.Register();
 
-            channel.UsingTransport(socketClient);
-            await socketClient.ConnectAsync(new Uri(baseUri, "/api/notifications"));
-            var status = channel.WaitForPushEnabled();
-            if (status != ControlChannelTriggerStatus.HardwareSlotAllocated
-                && status != ControlChannelTriggerStatus.SoftwareSlotAllocated)
-            {
-                Debug.Fail($"Create channel for {builder.Name} falied.");
-                return null;
+                var builder = new BackgroundTaskBuilder
+                {
+                    Name = nameof(NotificationBackgroundTask),
+                    TaskEntryPoint = typeof(NotificationBackgroundTask).FullName,
+                    IsNetworkRequested = true
+                };
+
+                builder.SetTrigger(channel.PushNotificationTrigger);
+                var task = builder.Register();
+
+                channel.UsingTransport(socketClient);
+                await socketClient.ConnectAsync(new Uri(baseUri, "/api/notifications"));
+                var status = channel.WaitForPushEnabled();
+                if (status != ControlChannelTriggerStatus.HardwareSlotAllocated
+                    && status != ControlChannelTriggerStatus.SoftwareSlotAllocated)
+                {
+#if FAIL_ON_DEBUG
+                    Debug.Fail($"Create channel for {builder.Name} falied.");
+#endif
+                }
             }
-
-            return task;
+            catch (Exception ex)
+            {
+#if FAIL_ON_DEBUG
+                Debug.Fail(ex.Message, ex.StackTrace);
+#endif
+            }
         }
 
-        private void SocketClient_MessageReceived(MessageWebSocket sender, MessageWebSocketMessageReceivedEventArgs args)
+        private static Task UnregistTaskAsync()
+        {
+            try
+            {
+                var tasks = BackgroundTaskRegistration.AllTasks
+                    .Where(i => i.Value.Name == nameof(NotificationBackgroundTask) || i.Value.Name == nameof(WebSocketKeepAlive))
+                    .Select(i => i.Value)
+                    .ToList();
+                foreach (var i in tasks) i.Unregister(false);
+                socketClient?.Dispose();
+            }
+            catch (Exception ex)
+            {
+#if FAIL_ON_DEBUG
+                Debug.Fail(ex.Message, ex.StackTrace);
+#endif
+            }
+            finally
+            {
+                socketClient = null;
+            }
+            return Task.CompletedTask;
+        }
+
+        public static IAsyncAction RegistAsync() => RegistTaskAsync().AsAsyncAction();
+        public static IAsyncAction UnregistAsync() => UnregistTaskAsync().AsAsyncAction();
+
+        private static void SocketClient_MessageReceived(MessageWebSocket sender, MessageWebSocketMessageReceivedEventArgs args)
         {
             if (args.IsMessageComplete)
             {
-                using var reader = args.GetDataReader();
-                var obj = reader.ReadString(reader.UnconsumedBufferLength).DeserializeJson<ResponseModel<dynamic>>();
-                messageQueue.Enqueue(obj);
+                try
+                {
+                    using var reader = args.GetDataReader();
+                    if (reader.UnconsumedBufferLength <= 0) return;
+                    var obj = reader.ReadString(reader.UnconsumedBufferLength).DeserializeJson<ResponseModel<NotificationModel>>();
+                    if (obj != null) messageQueue.Enqueue(obj);
+                }
+                catch (Exception ex)
+                {
+#if FAIL_ON_DEBUG
+                    Debug.Fail(ex.Message, ex.StackTrace);
+#endif
+                }
             }
         }
 
-        public IAsyncOperation<BackgroundTaskRegistration?> RegistAsync()
+        public void Run(IBackgroundTaskInstance taskInstance)
         {
-            return RegistTaskAsync().AsAsyncOperation();
-        }
-
-        public async void Run(IBackgroundTaskInstance taskInstance)
-        {
-            var deferral = taskInstance.GetDeferral();
             while (messageQueue.TryDequeue(out var result))
             {
-                if (result.Data.Type == "system")
+                try
                 {
-                    var visual = new ToastVisual
+                    if (result.Data.Type == "system")
                     {
-                        BindingGeneric = new ToastBindingGeneric
+                        var visual = new ToastVisual
                         {
-                            Children =
+                            BindingGeneric = new ToastBindingGeneric
+                            {
+                                Children =
                             {
                                 new AdaptiveText
                                 {
@@ -99,30 +147,33 @@ namespace MatrixUWP.BackgroundService.Tasks
                                 },
                                 new AdaptiveText
                                 {
-                                    Text = result.Data.Content.Text
+                                    Text = result.Data.Content?.Text
                                 },
                                 new AdaptiveText
                                 {
-                                    Text = result.Data.Sender.Name
+                                    Text = result.Data.Sender?.Name
                                 }
                             }
-                        }
-                    };
+                            }
+                        };
 
-                    var content = new ToastContent
-                    {
-                        Visual = visual
-                    };
+                        var content = new ToastContent
+                        {
+                            Visual = visual
+                        };
 
-                    var toast = new ToastNotification(content.GetXml())
-                    {
-                        ExpirationTime = DateTime.Now.AddMinutes(15)
-                    };
+                        var toast = new ToastNotification(content.GetXml());
 
-                    ToastNotificationManager.CreateToastNotifier().Show(toast);
+                        ToastNotificationManager.CreateToastNotifier().Show(toast);
+                    }
+                }
+                catch (Exception ex)
+                {
+#if FAIL_ON_DEBUG
+                    Debug.Fail(ex.Message, ex.StackTrace);
+#endif
                 }
             }
-            deferral.Complete();
         }
     }
 }
