@@ -1,5 +1,6 @@
 ﻿#nullable enable
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 
 namespace MatrixUWP.BackgroundService.Models.Notification
@@ -15,6 +16,6 @@ namespace MatrixUWP.BackgroundService.Models.Notification
         [JsonProperty("sender")]
         public NotificationSender? Sender { get; set; }
         [JsonProperty("content")]
-        public NotificationContent? Content { get; set; }
+        public JObject? Content { get; set; }
     }
 }

@@ -11,7 +11,7 @@ using MatrixUWP.Models.Course.Assignment.Report;
 using MatrixUWP.Models.Submission;
 using MatrixUWP.Utils;
 using MatrixUWP.ViewModels;
-using MatrixUWP.Views.General.Submit;
+using MatrixUWP.Views.Submit;
 using MatrixUWP.Views.Parameters.Course;
 using MatrixUWP.Views.Parameters.Submit;
 using Microsoft.Toolkit.Uwp.UI.Controls;
@@ -27,7 +27,7 @@ using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
-namespace MatrixUWP.Views.General.Course
+namespace MatrixUWP.Views.Course
 {
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.

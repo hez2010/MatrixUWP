@@ -1,9 +1,9 @@
 ﻿#nullable enable
 using Newtonsoft.Json;
 
-namespace MatrixUWP.BackgroundService.Models.Notification
+namespace MatrixUWP.BackgroundService.Models.Notification.Content
 {
-    class NotificationContent
+    class SystemContent
     {
         [JsonProperty("text")]
         public string Text { get; set; } = "";

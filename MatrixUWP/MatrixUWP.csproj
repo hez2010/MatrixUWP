@@ -22,11 +22,12 @@
     <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
     <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
     <AppxBundlePlatforms>x86|x64|arm|arm64</AppxBundlePlatforms>
-    <PackageCertificateThumbprint>15FFF53B53C197445433BA7F4D7DFD38E11584EF</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>01E6B44BE1ADB64F7AB909B0AD14C367D4C9816F</PackageCertificateThumbprint>
     <AppInstallerUpdateFrequency>1</AppInstallerUpdateFrequency>
     <AppInstallerCheckForUpdateFrequency>OnApplicationRun</AppInstallerCheckForUpdateFrequency>
     <AppxBundle>Auto</AppxBundle>
-    <PackageCertificateKeyFile>MatrixUWP_TemporaryKey.pfx</PackageCertificateKeyFile>
+    <PackageCertificateKeyFile>
+    </PackageCertificateKeyFile>
     <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
@@ -191,44 +192,38 @@
     <Compile Include="ViewModels\ProfileViewModel.cs" />
     <Compile Include="ViewModels\ProgrammingFileModel.cs" />
     <Compile Include="ViewModels\ProgrammingSubmitViewModel.cs" />
-    <Compile Include="Views\General\Course\CourseAssignments.xaml.cs">
+    <Compile Include="Views\Course\CourseAssignments.xaml.cs">
       <DependentUpon>CourseAssignments.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\General\Course\CourseDetails.xaml.cs">
+    <Compile Include="Views\Course\CourseDetails.xaml.cs">
       <DependentUpon>CourseDetails.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\General\Submit\ChoiceSubmit.xaml.cs">
+    <Compile Include="Views\Submit\ChoiceSubmit.xaml.cs">
       <DependentUpon>ChoiceSubmit.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\General\Submit\ProgrammingSubmit.xaml.cs">
+    <Compile Include="Views\Submit\ProgrammingSubmit.xaml.cs">
       <DependentUpon>ProgrammingSubmit.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\HomeViewModel.cs" />
     <Compile Include="ViewModels\LayoutViewModel.cs" />
-    <Compile Include="Views\Account\Profile.xaml.cs">
+    <Compile Include="Views\Profile.xaml.cs">
       <DependentUpon>Profile.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\General\Exam.xaml.cs">
-      <DependentUpon>Exam.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\General\Home.xaml.cs">
+    <Compile Include="Views\Home.xaml.cs">
       <DependentUpon>Home.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\General\Course\Course.xaml.cs">
+    <Compile Include="Views\Course\Course.xaml.cs">
       <DependentUpon>Course.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Parameters\Course\CourseAssignmentsParameters.cs" />
     <Compile Include="Views\Parameters\Course\CourseDetailsParameters.cs" />
-    <Compile Include="Views\General\Library.xaml.cs">
+    <Compile Include="Views\Library.xaml.cs">
       <DependentUpon>Library.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\General\Messages.xaml.cs">
+    <Compile Include="Views\Messages.xaml.cs">
       <DependentUpon>Messages.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Help\Feedback.xaml.cs">
-      <DependentUpon>Feedback.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Help\Manual.xaml.cs">
+    <Compile Include="Views\Manual.xaml.cs">
       <DependentUpon>Manual.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Layout.xaml.cs">
@@ -319,51 +314,43 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\Account\Profile.xaml">
+    <Page Include="Views\Profile.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\General\Course\CourseAssignments.xaml">
+    <Page Include="Views\Course\CourseAssignments.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\General\Course\CourseDetails.xaml">
+    <Page Include="Views\Course\CourseDetails.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\General\Exam.xaml">
+    <Page Include="Views\Home.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\General\Home.xaml">
+    <Page Include="Views\Course\Course.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\General\Course\Course.xaml">
+    <Page Include="Views\Library.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\General\Library.xaml">
+    <Page Include="Views\Messages.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\General\Messages.xaml">
+    <Page Include="Views\Submit\ChoiceSubmit.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\General\Submit\ChoiceSubmit.xaml">
+    <Page Include="Views\Submit\ProgrammingSubmit.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\General\Submit\ProgrammingSubmit.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Help\Feedback.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Help\Manual.xaml">
+    <Page Include="Views\Manual.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -413,9 +400,7 @@
       <SubType>Designer</SubType>
     </PRIResource>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Views\Dialogs\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>

@@ -117,15 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="NaviMenu_Header_Account.Content" xml:space="preserve">
-    <value>账户</value>
-  </data>
-  <data name="NaviMenu_Header_General.Content" xml:space="preserve">
-    <value>常用</value>
-  </data>
-  <data name="NaviMenu_Header_Help.Content" xml:space="preserve">
-    <value>帮助</value>
-  </data>
   <data name="NaviMenu_Item_Feedback.Content" xml:space="preserve">
     <value>反馈</value>
   </data>
@@ -133,13 +124,13 @@
     <value>主页</value>
   </data>
   <data name="NaviMenu_Item_Manual.Content" xml:space="preserve">
-    <value>手册</value>
+    <value>帮助</value>
   </data>
   <data name="NaviMenu_Item_Messages.Content" xml:space="preserve">
     <value>消息</value>
   </data>
   <data name="NaviMenu_Item_Profile.Content" xml:space="preserve">
-    <value>信息</value>
+    <value>账户</value>
   </data>
   <data name="NaviMenu_Item_Settings.Content" xml:space="preserve">
     <value>设置</value>
@@ -176,9 +167,6 @@
   </data>
   <data name="NaviMenu_Item_Course.Content" xml:space="preserve">
     <value>课程</value>
-  </data>
-  <data name="NaviMenu_Item_Exam.Content" xml:space="preserve">
-    <value>考试</value>
   </data>
   <data name="NaviMenu_Item_Library.Content" xml:space="preserve">
     <value>题库</value>

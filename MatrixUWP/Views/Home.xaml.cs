@@ -12,7 +12,7 @@ using Windows.UI.Xaml.Media.Imaging;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
-namespace MatrixUWP.Views.General
+namespace MatrixUWP.Views
 {
 
     /// <summary>

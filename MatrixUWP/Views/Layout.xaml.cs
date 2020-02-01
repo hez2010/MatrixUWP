@@ -37,7 +37,7 @@ namespace MatrixUWP.Views
             // clear all states
             navimenuNaviHistory.Clear();
             NaviContent.BackStack.Clear();
-            General.Course.CourseAssignments.LastCourseId = -1;
+            Course.CourseAssignments.LastCourseId = -1;
         }
 
         private void NaviContent_Navigated(object sender, Windows.UI.Xaml.Navigation.NavigationEventArgs e)
@@ -59,14 +59,12 @@ namespace MatrixUWP.Views
             var page = (naviPageName, isSettingsPage) switch
             {
                 (_, true) => typeof(Settings),
-                (nameof(HomeNaviPage), _) => typeof(General.Home),
-                (nameof(CourseNaviPage), _) => typeof(General.Course.Course),
-                (nameof(ExamNaviPage), _) => typeof(General.Exam),
-                (nameof(LibraryNaviPage), _) => typeof(General.Library),
-                (nameof(MessagesNaviPage), _) => typeof(General.Messages),
-                (nameof(ProfileNaviPage), _) => typeof(Account.Profile),
-                (nameof(ManualNaviPage), _) => typeof(Help.Manual),
-                (nameof(FeedbackNaviPage), _) => typeof(Help.Feedback),
+                (nameof(HomeNaviPage), _) => typeof(Home),
+                (nameof(CourseNaviPage), _) => typeof(Course.Course),
+                (nameof(LibraryNaviPage), _) => typeof(Library),
+                (nameof(MessagesNaviPage), _) => typeof(Messages),
+                (nameof(ProfileNaviPage), _) => typeof(Profile),
+                (nameof(ManualNaviPage), _) => typeof(Manual),
                 _ => null
             };
 

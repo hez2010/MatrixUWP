@@ -117,15 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="NaviMenu_Header_Account.Content" xml:space="preserve">
-    <value>Account</value>
-  </data>
-  <data name="NaviMenu_Header_General.Content" xml:space="preserve">
-    <value>General</value>
-  </data>
-  <data name="NaviMenu_Header_Help.Content" xml:space="preserve">
-    <value>Help</value>
-  </data>
   <data name="NaviMenu_Item_Feedback.Content" xml:space="preserve">
     <value>Feedback</value>
   </data>
@@ -136,13 +127,13 @@
     <value>Library</value>
   </data>
   <data name="NaviMenu_Item_Manual.Content" xml:space="preserve">
-    <value>Manual</value>
+    <value>Help</value>
   </data>
   <data name="NaviMenu_Item_Messages.Content" xml:space="preserve">
     <value>Messages</value>
   </data>
   <data name="NaviMenu_Item_Profile.Content" xml:space="preserve">
-    <value>Profiles</value>
+    <value>Account</value>
   </data>
   <data name="NaviMenu_Item_Settings.Content" xml:space="preserve">
     <value>Settings</value>
@@ -179,9 +170,6 @@
   </data>
   <data name="NaviMenu_Item_Course.Content" xml:space="preserve">
     <value>Course</value>
-  </data>
-  <data name="NaviMenu_Item_Exam.Content" xml:space="preserve">
-    <value>Exam</value>
   </data>
   <data name="Home_PasswordBox_Password.PlaceholderText" xml:space="preserve">
     <value>Password</value>

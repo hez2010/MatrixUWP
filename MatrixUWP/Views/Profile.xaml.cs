@@ -11,7 +11,7 @@ using Windows.Storage.Pickers;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
-namespace MatrixUWP.Views.Account
+namespace MatrixUWP.Views
 {
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.

@@ -5,7 +5,6 @@ using MatrixUWP.Models.User;
 using MatrixUWP.Views;
 using System;
 using System.Diagnostics;
-using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.UI;
@@ -79,6 +78,7 @@ namespace MatrixUWP
                     if (response.Status == StatusCode.OK)
                     {
                         UserModel.UpdateUserData(response.Data);
+                        await NotificationBackgroundTask.RegistAsync();
                     }
                 }
                 catch { /* ignored */ }
