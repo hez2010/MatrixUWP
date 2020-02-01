@@ -28,10 +28,12 @@
             </RelativePanel>
         </PivotItem>
         <PivotItem x:Uid="Settings_Header_Privacy">
-
+            <TextBlock Margin="8" Text="Matrix UWP 仅收集必要信息用于用户身份认证和通知推送，不会涉及到其他任何用户隐私数据">
+                
+            </TextBlock>
         </PivotItem>
         <PivotItem x:Uid="Settings_Header_About">
-
+            <TextBlock Margin="8" Text="vmatrix 2020 版权所有"></TextBlock>
         </PivotItem>
     </Pivot>
 </Page>
