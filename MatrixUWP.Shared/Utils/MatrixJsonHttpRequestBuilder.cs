@@ -4,15 +4,16 @@ using Windows.ApplicationModel;
 using Windows.Web.Http;
 using Windows.Web.Http.Filters;
 
-namespace MatrixUWP.Utils
+namespace MatrixUWP.Shared.Utils
 {
-    class MatrixJsonHttpRequestBuilder
+    public class MatrixJsonHttpRequestBuilder
     {
         private readonly HttpClient httpClient;
 #if DEBUG
         private static readonly Uri baseUri = new Uri("https://test.vmatrix.org.cn/");
 #else
-        private static readonly Uri baseUri = new Uri("https://vmatrix.org.cn/");
+#warning Restore uri before publishing stable version of Matrix UWP
+        private static readonly Uri baseUri = new Uri("https://test.vmatrix.org.cn/");
 #endif
 
         public MatrixJsonHttpRequestBuilder()

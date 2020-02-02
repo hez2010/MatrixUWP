@@ -1,7 +1,7 @@
 #nullable enable
 using MatrixUWP.BackgroundService.Tasks;
-using MatrixUWP.Models;
 using MatrixUWP.Models.User;
+using MatrixUWP.Shared.Models;
 using MatrixUWP.Views;
 using System;
 using System.Diagnostics;

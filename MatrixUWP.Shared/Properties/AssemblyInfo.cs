@@ -4,13 +4,13 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("MatrixUWP.BackgroundService")]
-[assembly: AssemblyDescription("Matrix UWP Background Service")]
+[assembly: AssemblyTitle("MatrixUWP.Shared")]
+[assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Matrix")]
-[assembly: AssemblyProduct("Matrix UWP")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("MatrixUWP.Shared")]
 [assembly: AssemblyCopyright("Copyright ©  2020")]
-[assembly: AssemblyTrademark("Matrix")]
+[assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
 // Version information for an assembly consists of the following four values:

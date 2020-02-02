@@ -1,8 +1,8 @@
 ﻿#nullable enable
 using MatrixUWP.BackgroundService.Extensions;
-using MatrixUWP.BackgroundService.Models;
 using MatrixUWP.BackgroundService.Models.Notification;
 using MatrixUWP.BackgroundService.Models.Notification.Content;
+using MatrixUWP.Shared.Models;
 using Microsoft.Toolkit.Uwp.Notifications;
 using System;
 using System.Diagnostics;
@@ -22,7 +22,8 @@ namespace MatrixUWP.BackgroundService.Tasks
 #if DEBUG
         private static readonly Uri baseUri = new Uri("wss://test.vmatrix.org.cn/");
 #else
-        private static readonly Uri baseUri = new Uri("wss://vmatrix.org.cn/");
+#warning Restore uri before publishing stable version of Matrix UWP
+        private static readonly Uri baseUri = new Uri("wss://test.vmatrix.org.cn/");
 #endif
 
         private static async Task RegistTaskAsync()

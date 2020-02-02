@@ -1,8 +1,9 @@
 #nullable enable
+using MatrixUWP;
 using Newtonsoft.Json;
 using System;
 
-namespace MatrixUWP.Models
+namespace MatrixUWP.Shared.Models
 {
     public class ResponseModel<T>
     {

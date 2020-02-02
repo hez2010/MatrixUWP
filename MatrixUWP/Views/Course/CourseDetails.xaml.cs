@@ -2,6 +2,7 @@
 using MatrixUWP.Extensions;
 using MatrixUWP.Models;
 using MatrixUWP.Models.Course;
+using MatrixUWP.Shared.Models;
 using MatrixUWP.ViewModels;
 using MatrixUWP.Views.Parameters.Course;
 using System;

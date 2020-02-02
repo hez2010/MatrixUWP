@@ -5,9 +5,9 @@ using Windows.Storage;
 using Windows.Web.Http;
 using Windows.Web.Http.Headers;
 
-namespace MatrixUWP.Utils
+namespace MatrixUWP.Shared.Utils
 {
-    class MatrixJsonHttpRequestClient
+    public class MatrixJsonHttpRequestClient
     {
         private readonly HttpClient httpClient;
         public readonly Uri BaseUri;

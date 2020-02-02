@@ -3,6 +3,7 @@ using MatrixUWP.Extensions;
 using MatrixUWP.Models;
 using MatrixUWP.Models.Submission;
 using MatrixUWP.Models.Submission.Answer;
+using MatrixUWP.Shared.Models;
 using MatrixUWP.ViewModels;
 using MatrixUWP.Views.Course;
 using MatrixUWP.Views.Parameters.Submit;

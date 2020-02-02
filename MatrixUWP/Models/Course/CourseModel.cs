@@ -1,5 +1,6 @@
 #nullable enable
-using MatrixUWP.Extensions;
+using MatrixUWP.Shared.Extensions;
+using MatrixUWP.Shared.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

@@ -140,10 +140,7 @@
     <Compile Include="Converters\NotConverter.cs" />
     <Compile Include="Converters\NotVisibilityConverter.cs" />
     <Compile Include="Converters\NumberLetterConverter.cs" />
-    <Compile Include="Extensions\CopyExtensions.cs" />
     <Compile Include="Extensions\DispatcherExtensions.cs" />
-    <Compile Include="Extensions\JsonExtensions.cs" />
-    <Compile Include="Extensions\ResponseExtensions.cs" />
     <Compile Include="Extensions\TaskExtensions.cs" />
     <Compile Include="Models\AppModel.cs" />
     <Compile Include="Models\Config\Configuration.cs" />
@@ -177,16 +174,10 @@
     <Compile Include="Models\Course\CourseModel.cs" />
     <Compile Include="Models\User\MailConfig.cs" />
     <Compile Include="Models\User\ProfileUpdateModel.cs" />
-    <Compile Include="Models\ResponseModel.cs" />
-    <Compile Include="Models\StatusCode.cs" />
     <Compile Include="Models\User\UserDataModel.cs" />
     <Compile Include="Models\User\UserEssentialDataModel.cs" />
     <Compile Include="Models\User\UserModel.cs" />
-    <Compile Include="Utils\HttpJsonContent.cs" />
     <Compile Include="Utils\LogHelper.cs" />
-    <Compile Include="Utils\MatrixHttpFilter.cs" />
-    <Compile Include="Utils\MatrixJsonHttpRequestBuilder.cs" />
-    <Compile Include="Utils\MatrixJsonHttpRequestClient.cs" />
     <Compile Include="Utils\VisualTreeUtils.cs" />
     <Compile Include="ViewModels\ChoiceSubmitViewModel.cs" />
     <Compile Include="ViewModels\CourseAssignmentsViewModel.cs" />
@@ -411,6 +402,10 @@
     <ProjectReference Include="..\MatrixUWP.BackgroundService\MatrixUWP.BackgroundService.csproj">
       <Project>{10123298-a4bf-4b75-8b05-e6e025c928e7}</Project>
       <Name>MatrixUWP.BackgroundService</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MatrixUWP.Shared\MatrixUWP.Shared.csproj">
+      <Project>{4073b51b-717e-4380-972f-4709f95ed2c5}</Project>
+      <Name>MatrixUWP.Shared</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">

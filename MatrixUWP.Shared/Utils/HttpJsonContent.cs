@@ -1,5 +1,5 @@
 #nullable enable
-using MatrixUWP.Extensions;
+using MatrixUWP.Shared.Extensions;
 using System;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
@@ -8,9 +8,9 @@ using Windows.Storage.Streams;
 using Windows.Web.Http;
 using Windows.Web.Http.Headers;
 
-namespace MatrixUWP.Utils
+namespace MatrixUWP.Shared.Utils
 {
-    class HttpJsonContent<T> : IHttpContent, IDisposable
+    public class HttpJsonContent<T> : IHttpContent
     {
         private readonly T json;
         private string serializedJson = "";
@@ -123,8 +123,6 @@ namespace MatrixUWP.Utils
             });
         }
 
-        public void Dispose() { }
-
         private ulong GetLength()
         {
             using var writer = new DataWriter();
@@ -132,6 +130,23 @@ namespace MatrixUWP.Utils
 
             var buffer = writer.DetachBuffer();
             return buffer.Length;
+        }
+
+        private bool _disposed;
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing) { }
+                _disposed = true;
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }

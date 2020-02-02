@@ -7,9 +7,9 @@ using Windows.Web.Http;
 using System.Diagnostics;
 using Newtonsoft.Json.Converters;
 
-namespace MatrixUWP.Extensions
+namespace MatrixUWP.Shared.Extensions
 {
-    static class ResponseExtensions
+    public static class ResponseExtensions
     {
         private static readonly JsonSerializerSettings jsonSerializerSettings
             = new JsonSerializerSettings

@@ -1,9 +1,9 @@
 #nullable enable
 using System.Linq;
 
-namespace MatrixUWP.Extensions
+namespace MatrixUWP.Shared.Extensions
 {
-    static class CopyExtensions
+    public static class CopyExtensions
     {
         public static void CopyTo(this object source, object target, params string[] suppress)
         {

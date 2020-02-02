@@ -8,9 +8,9 @@ using Windows.Foundation;
 using Windows.Web.Http;
 using Windows.Web.Http.Filters;
 
-namespace MatrixUWP.BackgroundService.Utils
+namespace MatrixUWP.Shared.Utils
 {
-    class MatrixHttpFilter : IHttpFilter
+    public class MatrixHttpFilter : IHttpFilter
     {
         private readonly IHttpFilter innerFilter;
         public MatrixHttpFilter(IHttpFilter filter)
@@ -33,17 +33,30 @@ namespace MatrixUWP.BackgroundService.Utils
                 if (csrf != null) request.Headers.Add(csrf.Name, csrf.Value);
 
                 var response = await innerFilter.SendRequestAsync(request).AsTask(cancellationToken, progress);
-#if DEBUG
                 Debug.WriteLine(
                     $"Sent request: {request.Method.Method} {uri}, with data: {(request.Content == null ? "null" : await request.Content.ReadAsStringAsync())}, with headers: {JsonConvert.SerializeObject(request.Headers)}");
-#endif
                 return response;
             });
         }
 
+        private bool _disposed;
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing)
+                {
+                    innerFilter.Dispose();
+                }
+                _disposed = true;
+            }
+        }
+
         public void Dispose()
         {
-            innerFilter.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }

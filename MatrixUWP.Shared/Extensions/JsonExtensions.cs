@@ -1,9 +1,9 @@
 #nullable enable
 using Newtonsoft.Json;
 
-namespace MatrixUWP.Extensions
+namespace MatrixUWP.Shared.Extensions
 {
-    static class JsonExtensions
+    public static class JsonExtensions
     {
         public static string SerializeJson<T>(this T obj, JsonSerializerSettings? options = null)
         {

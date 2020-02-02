@@ -2,6 +2,8 @@
 using MatrixUWP.Extensions;
 using MatrixUWP.Models;
 using MatrixUWP.Models.User;
+using MatrixUWP.Shared.Extensions;
+using MatrixUWP.Shared.Models;
 using MatrixUWP.ViewModels;
 using System;
 using System.Diagnostics;

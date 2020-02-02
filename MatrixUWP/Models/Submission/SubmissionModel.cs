@@ -1,6 +1,7 @@
 ﻿#nullable enable
-using MatrixUWP.Extensions;
 using MatrixUWP.Models.Submission.Course;
+using MatrixUWP.Shared.Extensions;
+using MatrixUWP.Shared.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;

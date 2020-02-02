@@ -1,7 +1,9 @@
 #nullable enable
-namespace MatrixUWP.BackgroundService.Models
+using MatrixUWP;
+
+namespace MatrixUWP.Shared.Models
 {
-    enum StatusCode
+    public enum StatusCode
     {
         OK, BAD_REQUEST, NOT_FOUND, NOT_AUTHORIZED, WRONG_CAPTCHA, WRONG_PASSWORD, INTERNAL_ERROR, NO_PERMISSION
     }

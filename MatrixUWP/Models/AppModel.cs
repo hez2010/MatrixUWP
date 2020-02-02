@@ -1,6 +1,6 @@
 ﻿#nullable enable
 using MatrixUWP.Models.Config;
-using MatrixUWP.Utils;
+using MatrixUWP.Shared.Utils;
 using System;
 using Windows.ApplicationModel.Resources;
 using Windows.UI.Xaml.Media.Animation;
