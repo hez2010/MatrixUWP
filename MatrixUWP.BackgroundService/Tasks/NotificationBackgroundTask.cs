@@ -116,7 +116,7 @@ namespace MatrixUWP.BackgroundService.Tasks
             {
                 var str = notification.Content;
                 if (str is null) return;
-                var result = str.DeserializeJson<ResponseModel<NotificationModel>>();
+                var result = str.DeserializeJson<ResponseModel<NotificationModel>>(JsonExtensions.JsonSerializerSettings);
                 if (result is null) return;
 
                 if (result.Data.Type == "system")
