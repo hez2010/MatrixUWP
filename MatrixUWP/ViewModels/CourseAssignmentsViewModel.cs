@@ -10,7 +10,17 @@ namespace MatrixUWP.ViewModels
     {
         private bool loading;
         private List<CourseAssignmentDetailsModel>? assignments;
-        public string? Title { get; set; }
+        private string? title;
+
+        public string? Title
+        {
+            get => title;
+            set
+            {
+                title = value;
+                OnPropertyChanged();
+            }
+        }
         public List<CourseAssignmentDetailsModel>? Assignments
         {
             get => assignments;

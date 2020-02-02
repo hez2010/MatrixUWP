@@ -28,7 +28,7 @@
             </RelativePanel>
         </PivotItem>
         <PivotItem x:Uid="Settings_Header_Privacy">
-            <TextBlock Margin="8" Text="Matrix UWP 仅收集必要信息用于用户身份认证和通知推送，不会涉及到其他任何用户隐私数据">
+            <TextBlock Margin="8" Text="Matrix UWP 仅收集用于识别用户身份和通知推送的必要信息，并确保数据已被加密储存，不会将用户数据用于任何形式的商业用途。">
                 
             </TextBlock>
         </PivotItem>

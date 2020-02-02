@@ -1,36 +1,34 @@
 #nullable enable
 using System;
-#if FXJSON
-using System.Text.Json.Serialization;
-#else
 using Newtonsoft.Json;
-#endif
 using System.Threading.Tasks;
 using Windows.Storage.Streams;
 using Windows.Web.Http;
 using System.Diagnostics;
+using Newtonsoft.Json.Converters;
 
 namespace MatrixUWP.Extensions
 {
     static class ResponseExtensions
     {
-#if FXJSON
-        public static async ValueTask<T> JsonAsync<T>(this ValueTask<HttpResponseMessage> response)
-        {
-            var result = await response;
-            var json = await result.Content.ReadAsStringAsync();
-            return JsonSerializer.Parse<T>(json);
-        }
-#else
         private static readonly JsonSerializerSettings jsonSerializerSettings
             = new JsonSerializerSettings
             {
-                NullValueHandling = NullValueHandling.Ignore
+                NullValueHandling = NullValueHandling.Ignore,
+                Converters =
+                {
+                    new StringEnumConverter()
+                },
+                ReferenceLoopHandling = ReferenceLoopHandling.Serialize,
+                MaxDepth = 1024,
+                Error = (sender, args) =>
+                {
+#if FAIL_ON_DEBUG
+                    Debug.Fail(args.ErrorContext.Error.Message, args.ErrorContext.Error.StackTrace);
+#endif
+                    args.ErrorContext.Handled = true;
+                }
             };
-        static ResponseExtensions()
-        {
-            jsonSerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
-        }
 
         public static async ValueTask<T> JsonAsync<T>(this ValueTask<HttpResponseMessage> response)
         {
@@ -39,7 +37,6 @@ namespace MatrixUWP.Extensions
             Debug.WriteLine($"Got response: {response.Result.StatusCode}, with data: {json}, with headers: {response.Result.Headers.SerializeJson()}");
             return JsonConvert.DeserializeObject<T>(json, jsonSerializerSettings);
         }
-#endif
 
         public static async ValueTask<string> TextAsync(this ValueTask<HttpResponseMessage> response)
         {
