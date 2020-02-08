@@ -95,12 +95,12 @@ namespace MatrixUWP.Views.Submit
 
         private async void MarkdownTextBlock_LinkClicked(object sender, LinkClickedEventArgs e)
         {
-            await Windows.System.Launcher.LaunchUriAsync(new Uri(e.Link));
+            await Windows.System.Launcher.LaunchUriAsync(new System.Uri(e.Link));
         }
 
         private async void MarkdownTextBlock_ImageClicked(object sender, LinkClickedEventArgs e)
         {
-            await Windows.System.Launcher.LaunchUriAsync(new Uri(e.Link));
+            await Windows.System.Launcher.LaunchUriAsync(new System.Uri(e.Link));
         }
 
         private async void LoadSubmission_Clicked(Microsoft.UI.Xaml.Controls.TeachingTip sender, object args)

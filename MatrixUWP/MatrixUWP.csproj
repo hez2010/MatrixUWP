@@ -372,7 +372,7 @@
       <Version>2.3.191211002</Version>
     </PackageReference>
     <PackageReference Include="Monaco.Editor">
-      <Version>0.9.0</Version>
+      <Version>0.9.0-beta</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>12.0.3</Version>
