@@ -1,4 +1,6 @@
 ﻿#nullable enable
+using MatrixUWP.Shared.Extensions;
+using MatrixUWP.Shared.Models;
 using MatrixUWP.Shared.Utils;
 using System;
 using System.Collections.Concurrent;
@@ -38,15 +40,27 @@ namespace MatrixUWP.BackgroundService.Tasks
         {
             try
             {
-                if (_channel is null)
+                if (_channel != null)
                 {
-                    _channel = await PushNotificationChannelManager.CreatePushNotificationChannelForApplicationAsync();
-                    _channel.PushNotificationReceived += OnReceived;
+                    _channel.PushNotificationReceived -= OnReceived;
+                    _channel.Close();
                 }
+                _channel = await PushNotificationChannelManager.CreatePushNotificationChannelForApplicationAsync();
+                _channel.PushNotificationReceived += OnReceived;
                 var sysInfo = new EasClientDeviceInformation();
                 var sysId = sysInfo.Id.ToString();
-                var response = await HttpUtils.MatrixHttpClient.PostJsonAsync("/wns/regist", new { user_id = userId, channel_uri = _channel.Uri, device_id = sysId });
-                return response.IsSuccessStatusCode;
+                var response =
+                    await HttpUtils.MatrixHttpClient.PostJsonAsync(
+                        "/api/wns/regist",
+                        new
+                        {
+                            user_id = userId,
+                            channel_uri = _channel.Uri,
+                            device_id = sysId,
+                            expire_time = _channel.ExpirationTime.DateTime
+                        })
+                    .JsonAsync<ResponseModel>();
+                return response.Status == StatusCode.OK;
             }
             catch (Exception ex)
             {
