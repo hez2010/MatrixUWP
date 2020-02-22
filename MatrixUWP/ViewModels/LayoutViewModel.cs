@@ -16,9 +16,21 @@ namespace MatrixUWP.ViewModels
 
         private bool showMessage;
         private string message = "";
+        private bool loading;
         private readonly DispatcherTimer messageTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(3) };
 
         public UserDataModel UserData { get; } = UserModel.CurrentUser;
+
+        public bool Loading
+        {
+            get => loading;
+            set
+            {
+                loading = value;
+                OnPropertyChanged();
+            }
+        }
+
         public bool ShowMessage
         {
             get => showMessage;

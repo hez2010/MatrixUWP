@@ -176,6 +176,8 @@
     <Compile Include="Models\User\UserDataModel.cs" />
     <Compile Include="Models\User\UserEssentialDataModel.cs" />
     <Compile Include="Models\User\UserModel.cs" />
+    <Compile Include="Services\NotificationService.cs" />
+    <Compile Include="Services\PushService.cs" />
     <Compile Include="Utils\LogHelper.cs" />
     <Compile Include="Utils\VisualTreeUtils.cs" />
     <Compile Include="ViewModels\ChoiceSubmitViewModel.cs" />

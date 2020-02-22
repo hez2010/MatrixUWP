@@ -7,7 +7,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls1="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:controls="using:Microsoft.UI.Xaml.Controls"
-    xmlns:app="using:MatrixUWP.Models"
+    xmlns:utils="using:MatrixUWP.Shared.Utils"
+    xmlns:models="using:MatrixUWP.Models"
     xmlns:monaco="using:Monaco"
     xmlns:viewmodels="using:MatrixUWP.ViewModels"
     mc:Ignorable="d"
@@ -36,7 +37,7 @@
                                 LinkClicked="MarkdownTextBlock_LinkClicked"
                                 ImageClicked="MarkdownTextBlock_ImageClicked"
                                 Background="Transparent"
-                                UriPrefix="{x:Bind app:AppModel.MatrixHttpClient.BaseUri.AbsoluteUri}"
+                                UriPrefix="{x:Bind utils:HttpUtils.MatrixHttpClient.BaseUri.AbsoluteUri}"
                                 Text="{x:Bind viewModel.Description, Mode=OneWay}"></controls1:MarkdownTextBlock>
             </ScrollViewer>
             <controls1:GridSplitter
@@ -58,7 +59,7 @@
                     <DataTemplate x:DataType="viewmodels:ProgrammingFileModel">
                         <monaco:CodeEditor
                             x:Name="MainCodeEditor"
-                            RequestedTheme="{x:Bind app:AppModel.AppConfiguration.AppTheme, Converter={StaticResource EnumConverter},Mode=OneWay}" 
+                            RequestedTheme="{x:Bind models:AppModel.AppConfiguration.AppTheme, Converter={StaticResource EnumConverter},Mode=OneWay}" 
                             Text="{x:Bind Content, Mode=TwoWay}"
                             ReadOnly="{x:Bind ReadOnly, Mode=OneWay}"
                             CodeLanguage="{Binding ElementName=LanguageBox, Path=SelectedItem, Mode=OneWay, Converter={StaticResource LanguageConverter}}" Loaded="MainCodeEditor_Loaded">

@@ -129,6 +129,7 @@
     <Compile Include="Models\StatusCode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\HttpJsonContent.cs" />
+    <Compile Include="Utils\HttpUtils.cs" />
     <Compile Include="Utils\MatrixHttpFilter.cs" />
     <Compile Include="Utils\MatrixJsonHttpRequestBuilder.cs" />
     <Compile Include="Utils\MatrixJsonHttpRequestClient.cs" />

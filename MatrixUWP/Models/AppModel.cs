@@ -1,6 +1,5 @@
 ﻿#nullable enable
 using MatrixUWP.Models.Config;
-using MatrixUWP.Shared.Utils;
 using System;
 using Windows.ApplicationModel.Resources;
 using Windows.UI.Xaml.Media.Animation;
@@ -24,9 +23,5 @@ namespace MatrixUWP.Models
         internal static readonly ResourceLoader CultureResource = ResourceLoader.GetForCurrentView();
 
         internal static readonly Configuration AppConfiguration = new Configuration();
-
-        private static readonly MatrixJsonHttpRequestBuilder MatrixHttpClientBuilder = new MatrixJsonHttpRequestBuilder();
-
-        internal static MatrixJsonHttpRequestClient MatrixHttpClient = MatrixHttpClientBuilder.Build();
     }
 }

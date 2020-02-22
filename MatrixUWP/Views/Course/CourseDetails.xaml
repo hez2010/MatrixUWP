@@ -4,7 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:MatrixUWP.Views.Course"
     xmlns:root="using:MatrixUWP"
-    xmlns:app="using:MatrixUWP.Models"
+    xmlns:utils="using:MatrixUWP.Shared.Utils"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
@@ -69,7 +69,7 @@
                     LinkClicked="MarkdownTextBlock_LinkClicked"
                     ImageClicked="MarkdownTextBlock_ImageClicked"
                     Background="Transparent"
-                    UriPrefix="{x:Bind app:AppModel.MatrixHttpClient.BaseUri.AbsoluteUri}"
+                    UriPrefix="{x:Bind utils:HttpUtils.MatrixHttpClient.BaseUri.AbsoluteUri}"
                     Text="{x:Bind viewModel.Course.Description, Mode=OneWay}">
                 </controls:MarkdownTextBlock>
             </ScrollViewer>

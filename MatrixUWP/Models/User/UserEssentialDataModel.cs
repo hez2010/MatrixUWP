@@ -1,4 +1,5 @@
 #nullable enable
+using MatrixUWP.Shared.Utils;
 using Newtonsoft.Json;
 using System;
 using System.ComponentModel;
@@ -85,7 +86,7 @@ namespace MatrixUWP.Models.User
                 {
                     try
                     {
-                        bitmap.UriSource = new Uri(AppModel.MatrixHttpClient.BaseUri, $"/api/users/profile/avatar?username={UserName}&t={DateTime.Now.Ticks}");
+                        bitmap.UriSource = new Uri(HttpUtils.MatrixHttpClient.BaseUri, $"/api/users/profile/avatar?username={UserName}&t={DateTime.Now.Ticks}");
                     }
                     catch
                     {

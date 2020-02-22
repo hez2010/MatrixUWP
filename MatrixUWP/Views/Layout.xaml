@@ -48,12 +48,13 @@
                     <NavigationViewItem x:Name="ManualNaviPage" Icon="Help" x:Uid="NaviMenu_Item_Manual"></NavigationViewItem>
                 </ctl:MyNavigationView.MenuItems>
                 <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                    <Frame VerticalContentAlignment="Stretch" x:Name="NaviContent" Navigated="NaviContent_Navigated"/>
-                    <Border Visibility="{x:Bind viewModel.ShowMessage, Mode=OneWay}" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="50" Background="{ThemeResource SystemControlAccentAcrylicElementAccentMediumHighBrush}" Padding="15,5" Opacity="50" CornerRadius="2">
-                        <TextBlock Foreground="White" Text="{x:Bind viewModel.Message, Mode=OneWay}"/>
-                    </Border>
+                    <Frame IsEnabled="{x:Bind viewModel.Loading, Mode=OneWay, Converter={StaticResource NotConverter}}" VerticalContentAlignment="Stretch" x:Name="NaviContent" Navigated="NaviContent_Navigated"/>
                 </Grid>
             </ctl:MyNavigationView>
         </Grid>
+        <Border Grid.Row="1" Visibility="{x:Bind viewModel.ShowMessage, Mode=OneWay}" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="50" Background="Black" Padding="16,8" Opacity="0.75" CornerRadius="2">
+            <TextBlock Foreground="White" Text="{x:Bind viewModel.Message, Mode=OneWay}"/>
+        </Border>
+        <ProgressRing Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-50,0,0" Width="60" Height="60" IsActive="{x:Bind viewModel.Loading, Mode=OneWay}"></ProgressRing>
     </Grid>
 </Page>

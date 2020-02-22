@@ -1,6 +1,9 @@
 #nullable enable
+using MatrixUWP.Extensions;
 using MatrixUWP.Models;
 using MatrixUWP.Models.User;
+using MatrixUWP.Services;
+using MatrixUWP.Shared.Models;
 using MatrixUWP.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -16,6 +19,8 @@ namespace MatrixUWP.Views
     public sealed partial class Layout : Page
     {
         private readonly LayoutViewModel viewModel = new LayoutViewModel();
+        private static bool loaded = false;
+        private static int previousUserId = -1;
 
         public Layout()
         {
@@ -31,7 +36,9 @@ namespace MatrixUWP.Views
         private void UserData_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (!(sender is UserDataModel userData)) return;
-            if (userData?.SignedIn ?? false) return;
+            if (previousUserId == userData.UserId) return;
+            previousUserId = userData.UserId;
+            if (userData.SignedIn) return;
 
             NavigateToPage(HomeNaviPage, false, NaviMenu.PaneDisplayMode);
             // clear all states
@@ -161,11 +168,30 @@ namespace MatrixUWP.Views
             viewModel.UserData.PropertyChanged -= UserData_PropertyChanged;
         }
 
-        private void Page_Loaded(object sender, RoutedEventArgs e)
+        private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
             // Navigate to Home
             NavigateToPage(HomeNaviPage, false, NaviMenu.PaneDisplayMode);
             viewModel.UserData.PropertyChanged += UserData_PropertyChanged;
+
+            if (!loaded)
+            {
+                viewModel.Loading = true;
+                await Dispatcher.YieldAsync();
+                try
+                {
+                    var response = await UserModel.GetUserProfile();
+                    if (response.Status == StatusCode.OK)
+                    {
+                        UserModel.UpdateUserData(response.Data);
+                    }
+                }
+                catch { /* ignored */ }
+                loaded = true;
+                viewModel.Loading = false;
+
+                await PushService.RegistTaskAsync();
+            }
         }
     }
 }

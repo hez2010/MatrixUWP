@@ -1,5 +1,4 @@
 #nullable enable
-using MatrixUWP;
 
 namespace MatrixUWP.Shared.Models
 {
