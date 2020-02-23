@@ -176,6 +176,7 @@ namespace MatrixUWP.Views
 
             if (!loaded)
             {
+                loaded = true;
                 viewModel.Loading = true;
                 await Dispatcher.YieldAsync();
                 try
@@ -187,7 +188,6 @@ namespace MatrixUWP.Views
                     }
                 }
                 catch { /* ignored */ }
-                loaded = true;
                 viewModel.Loading = false;
 
                 await PushService.RegistTaskAsync();
