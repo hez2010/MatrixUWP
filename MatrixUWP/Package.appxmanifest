@@ -10,10 +10,10 @@
 
   <Identity
     Name="41790vmatrix.MatrixUWP"
-    Publisher="CN=vmatrix"
-    Version="0.0.9.0" />
+    Publisher="CN=CB744060-7B89-4630-9B34-944A7035EC99"
+    Version="0.0.10.0" />
 
-  <mp:PhoneIdentity PhoneProductId="6a7a5280-10c1-4564-9a8a-19a008c3ee9a" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="bbf08e55-8f9c-41a6-938f-1af76eac75f9" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
     <DisplayName>Matrix UWP</DisplayName>
