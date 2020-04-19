@@ -7,7 +7,7 @@ using Windows.UI.Xaml;
 
 namespace MatrixUWP.ViewModels
 {
-    class LayoutViewModel : INotifyPropertyChanged
+    internal class LayoutViewModel : INotifyPropertyChanged
     {
         public LayoutViewModel()
         {
@@ -51,15 +51,9 @@ namespace MatrixUWP.ViewModels
             }
         }
 
-        private void Timer_Tick(object sender, object e)
-        {
-            ShowMessage = false;
-        }
+        private void Timer_Tick(object sender, object e) => ShowMessage = false;
 
         public event PropertyChangedEventHandler? PropertyChanged;
-        protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+        protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

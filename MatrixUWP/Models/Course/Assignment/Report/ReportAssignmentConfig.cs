@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace MatrixUWP.Models.Course.Assignment.Report
 {
-    class ReportAssignmentConfig
+    internal class ReportAssignmentConfig
     {
         [JsonProperty("standard_score")]
         public int StandardScore { get; set; }

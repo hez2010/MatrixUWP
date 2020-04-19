@@ -8,7 +8,7 @@ using Windows.UI.Xaml.Media.Imaging;
 
 namespace MatrixUWP.ViewModels
 {
-    class HomeViewModel : INotifyPropertyChanged
+    internal class HomeViewModel : INotifyPropertyChanged
     {
         private SvgImageSource captchaData = new SvgImageSource();
         private bool captchaNeeded = false;
@@ -65,7 +65,10 @@ namespace MatrixUWP.ViewModels
             get
             {
                 var bitmap = new BitmapImage();
-                if (string.IsNullOrEmpty(userName)) bitmap.UriSource = new Uri("ms-appx:///Assets/Home/user.png");
+                if (string.IsNullOrEmpty(userName))
+                {
+                    bitmap.UriSource = new Uri("ms-appx:///Assets/Home/user.png");
+                }
                 else
                 {
                     try
@@ -106,9 +109,6 @@ namespace MatrixUWP.ViewModels
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
-        protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+        protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

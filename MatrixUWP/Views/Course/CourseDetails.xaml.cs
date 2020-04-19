@@ -1,5 +1,4 @@
-#nullable enable
-using MatrixUWP.Extensions;
+﻿#nullable enable
 using MatrixUWP.Models;
 using MatrixUWP.Models.Course;
 using MatrixUWP.Shared.Models;
@@ -52,13 +51,13 @@ namespace MatrixUWP.Views.Course
         {
             AdjustElementsSize();
             viewModel.Loading = true;
-            await Dispatcher.YieldAsync();
+
             try
             {
                 var response = await CourseModel.FetchCourseAsync(parameters?.CourseId ?? 0);
-                if (response.Status != StatusCode.OK)
+                if (response?.Status != StatusCode.OK)
                 {
-                    AppModel.ShowMessage?.Invoke(response.Message);
+                    AppModel.ShowMessage?.Invoke(response?.Message ?? "课程获取失败");
                     return;
                 }
                 viewModel.Course = response.Data;
@@ -83,20 +82,11 @@ namespace MatrixUWP.Views.Course
             DescriptionViewer.MaxWidth = Math.Max(Container.ActualWidth - 16, 0);
         }
 
-        private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            AdjustElementsSize();
-        }
+        private void Page_SizeChanged(object sender, SizeChangedEventArgs e) => AdjustElementsSize();
 
-        private async void MarkdownTextBlock_LinkClicked(object sender, Microsoft.Toolkit.Uwp.UI.Controls.LinkClickedEventArgs e)
-        {
-            await Windows.System.Launcher.LaunchUriAsync(new Uri(e.Link));
-        }
+        private async void MarkdownTextBlock_LinkClicked(object sender, Microsoft.Toolkit.Uwp.UI.Controls.LinkClickedEventArgs e) => await Windows.System.Launcher.LaunchUriAsync(new Uri(e.Link));
 
-        private async void MarkdownTextBlock_ImageClicked(object sender, Microsoft.Toolkit.Uwp.UI.Controls.LinkClickedEventArgs e)
-        {
-            await Windows.System.Launcher.LaunchUriAsync(new Uri(e.Link));
-        }
+        private async void MarkdownTextBlock_ImageClicked(object sender, Microsoft.Toolkit.Uwp.UI.Controls.LinkClickedEventArgs e) => await Windows.System.Launcher.LaunchUriAsync(new Uri(e.Link));
 
         private void ViewAssignment_Click(object sender, RoutedEventArgs e)
         {

@@ -9,7 +9,7 @@ using Windows.ApplicationModel.Background;
 
 namespace MatrixUWP.Services
 {
-    class PushService
+    internal class PushService
     {
         public static void UnregistTask()
         {

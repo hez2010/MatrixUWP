@@ -9,7 +9,7 @@ using Windows.UI.Xaml;
 
 namespace MatrixUWP.Models.Config
 {
-    class Configuration : INotifyPropertyChanged
+    internal class Configuration : INotifyPropertyChanged
     {
         private Language appLanguage = GetConfiguration(nameof(AppLanguage), Language.Default);
         private Theme appTheme = GetConfiguration(nameof(AppTheme), Theme.Default);
@@ -70,15 +70,9 @@ namespace MatrixUWP.Models.Config
         public ElementTheme AppThemeValue => (ElementTheme)(int)AppTheme;
 
         public event PropertyChangedEventHandler? PropertyChanged;
-        protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+        protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
-        protected void SaveConfiguration<T>(T value, [CallerMemberName] string? propertyName = null)
-        {
-            ApplicationData.Current.LocalSettings.Values[propertyName] = JsonConvert.SerializeObject(value);
-        }
+        protected void SaveConfiguration<T>(T value, [CallerMemberName] string? propertyName = null) => ApplicationData.Current.LocalSettings.Values[propertyName] = JsonConvert.SerializeObject(value);
 
         protected static T GetConfiguration<T>([CallerMemberName] string? propertyName = null, T defaultValue = default!)
         {

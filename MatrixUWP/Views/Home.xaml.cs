@@ -1,5 +1,4 @@
 #nullable enable
-using MatrixUWP.Extensions;
 using MatrixUWP.Models;
 using MatrixUWP.Models.User;
 using MatrixUWP.ViewModels;
@@ -30,7 +29,7 @@ namespace MatrixUWP.Views
         private async void SignIn_Click(object sender, RoutedEventArgs? e)
         {
             viewModel.Loading = true;
-            await Dispatcher.YieldAsync();
+
             try
             {
                 var result = await (string.IsNullOrEmpty(viewModel.Captcha) ? UserModel.SignInAsync(viewModel.UserName, viewModel.Password)
@@ -45,7 +44,7 @@ namespace MatrixUWP.Views
 
                 var stream = new MemoryStream();
                 using var writer = new StreamWriter(stream);
-                await writer.WriteAsync(captcha.Data?.Captcha);
+                await writer.WriteAsync(captcha?.Data?.Captcha ?? "");
                 await writer.FlushAsync();
                 stream.Position = 0;
 

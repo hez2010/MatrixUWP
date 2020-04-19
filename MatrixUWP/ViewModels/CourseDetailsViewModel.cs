@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 
 namespace MatrixUWP.ViewModels
 {
-    class CourseDetailsViewModel : INotifyPropertyChanged
+    internal class CourseDetailsViewModel : INotifyPropertyChanged
     {
         private bool loading;
         private CourseInfoModel? course;
@@ -32,9 +32,6 @@ namespace MatrixUWP.ViewModels
             }
         }
 
-        protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+        protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

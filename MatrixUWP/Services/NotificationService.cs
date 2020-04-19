@@ -9,7 +9,7 @@ using Windows.Networking.Sockets;
 
 namespace MatrixUWP.Services
 {
-    static class NotificationService
+    internal static class NotificationService
     {
         private const string channelId = "MatrixUWP_Notifications";
 #if DEBUG

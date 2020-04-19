@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace MatrixUWP.Models.Submission
 {
-    class SubmissionDetailsModel<TAnswer, TReport>
+    internal class SubmissionDetailsModel<TAnswer, TReport>
         where TAnswer : class
         where TReport : class
     {

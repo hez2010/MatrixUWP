@@ -1,5 +1,4 @@
-#nullable enable
-using MatrixUWP.Extensions;
+﻿#nullable enable
 using MatrixUWP.Models;
 using MatrixUWP.Models.Course;
 using MatrixUWP.Shared.Models;
@@ -30,13 +29,12 @@ namespace MatrixUWP.Views.Course
         private async void Page_Loaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
             viewModel.Loading = true;
-            await Dispatcher.YieldAsync();
 
             try
             {
                 var coursesResponse = await CourseModel.FetchCourseListAsync();
-                if (coursesResponse.Status == StatusCode.OK) viewModel.Courses = coursesResponse.Data;
-                else AppModel.ShowMessage?.Invoke(coursesResponse.Message);
+                if (coursesResponse?.Status == StatusCode.OK) viewModel.Courses = coursesResponse.Data;
+                else AppModel.ShowMessage?.Invoke(coursesResponse?.Message ?? "课程列表获取失败");
             }
             catch (Exception ex)
             {

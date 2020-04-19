@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace MatrixUWP.Models.Course.Assignment.Programming
 {
-    class ProgrammingAssignmentConfig
+    internal class ProgrammingAssignmentConfig
     {
         [JsonProperty("limits")]
         public ProgrammingAssignmentLimits? Limits { get; set; }

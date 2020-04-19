@@ -18,23 +18,17 @@ namespace MatrixUWP.BackgroundService.Tasks
     {
         private static PushNotificationChannel? _channel;
         private static readonly ConcurrentQueue<(PushNotificationType Type, object Notification)> messageQueue = new ConcurrentQueue<(PushNotificationType, object)>();
-        public static IAsyncOperation<bool> CreateChannelAsync(long userId)
-        {
-            return InternalCreateChannelAsync(userId).AsAsyncOperation();
-        }
+        public static IAsyncOperation<bool> CreateChannelAsync(long userId) => InternalCreateChannelAsync(userId).AsAsyncOperation();
 
-        private static void OnReceived(PushNotificationChannel sender, PushNotificationReceivedEventArgs args)
+        private static void OnReceived(PushNotificationChannel sender, PushNotificationReceivedEventArgs args) => messageQueue.Enqueue((args.NotificationType, args.NotificationType switch
         {
-            messageQueue.Enqueue((args.NotificationType, args.NotificationType switch
-            {
-                PushNotificationType.Toast => args.ToastNotification,
-                PushNotificationType.Badge => args.BadgeNotification,
-                PushNotificationType.Tile => args.TileNotification,
-                PushNotificationType.TileFlyout => args.TileNotification,
-                PushNotificationType.Raw => args.RawNotification,
-                _ => throw new NotSupportedException($"Notification type ${args.NotificationType} is not supported.")
-            }));
-        }
+            PushNotificationType.Toast => args.ToastNotification,
+            PushNotificationType.Badge => args.BadgeNotification,
+            PushNotificationType.Tile => args.TileNotification,
+            PushNotificationType.TileFlyout => args.TileNotification,
+            PushNotificationType.Raw => args.RawNotification,
+            _ => throw new NotSupportedException($"Notification type ${args.NotificationType} is not supported.")
+        }));
 
         private static async Task<bool> InternalCreateChannelAsync(long userId)
         {
@@ -60,7 +54,7 @@ namespace MatrixUWP.BackgroundService.Tasks
                             expire_time = _channel.ExpirationTime.DateTime
                         })
                     .JsonAsync<ResponseModel>();
-                return response.Status == StatusCode.OK;
+                return response?.Status == StatusCode.OK;
             }
             catch (Exception ex)
             {

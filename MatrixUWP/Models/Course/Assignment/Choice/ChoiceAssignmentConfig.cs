@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 
 namespace MatrixUWP.Models.Course.Assignment.Choice
 {
-    class ChoiceAssignmentConfig : INotifyPropertyChanged
+    internal class ChoiceAssignmentConfig : INotifyPropertyChanged
     {
         private List<ChoiceAssignmentQuestion>? questions;
 
@@ -22,9 +22,6 @@ namespace MatrixUWP.Models.Course.Assignment.Choice
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
-        protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+        protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

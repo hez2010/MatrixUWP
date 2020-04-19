@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace MatrixUWP.Models.Course.Assignment.Answer
 {
-    class AnswerAssignmentConfig
+    internal class AnswerAssignmentConfig
     {
         [JsonProperty("questions")]
         public List<AnswerAssignmentQuestion>? Questions { get; set; }

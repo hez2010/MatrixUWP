@@ -1,5 +1,4 @@
-#nullable enable
-using MatrixUWP.Extensions;
+﻿#nullable enable
 using MatrixUWP.Models;
 using MatrixUWP.Models.User;
 using MatrixUWP.Shared.Extensions;
@@ -31,12 +30,12 @@ namespace MatrixUWP.Views
         private async void SignOut_Click(object sender, RoutedEventArgs e)
         {
             viewModel.Loading = true;
-            await Dispatcher.YieldAsync();
+
             try
             {
                 var result = await UserModel.SignOutAsync();
 
-                AppModel.ShowMessage?.Invoke(result.Message);
+                AppModel.ShowMessage?.Invoke(result?.Message ?? "发生错误");
                 UserModel.UpdateUserData(new UserDataModel());
             }
             catch (Exception ex)
@@ -61,7 +60,7 @@ namespace MatrixUWP.Views
             var file = await picker.PickSingleFileAsync();
             if (file is null) return;
             viewModel.Loading = true;
-            await Dispatcher.YieldAsync();
+
             AppModel.ShowMessage?.Invoke(await UpdateProfile(file));
             viewModel.Loading = false;
         }
@@ -84,11 +83,11 @@ namespace MatrixUWP.Views
                     })
                 };
                 if (file != null) viewModel.UserData.OnPropertyChanged(nameof(viewModel.UserData.Avatar));
-                if (result.Status == StatusCode.OK)
+                if (result?.Status == StatusCode.OK)
                 {
                     UserModel.UpdateUserData(viewModel.UserData);
                 }
-                return result.Message;
+                return result?.Message ?? "发生错误";
             }
             catch (Exception ex)
             {
@@ -102,7 +101,7 @@ namespace MatrixUWP.Views
         private async void SaveProfiles_Click(object sender, RoutedEventArgs e)
         {
             viewModel.Loading = true;
-            await Dispatcher.YieldAsync();
+
             AppModel.ShowMessage?.Invoke(await UpdateProfile());
             viewModel.Loading = false;
         }

@@ -9,16 +9,10 @@ namespace MatrixUWP.Models.Course.Assignment
 {
     public class CourseAssignmentModel
     {
-        public static async ValueTask<ResponseModel<List<CourseAssignmentDetailsModel>>> FetchCourseAssignmentListAsync(int courseId)
-        {
-            return await HttpUtils.MatrixHttpClient.GetAsync($"/api/courses/{courseId}/assignments")
+        public static async ValueTask<ResponseModel<List<CourseAssignmentDetailsModel>>?> FetchCourseAssignmentListAsync(int courseId) => await HttpUtils.MatrixHttpClient.GetAsync($"/api/courses/{courseId}/assignments")
                 .JsonAsync<ResponseModel<List<CourseAssignmentDetailsModel>>>();
-        }
 
-        public static async ValueTask<ResponseModel<CourseAssignmentDetailsModel>> FetchCourseAssignmentAsync(int courseId, int courseAssignmentId)
-        {
-            return await HttpUtils.MatrixHttpClient.GetAsync($"/api/courses/{courseId}/assignments/{courseAssignmentId}")
+        public static async ValueTask<ResponseModel<CourseAssignmentDetailsModel>?> FetchCourseAssignmentAsync(int courseId, int courseAssignmentId) => await HttpUtils.MatrixHttpClient.GetAsync($"/api/courses/{courseId}/assignments/{courseAssignmentId}")
                 .JsonAsync<ResponseModel<CourseAssignmentDetailsModel>>();
-        }
     }
 }

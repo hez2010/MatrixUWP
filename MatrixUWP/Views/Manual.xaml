@@ -5,10 +5,19 @@
     xmlns:local="using:MatrixUWP.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d"
     Background="{ThemeResource SystemControlAcrylicWindowMediumHighBrush}">
 
     <Grid>
+        <controls:TabView>
+            <controls:TabView.TabItems>
+                <controls:TabViewItem
+                    IsClosable="True"
+                    Header="Test">
+                </controls:TabViewItem>
+            </controls:TabView.TabItems>
+        </controls:TabView>
 
     </Grid>
 </Page>

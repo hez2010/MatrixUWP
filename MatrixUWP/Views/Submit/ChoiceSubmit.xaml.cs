@@ -1,5 +1,4 @@
 ﻿#nullable enable
-using MatrixUWP.Extensions;
 using MatrixUWP.Models;
 using MatrixUWP.Models.Submission;
 using MatrixUWP.Models.Submission.Answer;
@@ -58,15 +57,9 @@ namespace MatrixUWP.Views.Submit
             InitializeComponent();
         }
 
-        private async void MarkdownTextBlock_LinkClicked(object sender, LinkClickedEventArgs e)
-        {
-            await Windows.System.Launcher.LaunchUriAsync(new Uri(e.Link));
-        }
+        private async void MarkdownTextBlock_LinkClicked(object sender, LinkClickedEventArgs e) => await Windows.System.Launcher.LaunchUriAsync(new Uri(e.Link));
 
-        private async void MarkdownTextBlock_ImageClicked(object sender, LinkClickedEventArgs e)
-        {
-            await Windows.System.Launcher.LaunchUriAsync(new Uri(e.Link));
-        }
+        private async void MarkdownTextBlock_ImageClicked(object sender, LinkClickedEventArgs e) => await Windows.System.Launcher.LaunchUriAsync(new Uri(e.Link));
 
         private void Reset_Click(object sender, RoutedEventArgs e)
         {
@@ -78,13 +71,13 @@ namespace MatrixUWP.Views.Submit
         {
             if (parameters is null) return;
             viewModel.Loading = true;
-            await Dispatcher.YieldAsync();
+
             try
             {
                 var response = await SubmissionModel.FetchCourseSubmissionListAsync(parameters.CourseId, parameters.AssignmentId);
-                if (response.Status != StatusCode.OK)
+                if (response?.Status != StatusCode.OK)
                 {
-                    AppModel.ShowMessage?.Invoke(response.Message);
+                    AppModel.ShowMessage?.Invoke(response?.Message ?? "课程提交列表获取失败");
                     return;
                 }
                 var latestSubmission = response.Data.OrderByDescending(i => i.SubmitAt).FirstOrDefault();
@@ -93,9 +86,9 @@ namespace MatrixUWP.Views.Submit
                     await SubmissionModel.FetchCourseSubmissionAsync<List<ChoiceAnswer>, object>(parameters.CourseId,
                         parameters.AssignmentId,
                         latestSubmission.SubmissionId);
-                if (submissionDetails.Status != StatusCode.OK)
+                if (submissionDetails?.Status != StatusCode.OK)
                 {
-                    AppModel.ShowMessage?.Invoke(response.Message);
+                    AppModel.ShowMessage?.Invoke(response?.Message ?? "提交详情获取失败");
                     return;
                 }
                 var answers = submissionDetails.Data.Answers;
@@ -121,7 +114,7 @@ namespace MatrixUWP.Views.Submit
             if (viewModel.Questions is null) return;
 
             viewModel.Loading = true;
-            await Dispatcher.YieldAsync();
+
 
             var content = new SubmitPostModel<List<ChoiceAnswer>>();
             content.Detail.Answers = new List<ChoiceAnswer>();
@@ -137,7 +130,7 @@ namespace MatrixUWP.Views.Submit
             try
             {
                 var response = await SubmissionModel.SubmitForCourseAssignment(parameters.CourseId, parameters.AssignmentId, content);
-                AppModel.ShowMessage?.Invoke(response.Message);
+                AppModel.ShowMessage?.Invoke(response?.Message ?? "发生错误");
             }
             catch (Exception ex)
             {
@@ -157,13 +150,13 @@ namespace MatrixUWP.Views.Submit
             LoadPreviousSubmissionTip.IsOpen = false;
             if (parameters is null) return;
             viewModel.Loading = true;
-            await Dispatcher.YieldAsync();
+
             try
             {
                 var response = await SubmissionModel.FetchCourseSubmissionListAsync(parameters.CourseId, parameters.AssignmentId);
-                if (response.Status != StatusCode.OK)
+                if (response?.Status != StatusCode.OK)
                 {
-                    AppModel.ShowMessage?.Invoke(response.Message);
+                    AppModel.ShowMessage?.Invoke(response?.Message ?? "课程提交列表获取失败");
                     return;
                 }
                 var latestSubmission = response.Data.OrderByDescending(i => i.SubmitAt).FirstOrDefault();
@@ -172,9 +165,9 @@ namespace MatrixUWP.Views.Submit
                     await SubmissionModel.FetchCourseSubmissionAsync<List<ChoiceAnswer>, object>(parameters.CourseId,
                         parameters.AssignmentId,
                         latestSubmission.SubmissionId);
-                if (submissionDetails.Status != StatusCode.OK)
+                if (submissionDetails?.Status != StatusCode.OK)
                 {
-                    AppModel.ShowMessage?.Invoke(response.Message);
+                    AppModel.ShowMessage?.Invoke(response?.Message ?? "课程提交获取失败");
                     return;
                 }
                 var answers = submissionDetails.Data.Answers;
@@ -190,7 +183,10 @@ namespace MatrixUWP.Views.Submit
                     var question = viewModel.Questions.FirstOrDefault(q => q.Id == i.QuestionId);
                     if (question is null || question.Choices is null || i.ChoiceId is null) continue;
                     foreach (var c in question.Choices
-                        .Where(x => i.ChoiceId.Contains(x.Id))) c.IsChecked = true;
+                        .Where(x => i.ChoiceId.Contains(x.Id)))
+                    {
+                        c.IsChecked = true;
+                    }
                 }
                 AppModel.ShowMessage?.Invoke("已加载上次提交内容");
             }

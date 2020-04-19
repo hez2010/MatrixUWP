@@ -4,7 +4,7 @@ using System;
 
 namespace MatrixUWP.Models.Submission.Course
 {
-    class CourseSubmissionInfoModel
+    internal class CourseSubmissionInfoModel
     {
         [JsonProperty("sub_ca_id")]
         public int SubmissionId { get; set; }

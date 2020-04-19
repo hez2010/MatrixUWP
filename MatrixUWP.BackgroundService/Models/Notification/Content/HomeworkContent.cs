@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace MatrixUWP.BackgroundService.Models.Notification.Content
 {
-    class HomeworkContent
+    internal class HomeworkContent
     {
         [JsonProperty("action")]
         public string Action { get; set; } = "";

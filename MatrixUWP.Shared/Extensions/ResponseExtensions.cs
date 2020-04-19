@@ -1,11 +1,11 @@
 #nullable enable
-using System;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Windows.Storage.Streams;
 using Windows.Web.Http;
-using System.Diagnostics;
-using Newtonsoft.Json.Converters;
 
 namespace MatrixUWP.Shared.Extensions
 {
@@ -30,7 +30,7 @@ namespace MatrixUWP.Shared.Extensions
                 }
             };
 
-        public static async ValueTask<T> JsonAsync<T>(this ValueTask<HttpResponseMessage> response)
+        public static async ValueTask<T?> JsonAsync<T>(this ValueTask<HttpResponseMessage> response) where T : class
         {
             var result = await response;
             var json = await result.Content.ReadAsStringAsync();

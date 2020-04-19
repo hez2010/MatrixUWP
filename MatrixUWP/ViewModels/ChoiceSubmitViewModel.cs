@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 
 namespace MatrixUWP.ViewModels
 {
-    class ChoiceSubmitViewModel : INotifyPropertyChanged
+    internal class ChoiceSubmitViewModel : INotifyPropertyChanged
     {
         private bool loading;
 
@@ -24,9 +24,6 @@ namespace MatrixUWP.ViewModels
         public string Title { get; set; } = "";
 
         public event PropertyChangedEventHandler? PropertyChanged;
-        protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+        protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

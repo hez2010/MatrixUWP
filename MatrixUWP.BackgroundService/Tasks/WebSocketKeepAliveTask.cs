@@ -7,9 +7,6 @@ namespace MatrixUWP.BackgroundService.Tasks
     public sealed class WebSocketKeepAliveTask : IBackgroundTask
     {
         private readonly WebSocketKeepAlive innerTask = new WebSocketKeepAlive();
-        public void Run(IBackgroundTaskInstance taskInstance)
-        {
-            innerTask.Run(taskInstance);
-        }
+        public void Run(IBackgroundTaskInstance taskInstance) => innerTask.Run(taskInstance);
     }
 }

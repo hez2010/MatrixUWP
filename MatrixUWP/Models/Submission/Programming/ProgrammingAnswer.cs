@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace MatrixUWP.Models.Submission.Programming
 {
-    class ProgrammingAnswer
+    internal class ProgrammingAnswer
     {
         [JsonProperty("name")]
         public string? Name { get; set; }

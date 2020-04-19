@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace MatrixUWP.Models.Submission.Answer
 {
-    class ChoiceAnswer
+    internal class ChoiceAnswer
     {
         [JsonProperty("question_id")]
         public int QuestionId { get; set; }

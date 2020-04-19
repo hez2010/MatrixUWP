@@ -1,7 +1,7 @@
 #nullable enable
 namespace MatrixUWP.Models.Config
 {
-    enum Language : int
+    internal enum Language : int
     {
         Default, English, Chinese
     }

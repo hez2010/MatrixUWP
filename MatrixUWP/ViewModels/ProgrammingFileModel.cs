@@ -50,16 +50,17 @@ namespace MatrixUWP.ViewModels
                     if (!ReadOnly)
                         SetContent?.Invoke(FileName, value ?? "");
                 }
-                else SuppressSetDispatcher = false;
+                else
+                {
+                    SuppressSetDispatcher = false;
+                }
+
                 OnPropertyChanged();
             }
         }
         public bool IsSupportFile { get; set; }
 
         public event PropertyChangedEventHandler? PropertyChanged;
-        protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+        protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

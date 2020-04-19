@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace MatrixUWP.Models.Course.Assignment.File
 {
-    class FileAssignmentConfig
+    internal class FileAssignmentConfig
     {
         [JsonProperty("filename")]
         public string FileName { get; set; } = "";

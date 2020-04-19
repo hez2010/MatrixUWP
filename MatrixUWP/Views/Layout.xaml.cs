@@ -1,8 +1,6 @@
-#nullable enable
-using MatrixUWP.Extensions;
+﻿#nullable enable
 using MatrixUWP.Models;
 using MatrixUWP.Models.User;
-using MatrixUWP.Services;
 using MatrixUWP.Shared.Models;
 using MatrixUWP.ViewModels;
 using System;
@@ -102,15 +100,12 @@ namespace MatrixUWP.Views
             }
 
             // Set up page transition effect base on pane display mode
-            NavigationTransitionInfo transition;
-            if (paneDisplayMode == NavigationViewPaneDisplayMode.Top)
-            {
-                transition = new SlideNavigationTransitionInfo
+            var transition = paneDisplayMode == NavigationViewPaneDisplayMode.Top
+                ? new SlideNavigationTransitionInfo
                 {
                     Effect = lastSelectedItemIndex <= index ? SlideNavigationTransitionEffect.FromRight : SlideNavigationTransitionEffect.FromLeft
-                };
-            }
-            else transition = new DrillInNavigationTransitionInfo();
+                }
+                : (NavigationTransitionInfo)new DrillInNavigationTransitionInfo();
 
             // Navigate to page
             NaviContent.Navigate(targetInfo, null, transition);
@@ -120,10 +115,7 @@ namespace MatrixUWP.Views
             lastSelectedItemIndex = index;
         }
 
-        private void NavigateToPage(Type pageType, object parameter, NavigationTransitionInfo? transitionInfo)
-        {
-            NaviContent.Navigate(pageType, parameter, transitionInfo ?? new DrillInNavigationTransitionInfo());
-        }
+        private void NavigateToPage(Type pageType, object parameter, NavigationTransitionInfo? transitionInfo) => NaviContent.Navigate(pageType, parameter, transitionInfo ?? new DrillInNavigationTransitionInfo());
 
         private void ShowMessage(string message)
         {
@@ -131,10 +123,7 @@ namespace MatrixUWP.Views
             viewModel.ShowMessage = true;
         }
 
-        private void NaviMenu_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
-        {
-            NavigateToPage(args.InvokedItemContainer, args.IsSettingsInvoked, sender.PaneDisplayMode);
-        }
+        private void NaviMenu_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args) => NavigateToPage(args.InvokedItemContainer, args.IsSettingsInvoked, sender.PaneDisplayMode);
 
         private bool NavigateBack()
         {
@@ -144,8 +133,7 @@ namespace MatrixUWP.Views
                 if (navimenuNaviHistory.TryPop(out var index))
                 {
                     if (index == -1) return true;
-                    if (index != NaviMenu.MenuItems.Count) NaviMenu.SelectedItem = NaviMenu.MenuItems[index];
-                    else NaviMenu.SelectedItem = NaviMenu.SettingsItem;
+                    NaviMenu.SelectedItem = index != NaviMenu.MenuItems.Count ? NaviMenu.MenuItems[index] : NaviMenu.SettingsItem;
                     lastSelectedItemIndex = index;
                 }
                 return true;
@@ -153,20 +141,11 @@ namespace MatrixUWP.Views
             return false;
         }
 
-        private void App_BackRequested(object sender, Windows.UI.Core.BackRequestedEventArgs e)
-        {
-            e.Handled = NavigateBack();
-        }
+        private void App_BackRequested(object sender, Windows.UI.Core.BackRequestedEventArgs e) => e.Handled = NavigateBack();
 
-        private void NaviMenu_BackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args)
-        {
-            NavigateBack();
-        }
+        private void NaviMenu_BackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args) => NavigateBack();
 
-        private void Page_Unloaded(object sender, RoutedEventArgs e)
-        {
-            viewModel.UserData.PropertyChanged -= UserData_PropertyChanged;
-        }
+        private void Page_Unloaded(object sender, RoutedEventArgs e) => viewModel.UserData.PropertyChanged -= UserData_PropertyChanged;
 
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
@@ -178,19 +157,22 @@ namespace MatrixUWP.Views
             {
                 loaded = true;
                 viewModel.Loading = true;
-                await Dispatcher.YieldAsync();
+
                 try
                 {
                     var response = await UserModel.GetUserProfile();
-                    if (response.Status == StatusCode.OK)
+                    if (response?.Status == StatusCode.OK)
                     {
                         UserModel.UpdateUserData(response.Data);
                     }
                 }
                 catch { /* ignored */ }
                 viewModel.Loading = false;
-
-                await PushService.RegistTaskAsync();
+                //try
+                //{
+                //    await PushService.RegistTaskAsync();
+                //}
+                //catch { /* ignored */ }
             }
         }
     }

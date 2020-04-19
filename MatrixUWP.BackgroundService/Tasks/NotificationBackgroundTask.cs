@@ -14,11 +14,8 @@ namespace MatrixUWP.BackgroundService.Tasks
 {
     public sealed class NotificationBackgroundTask : IBackgroundTask
     {
-        private readonly static ConcurrentQueue<string> messageQueue = new ConcurrentQueue<string>();
-        public static void PushMessage(string message)
-        {
-            messageQueue.Enqueue(message);
-        }
+        private static readonly ConcurrentQueue<string> messageQueue = new ConcurrentQueue<string>();
+        public static void PushMessage(string message) => messageQueue.Enqueue(message);
 
         public void Run(IBackgroundTaskInstance taskInstance)
         {

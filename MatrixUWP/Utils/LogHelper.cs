@@ -7,7 +7,7 @@ using Windows.Foundation.Diagnostics;
 namespace MatrixUWP.Utils
 {
     [EventData]
-    class LogMessage<T>
+    internal class LogMessage<T>
     {
         public LogMessage(T message)
         {
@@ -15,16 +15,11 @@ namespace MatrixUWP.Utils
         }
         public T Message;
     }
-    static class LogHelper
-    {
-        public static void Log(this Exception ex, LoggingLevel severity = LoggingLevel.Information)
-        {
-            Debugger.Break();
-        }
 
-        public static void Log(string message, LoggingLevel severity = LoggingLevel.Information)
-        {
-            Debugger.Break();
-        }
+    internal static class LogHelper
+    {
+        public static void Log(this Exception ex, LoggingLevel severity = LoggingLevel.Information) => Debugger.Break();
+
+        public static void Log(string message, LoggingLevel severity = LoggingLevel.Information) => Debugger.Break();
     }
 }

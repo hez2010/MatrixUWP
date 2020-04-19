@@ -5,7 +5,7 @@ using Windows.UI.Xaml.Media;
 
 namespace MatrixUWP.Utils
 {
-    static class VisualTreeUtils
+    internal static class VisualTreeUtils
     {
         public static T? FindChildOfType<T>(this DependencyObject root) where T : UIElement
         {
@@ -13,8 +13,8 @@ namespace MatrixUWP.Utils
             queue.Enqueue(root);
             while (queue.Count > 0)
             {
-                DependencyObject current = queue.Dequeue();
-                for (int i = 0; i < VisualTreeHelper.GetChildrenCount(current); i++)
+                var current = queue.Dequeue();
+                for (var i = 0; i < VisualTreeHelper.GetChildrenCount(current); i++)
                 {
                     var child = VisualTreeHelper.GetChild(current, i);
                     if (child is T typedChild)
@@ -32,8 +32,8 @@ namespace MatrixUWP.Utils
             queue.Enqueue(root);
             while (queue.Count > 0)
             {
-                DependencyObject current = queue.Dequeue();
-                for (int i = 0; i < VisualTreeHelper.GetChildrenCount(current); i++)
+                var current = queue.Dequeue();
+                for (var i = 0; i < VisualTreeHelper.GetChildrenCount(current); i++)
                 {
                     var child = VisualTreeHelper.GetChild(current, i);
                     if (child is T typedChild && child is FrameworkElement fe && fe.Name == name)

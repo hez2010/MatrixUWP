@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace MatrixUWP.BackgroundService.Models.Notification
 {
-    class NotificationSender
+    internal class NotificationSender
     {
         [JsonProperty("id")]
         public int Id { get; set; }

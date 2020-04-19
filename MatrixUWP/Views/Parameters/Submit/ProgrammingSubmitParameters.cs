@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace MatrixUWP.Views.Parameters.Submit
 {
-    class ProgrammingSubmitParameters
+    internal class ProgrammingSubmitParameters
     {
         public string Description { get; set; } = "";
         public string Title { get; set; } = "";

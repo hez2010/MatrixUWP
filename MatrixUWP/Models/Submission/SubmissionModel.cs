@@ -11,30 +11,21 @@ using Windows.Web.Http;
 
 namespace MatrixUWP.Models.Submission
 {
-    class SubmissionModel
+    internal class SubmissionModel
     {
-        public static async ValueTask<ResponseModel<List<CourseSubmissionInfoModel>>> FetchCourseSubmissionListAsync(int courseId, int assignmentId)
-        {
-            return await HttpUtils.MatrixHttpClient.GetAsync($"/api/courses/{courseId}/assignments/{assignmentId}/submissions")
+        public static async ValueTask<ResponseModel<List<CourseSubmissionInfoModel>>?> FetchCourseSubmissionListAsync(int courseId, int assignmentId) => await HttpUtils.MatrixHttpClient.GetAsync($"/api/courses/{courseId}/assignments/{assignmentId}/submissions")
                 .JsonAsync<ResponseModel<List<CourseSubmissionInfoModel>>>();
-        }
 
-        public static async ValueTask<ResponseModel<SubmissionDetailsModel<TAnswer, TReport>>> FetchCourseSubmissionAsync<TAnswer, TReport>
+        public static async ValueTask<ResponseModel<SubmissionDetailsModel<TAnswer, TReport>>?> FetchCourseSubmissionAsync<TAnswer, TReport>
            (int courseId, int assignmentId, int submissionId)
            where TAnswer : class
-           where TReport : class
-        {
-            return await HttpUtils.MatrixHttpClient.GetAsync($"/api/courses/{courseId}/assignments/{assignmentId}/submissions/{submissionId}")
+           where TReport : class => await HttpUtils.MatrixHttpClient.GetAsync($"/api/courses/{courseId}/assignments/{assignmentId}/submissions/{submissionId}")
                 .JsonAsync<ResponseModel<SubmissionDetailsModel<TAnswer, TReport>>>();
-        }
 
-        public static async ValueTask<ResponseModel> SubmitForCourseAssignment<TAnswer>(int courseId, int assignmentId, TAnswer answer)
-        {
-            return await HttpUtils.MatrixHttpClient.PostJsonAsync($"/api/courses/{courseId}/assignments/{assignmentId}/submissions", answer)
+        public static async ValueTask<ResponseModel?> SubmitForCourseAssignment<TAnswer>(int courseId, int assignmentId, TAnswer answer) => await HttpUtils.MatrixHttpClient.PostJsonAsync($"/api/courses/{courseId}/assignments/{assignmentId}/submissions", answer)
                 .JsonAsync<ResponseModel>();
-        }
 
-        public static async ValueTask<ResponseModel> SubmitFileForCourseAssignment(int courseId, int assignmentId, StorageFile file)
+        public static async ValueTask<ResponseModel?> SubmitFileForCourseAssignment(int courseId, int assignmentId, StorageFile file)
         {
             var buffer = await FileIO.ReadBufferAsync(file);
             using var httpContent = new HttpBufferContent(buffer);

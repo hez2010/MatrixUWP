@@ -10,7 +10,7 @@ namespace MatrixUWP.Models
     /// 
     /// </summary>
     /// <typeparam name="T">Parameter type</typeparam>
-    static class AppModel
+    internal static class AppModel
     {
         public static Action<string>? ShowMessage { get; set; }
         /// <summary>

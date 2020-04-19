@@ -1,5 +1,4 @@
 #nullable enable
-using MatrixUWP.Extensions;
 using MatrixUWP.Models;
 using MatrixUWP.Models.Course.Assignment;
 using MatrixUWP.Models.Course.Assignment.Answer;
@@ -9,11 +8,13 @@ using MatrixUWP.Models.Course.Assignment.Output;
 using MatrixUWP.Models.Course.Assignment.Programming;
 using MatrixUWP.Models.Course.Assignment.Report;
 using MatrixUWP.Models.Submission;
+using MatrixUWP.Shared.Extensions;
+using MatrixUWP.Shared.Models;
 using MatrixUWP.Utils;
 using MatrixUWP.ViewModels;
-using MatrixUWP.Views.Submit;
 using MatrixUWP.Views.Parameters.Course;
 using MatrixUWP.Views.Parameters.Submit;
+using MatrixUWP.Views.Submit;
 using Microsoft.Toolkit.Uwp.UI.Controls;
 using Newtonsoft.Json;
 using System;
@@ -24,8 +25,6 @@ using Windows.Storage.Pickers;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
-using MatrixUWP.Shared.Extensions;
-using MatrixUWP.Shared.Models;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -99,14 +98,13 @@ namespace MatrixUWP.Views.Course
             if (LastCourseId == parameters.CourseId) return;
             viewModel.Assignments = null;
             viewModel.Loading = true;
-            await Dispatcher.YieldAsync();
 
             try
             {
                 var response = await CourseAssignmentModel.FetchCourseAssignmentListAsync(parameters?.CourseId ?? 0);
-                if (response.Status != StatusCode.OK)
+                if (response?.Status != StatusCode.OK)
                 {
-                    AppModel.ShowMessage?.Invoke(response.Message);
+                    AppModel.ShowMessage?.Invoke(response?.Message ?? "课程作业列表获取失败");
                     return;
                 }
                 viewModel.Assignments = response.Data;
@@ -130,16 +128,15 @@ namespace MatrixUWP.Views.Course
             if (!(e.AddedItems.First() is CourseAssignmentDetailsModel selectedItem)) return;
             if (selectedItem.Loaded) return;
             selectedItem.Loading = true;
-            await Dispatcher.YieldAsync();
             try
             {
                 var response =
                     await CourseAssignmentModel.FetchCourseAssignmentAsync(
                         parameters.CourseId,
                         selectedItem.CourseAssignmentId);
-                if (response.Status != StatusCode.OK)
+                if (response?.Status != StatusCode.OK)
                 {
-                    AppModel.ShowMessage?.Invoke(response.Message);
+                    AppModel.ShowMessage?.Invoke(response?.Message ?? "课程作业获取失败");
                     return;
                 }
                 response.Data.CopyTo(selectedItem);
@@ -157,15 +154,9 @@ namespace MatrixUWP.Views.Course
                 selectedItem.Loading = false;
             }
         }
-        private async void MarkdownTextBlock_LinkClicked(object sender, LinkClickedEventArgs e)
-        {
-            await Windows.System.Launcher.LaunchUriAsync(new Uri(e.Link));
-        }
+        private async void MarkdownTextBlock_LinkClicked(object sender, LinkClickedEventArgs e) => await Windows.System.Launcher.LaunchUriAsync(new Uri(e.Link));
 
-        private async void MarkdownTextBlock_ImageClicked(object sender, LinkClickedEventArgs e)
-        {
-            await Windows.System.Launcher.LaunchUriAsync(new Uri(e.Link));
-        }
+        private async void MarkdownTextBlock_ImageClicked(object sender, LinkClickedEventArgs e) => await Windows.System.Launcher.LaunchUriAsync(new Uri(e.Link));
 
         private async Task ShowSubmitPage(object config, CourseAssignmentDetailsModel model)
         {
@@ -179,19 +170,13 @@ namespace MatrixUWP.Views.Course
             {
                 case ProgrammingAssignmentConfig asgnConfig:
                     {
-                        void SetContent(string fileName, string content)
-                        {
-                            asgnConfig.SubmitContents[fileName] = content;
-                        }
+                        void SetContent(string fileName, string content) => asgnConfig.SubmitContents[fileName] = content;
 
-                        string GetContent(string fileName, bool isSupportFile)
+                        string GetContent(string fileName, bool isSupportFile) => isSupportFile switch
                         {
-                            return isSupportFile switch
-                            {
-                                true => (asgnConfig.SupportContents?.ContainsKey(fileName) ?? false) ? asgnConfig.SupportContents[fileName] : "",
-                                false => asgnConfig.SubmitContents.ContainsKey(fileName) ? asgnConfig.SubmitContents[fileName] : ""
-                            };
-                        }
+                            true => (asgnConfig.SupportContents?.ContainsKey(fileName) ?? false) ? asgnConfig.SupportContents[fileName] : "",
+                            false => asgnConfig.SubmitContents.ContainsKey(fileName) ? asgnConfig.SubmitContents[fileName] : ""
+                        };
 
                         if (asgnConfig.Standard?.Support != null)
                         {
@@ -244,11 +229,10 @@ namespace MatrixUWP.Views.Course
                             break;
                         }
                         viewModel.Loading = true;
-                        await Dispatcher.YieldAsync();
                         try
                         {
                             var response = await SubmissionModel.SubmitFileForCourseAssignment(model.CourseId, model.CourseAssignmentId, file);
-                            AppModel.ShowMessage?.Invoke(response.Message);
+                            AppModel.ShowMessage?.Invoke(response?.Message ?? "提交成功");
                         }
                         catch (Exception ex)
                         {

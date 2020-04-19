@@ -133,17 +133,18 @@
     <Compile Include="Utils\MatrixHttpFilter.cs" />
     <Compile Include="Utils\MatrixJsonHttpRequestBuilder.cs" />
     <Compile Include="Utils\MatrixJsonHttpRequestClient.cs" />
+    <Compile Include="Utils\NullableTypesAttributes.cs" />
     <EmbeddedResource Include="Properties\MatrixUWP.Shared.rd.xml" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
-      <Version>6.2.9</Version>
+      <Version>6.2.10</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>12.0.3</Version>
     </PackageReference>
     <PackageReference Include="System.Threading.Tasks.Extensions">
-      <Version>4.5.3</Version>
+      <Version>4.5.4</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup />

@@ -5,7 +5,7 @@ using System;
 
 namespace MatrixUWP.BackgroundService.Models.Notification
 {
-    class NotificationModel
+    internal class NotificationModel
     {
         [JsonProperty("time")]
         public DateTime Time { get; set; }

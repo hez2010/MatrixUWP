@@ -81,7 +81,10 @@ namespace MatrixUWP.Models.User
             get
             {
                 var bitmap = new BitmapImage();
-                if (string.IsNullOrEmpty(UserName)) bitmap.UriSource = new Uri("ms-appx:///Assets/Home/user.png");
+                if (string.IsNullOrEmpty(UserName))
+                {
+                    bitmap.UriSource = new Uri("ms-appx:///Assets/Home/user.png");
+                }
                 else
                 {
                     try
@@ -98,9 +101,6 @@ namespace MatrixUWP.Models.User
             }
         }
 
-        public virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+        public virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

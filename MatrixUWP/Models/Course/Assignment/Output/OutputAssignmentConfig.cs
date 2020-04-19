@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace MatrixUWP.Models.Course.Assignment.Output
 {
-    class OutputAssignmentConfig
+    internal class OutputAssignmentConfig
     {
         [JsonProperty("answer_scores")]
         public List<int>? AnswerScores { get; set; }

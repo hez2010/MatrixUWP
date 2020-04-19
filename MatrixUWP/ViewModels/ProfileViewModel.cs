@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 
 namespace MatrixUWP.ViewModels
 {
-    class ProfileViewModel : INotifyPropertyChanged
+    internal class ProfileViewModel : INotifyPropertyChanged
     {
         private bool loading;
         private UserDataModel? userData;
@@ -31,9 +31,6 @@ namespace MatrixUWP.ViewModels
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
-        protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+        protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

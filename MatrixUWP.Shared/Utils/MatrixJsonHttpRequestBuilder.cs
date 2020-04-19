@@ -32,9 +32,6 @@ namespace MatrixUWP.Shared.Utils
             httpClient.DefaultRequestHeaders.IfModifiedSince = DateTimeOffset.Now;
         }
 
-        public MatrixJsonHttpRequestClient Build()
-        {
-            return new MatrixJsonHttpRequestClient(httpClient, baseUri);
-        }
+        public MatrixJsonHttpRequestClient Build() => new MatrixJsonHttpRequestClient(httpClient, baseUri);
     }
 }
