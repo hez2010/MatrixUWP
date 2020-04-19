@@ -10,7 +10,7 @@
 
   <Identity
     Name="41790vmatrix.MatrixUWP"
-    Publisher="CN=CB744060-7B89-4630-9B34-944A7035EC99"
+    Publisher="CN=vmatrix"
     Version="0.0.10.0" />
 
   <mp:PhoneIdentity PhoneProductId="bbf08e55-8f9c-41a6-938f-1af76eac75f9" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
