@@ -1,4 +1,8 @@
 #nullable enable
+using Exceptionless;
+#if !DEBUG
+using Exceptionless.Plugins;
+#endif
 using MatrixUWP.Views;
 using System;
 using System.Diagnostics;
@@ -24,9 +28,44 @@ namespace MatrixUWP
         {
             InitializeComponent();
             Suspending += OnSuspending;
-            UnhandledException += OnUnhandledException;
             EnteredBackground += OnEnteredBackground;
             LeavingBackground += OnLeavingBackground;
+            SetupExceptionless();
+        }
+
+        private void SetupExceptionless()
+        {
+            var client = ExceptionlessClient.Default;
+            UnhandledException += (sender, args) =>
+            {
+#if !DEBUG
+                var contextData = new ContextData();
+                contextData.MarkAsUnhandledError();
+                contextData.SetSubmissionMethod("App_UnhandledException");
+                args.Exception.ToExceptionless(contextData, client).Submit();
+                client.ProcessQueue();
+#endif
+#if FAIL_ON_DEBUG
+                Debug.Fail(args.Message);
+                args.Handled = true;
+#endif
+            };
+
+            AppDomain.CurrentDomain.UnhandledException += (sender, args) =>
+            {
+                if (!(args.ExceptionObject is Exception ex)) return;
+#if !DEBUG
+                var contextData = new ContextData();
+                contextData.MarkAsUnhandledError();
+                contextData.SetSubmissionMethod("AppDomain_UnhandledException");
+                ex.ToExceptionless(contextData, client).Submit();
+                client.ProcessQueue();
+#endif
+#if FAIL_ON_DEBUG
+                Debug.Fail(ex.Message);
+#endif
+            };
+            client.Startup("AjRPnkPtLOd7mZNKb1XU4yuxYqhS5Xe247IX07w5");
         }
 
         private void OnEnteredBackground(object sender, EnteredBackgroundEventArgs e)
@@ -104,14 +143,6 @@ namespace MatrixUWP
             var deferral = e.SuspendingOperation.GetDeferral();
             //TODO: Save application state and stop any background activity
             deferral.Complete();
-        }
-
-        private void OnUnhandledException(object sender, Windows.UI.Xaml.UnhandledExceptionEventArgs e)
-        {
-#if FAIL_ON_DEBUG
-            Debug.Fail(e.Message, e.Exception.StackTrace);
-#endif
-            e.Handled = true;
         }
     }
 }
