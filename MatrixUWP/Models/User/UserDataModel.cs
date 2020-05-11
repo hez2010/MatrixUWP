@@ -10,7 +10,7 @@ namespace MatrixUWP.Models.User
         private bool captcha;
         private string nickName = "";
         private int isValid;
-        private object? userAddition;
+        private UserAddition? userAddition;
         private MailConfig? mailConfig;
         private bool isInLib;
         private bool canCreateLib;
@@ -58,7 +58,7 @@ namespace MatrixUWP.Models.User
         }
 
         [JsonProperty("user_addition")]
-        public object? UserAddition
+        public UserAddition? UserAddition
         {
             get => userAddition;
             set

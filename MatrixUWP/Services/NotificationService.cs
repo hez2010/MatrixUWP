@@ -13,20 +13,22 @@ namespace MatrixUWP.Services
     {
         private const string channelId = "MatrixUWP_Notifications";
 #if DEBUG
-        private static readonly Uri baseUri = new Uri("wss://test.vmatrix.org.cn/");
+        private static readonly Uri baseUri = new Uri("wss://test.vmatrix.org.cn");
 #else
 #warning Restore uri before publishing stable version of Matrix UWP
-        private static readonly Uri baseUri = new Uri("wss://test.vmatrix.org.cn/");
+        private static readonly Uri baseUri = new Uri("wss://test.vmatrix.org.cn");
 #endif
+        private static ControlChannelTrigger? channel;
         public static void UnregistTask()
         {
             try
             {
                 var tasks = BackgroundTaskRegistration.AllTasks
-                    .Where(i => i.Value.Name == nameof(NotificationBackgroundTask) || i.Value.Name == nameof(WebSocketKeepAliveTask))
+                    .Where(i => i.Value.Name == nameof(NotificationBackgroundTask) || i.Value.Name == nameof(WebSocketKeepAlive))
                     .Select(i => i.Value)
                     .ToList();
                 foreach (var i in tasks) i.Unregister(true);
+                channel?.Dispose();
             }
             catch (Exception ex)
             {
@@ -71,12 +73,12 @@ namespace MatrixUWP.Services
                         Debug.WriteLine(ex.Message);
                     }
                 };
-                var channel = new ControlChannelTrigger(channelId, 15, ControlChannelTriggerResourceType.RequestHardwareSlot);
+                channel = new ControlChannelTrigger(channelId, 15, ControlChannelTriggerResourceType.RequestHardwareSlot);
 
                 var keepAliveBuilder = new BackgroundTaskBuilder
                 {
-                    Name = nameof(WebSocketKeepAliveTask),
-                    TaskEntryPoint = typeof(WebSocketKeepAliveTask).FullName,
+                    Name = nameof(WebSocketKeepAlive),
+                    TaskEntryPoint = typeof(WebSocketKeepAlive).FullName,
                     IsNetworkRequested = true
                 };
                 keepAliveBuilder.SetTrigger(channel.KeepAliveTrigger);
@@ -95,7 +97,7 @@ namespace MatrixUWP.Services
 
                 channel.UsingTransport(socketClient);
 
-                await socketClient.ConnectAsync(new Uri(baseUri, "/ws"));
+                await socketClient.ConnectAsync(new Uri(baseUri, "/api/notifications"));
                 var status = channel.WaitForPushEnabled();
                 if (status != ControlChannelTriggerStatus.HardwareSlotAllocated
                     && status != ControlChannelTriggerStatus.SoftwareSlotAllocated)

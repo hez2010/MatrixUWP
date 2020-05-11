@@ -3,15 +3,15 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:MatrixUWP.Views"
+    xmlns:user="using:MatrixUWP.Models.User"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:user="using:MatrixUWP.Models.User"
     mc:Ignorable="d"
     xmlns:tookit="using:Microsoft.Toolkit.Uwp.UI.Controls"
     Background="{ThemeResource SystemControlAcrylicWindowMediumHighBrush}" Loaded="Page_Loaded">
 
     <Grid>
-        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="{x:Bind user:UserModel.CurrentUser.SignedIn, Mode=OneWay, Converter={StaticResource NotVisibilityConverter}}">
+        <StackPanel x:Name="UnsignedInPanel" VerticalAlignment="Center" HorizontalAlignment="Center" x:Load="{x:Bind user:UserModel.CurrentUser.SignedIn, Mode=OneWay, Converter={StaticResource NotConverter}}">
             <Image Height="100" Source="{ThemeResource MatrixLogo}"></Image>
             <Border Margin="0,0,0,50" Background="{ThemeResource SystemControlAcrylicWindowBrush}" BorderBrush="LightGray" BorderThickness="1" CornerRadius="2">
                 <StackPanel>
@@ -37,9 +37,178 @@
                 </StackPanel>
             </Border>
         </StackPanel>
-        <StackPanel VerticalAlignment="Center" Orientation="Horizontal" HorizontalAlignment="Center" Visibility="{x:Bind user:UserModel.CurrentUser.SignedIn, Mode=OneWay}">
-            <TextBlock Text="欢迎回来，" FontSize="30"></TextBlock>
-            <TextBlock Text="{x:Bind user:UserModel.CurrentUser.NickName, Mode=OneWay}" FontSize="30"></TextBlock>
-        </StackPanel>
+        <Grid x:Name="SignedInPanel" Margin="40" x:Load="{x:Bind user:UserModel.CurrentUser.SignedIn, Mode=OneWay}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="350"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0">
+                <StackPanel Margin="0" VerticalAlignment="Top" Orientation="Horizontal">
+                    <TextBlock VerticalAlignment="Center" Text="Matrix" FontWeight="Bold" FontSize="28"></TextBlock>
+                    <TextBlock Margin="28,0,0,0" VerticalAlignment="Center" Foreground="#b5b5b5" FontWeight="Bold" Text="{x:Bind viewModel.CurrentDateTime, Mode=OneWay}" FontSize="18"></TextBlock>
+                </StackPanel>
+                <Border Margin="0,20,0,0" CornerRadius="5" BorderThickness="0" Background="{ThemeResource SystemControlAcrylicWindowBrush}" Height="170">
+                    <StackPanel>
+                        <StackPanel Margin="40,40,0,0" Orientation="Horizontal">
+                            <TextBlock FontSize="32" FontWeight="Bold" Text="欢迎，"></TextBlock>
+                            <TextBlock FontSize="32" FontWeight="Bold" Text="{x:Bind user:UserModel.CurrentUser.UserName, Mode=OneWay}"></TextBlock>
+                            <TextBlock FontSize="32" FontWeight="Bold" Text="！"></TextBlock>
+                        </StackPanel>
+                        <StackPanel Margin="40,20,0,0" Orientation="Horizontal">
+                            <TextBlock FontSize="18" FontWeight="Bold" Foreground="#797979" Text="你还有"></TextBlock>
+                            <TextBlock FontSize="18" FontWeight="Bold" Foreground="#797979" Text="5"></TextBlock>
+                            <TextBlock FontSize="18" FontWeight="Bold" Foreground="#797979" Text="道题目待完成，加油！"></TextBlock>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+                <TextBlock Margin="0,20,0,0" Text="TO DO LIST" FontSize="20" FontWeight="Bold"></TextBlock>
+                <ListView Margin="0,20,0,0" Background="{ThemeResource SystemControlAcrylicWindowBrush}">
+                    <ListViewItem>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="230"></ColumnDefinition>
+                                <ColumnDefinition Width="230"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Width="200" Margin="8" Grid.Column="0">
+                                <TextBlock FontWeight="Bold" Text="[Inheritance] Employee"></TextBlock>
+                                <TextBlock Foreground="#b5b5b5" Text="程序设计(Ⅱ) - 实时编程题"></TextBlock>
+                            </StackPanel>
+                            <StackPanel Margin="8" Grid.Column="1" Orientation="Horizontal">
+                                <ProgressBar Margin="8" Width="150" Value="46"></ProgressBar>
+                                <TextBlock Margin="8" VerticalAlignment="Center" Foreground="DodgerBlue" Text="46%"></TextBlock>
+                            </StackPanel>
+                            <TextBlock Grid.Column="2" Margin="8" VerticalAlignment="Center" Foreground="#ff6a77" Text="2 小时后截止"></TextBlock>
+                        </Grid>
+                    </ListViewItem>
+                    <ListViewItem>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="230"></ColumnDefinition>
+                                <ColumnDefinition Width="230"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Width="200" Margin="8" Grid.Column="0">
+                                <TextBlock FontWeight="Bold" Text="[Exception] Stack and Exception"></TextBlock>
+                                <TextBlock Foreground="#b5b5b5" Text="程序设计(Ⅱ) - 实时编程题"></TextBlock>
+                            </StackPanel>
+                            <StackPanel Margin="8" Grid.Column="1" Orientation="Horizontal">
+                                <ProgressBar Margin="8" Width="150" Value="60"></ProgressBar>
+                                <TextBlock Margin="8" VerticalAlignment="Center" Foreground="DodgerBlue" Text="60%"></TextBlock>
+                            </StackPanel>
+                            <TextBlock Grid.Column="2" Margin="8" VerticalAlignment="Center" Foreground="#ff6a77" Text="2 小时后截止"></TextBlock>
+                        </Grid>
+                    </ListViewItem>
+                    <ListViewItem>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="230"></ColumnDefinition>
+                                <ColumnDefinition Width="230"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Width="200" Margin="8" Grid.Column="0">
+                                <TextBlock FontWeight="Bold" Text="[Classes and Objects] DouList (eden)"></TextBlock>
+                                <TextBlock Foreground="#b5b5b5" Text="程序设计(Ⅱ) - 实时编程题"></TextBlock>
+                            </StackPanel>
+                            <StackPanel Margin="8" Grid.Column="1" Orientation="Horizontal">
+                                <ProgressBar Margin="8" Width="150" Value="40"></ProgressBar>
+                                <TextBlock Margin="8" VerticalAlignment="Center" Foreground="DodgerBlue" Text="40%"></TextBlock>
+                            </StackPanel>
+                            <TextBlock Grid.Column="2" Margin="8" VerticalAlignment="Center" Foreground="#b5b5b5" Text="7 天后截止"></TextBlock>
+                        </Grid>
+                    </ListViewItem>
+                    <ListViewItem>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="230"></ColumnDefinition>
+                                <ColumnDefinition Width="230"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Width="200" Margin="8" Grid.Column="0">
+                                <TextBlock FontWeight="Bold" Text="[Inheritance] Simple Markup Language"></TextBlock>
+                                <TextBlock Foreground="#b5b5b5" Text="程序设计(Ⅱ) - 实时编程题"></TextBlock>
+                            </StackPanel>
+                            <StackPanel Margin="8" Grid.Column="1" Orientation="Horizontal">
+                                <ProgressBar Margin="8" Width="150" Value="20" Foreground="#ff6a77"></ProgressBar>
+                                <TextBlock Margin="8" VerticalAlignment="Center" Foreground="#ff6a77" Text="20%"></TextBlock>
+                            </StackPanel>
+                            <TextBlock Grid.Column="2" Margin="8" VerticalAlignment="Center" Foreground="#b5b5b5" Text="2020/06/16 截止"></TextBlock>
+                        </Grid>
+                    </ListViewItem>
+                    <ListViewItem>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="230"></ColumnDefinition>
+                                <ColumnDefinition Width="230"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Width="200" Margin="8" Grid.Column="0">
+                                <TextBlock FontWeight="Bold" Text="[Operator Overloading] The Ration"></TextBlock>
+                                <TextBlock Foreground="#b5b5b5" Text="程序设计(Ⅱ) - 实时编程题"></TextBlock>
+                            </StackPanel>
+                            <StackPanel Margin="8" Grid.Column="1" Orientation="Horizontal">
+                                <ProgressBar Margin="8" Width="150" Value="0" Foreground="#ff6a77"></ProgressBar>
+                                <TextBlock Margin="8" VerticalAlignment="Center" Foreground="#ff6a77" Text="0%"></TextBlock>
+                            </StackPanel>
+                            <TextBlock Grid.Column="2" Margin="8" VerticalAlignment="Center" Foreground="#b5b5b5" Text="2020/06/16 截止"></TextBlock>
+                        </Grid>
+                    </ListViewItem>
+                </ListView>
+            </StackPanel>
+            <Grid Margin="28,0,0,0" Grid.Column="1" Background="{ThemeResource SystemControlAcrylicWindowBrush}">
+                <StackPanel>
+                    <Ellipse Margin="36" Height="150" Width="150">
+                        <Ellipse.Fill>
+                            <ImageBrush ImageSource="{x:Bind user:UserModel.CurrentUser.Avatar, Mode=OneWay}"/>
+                        </Ellipse.Fill>
+                    </Ellipse>
+                    <TextBlock Margin="8" FontSize="18" HorizontalAlignment="Center" FontWeight="Bold" Text="{x:Bind user:UserModel.CurrentUser.RealName, Mode=OneWay}" />
+                    <StackPanel Margin="8" Orientation="Horizontal" HorizontalAlignment="Center">
+                        <TextBlock FontSize="14" Foreground="#b5b5b5" Text="学号："></TextBlock>
+                        <TextBlock FontSize="14" Foreground="#b5b5b5" Text="{x:Bind user:UserModel.CurrentUser.UserName, Mode=OneWay}"></TextBlock>
+                    </StackPanel>
+                    <StackPanel Margin="8" Orientation="Horizontal" HorizontalAlignment="Center">
+                        <TextBlock FontSize="14" Foreground="#b5b5b5" Text="专业："></TextBlock>
+                        <TextBlock FontSize="14" Foreground="#b5b5b5" Text="{x:Bind user:UserModel.CurrentUser.UserAddition.Major, Mode=OneWay}"></TextBlock>
+                    </StackPanel>
+                    <StackPanel Margin="8">
+                        <Grid Margin="30,20,20,0">
+                            <TextBlock FontSize="18" FontWeight="Bold" Text="消息通知"></TextBlock>
+                            <HyperlinkButton VerticalAlignment="Bottom" HorizontalAlignment="Right" Content="查看更多"></HyperlinkButton>
+                        </Grid>
+                        <ListView Margin="8" Background="{ThemeResource SystemControlAcrylicWindowBrush}">
+                            <ListViewItem>
+                                <StackPanel Orientation="Horizontal">
+                                    <SymbolIcon Margin="16" Symbol="Mail"></SymbolIcon>
+                                    <StackPanel Margin="8">
+                                        <TextBlock FontWeight="Bold" Text="test"></TextBlock>
+                                        <TextBlock Foreground="#b5b5b5" Text="2020/02/21 20:20:18"></TextBlock>
+                                    </StackPanel>
+                                </StackPanel>
+                            </ListViewItem>
+                            <ListViewItem>
+                                <StackPanel Orientation="Horizontal">
+                                    <SymbolIcon Margin="16" Symbol="Mail"></SymbolIcon>
+                                    <StackPanel Margin="8">
+                                        <TextBlock FontWeight="Bold" Text="test2"></TextBlock>
+                                        <TextBlock Foreground="#b5b5b5" Text="2020/02/21 20:20:22"></TextBlock>
+                                    </StackPanel>
+                                </StackPanel>
+                            </ListViewItem>
+                            <ListViewItem>
+                                <StackPanel Orientation="Horizontal">
+                                    <SymbolIcon Margin="16" Symbol="Mail"></SymbolIcon>
+                                    <StackPanel Margin="8">
+                                        <TextBlock FontWeight="Bold" Text="test3"></TextBlock>
+                                        <TextBlock Foreground="#b5b5b5" Text="2020/02/22 12:42:41"></TextBlock>
+                                    </StackPanel>
+                                </StackPanel>
+                            </ListViewItem>
+                        </ListView>
+                    </StackPanel>
+                </StackPanel>
+                <HyperlinkButton Margin="0,0,20,20" VerticalAlignment="Bottom" HorizontalAlignment="Right" Content="退出"></HyperlinkButton>
+            </Grid>
+        </Grid>
     </Grid>
 </Page>

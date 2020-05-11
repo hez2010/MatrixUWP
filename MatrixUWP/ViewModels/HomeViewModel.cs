@@ -3,19 +3,28 @@ using MatrixUWP.Shared.Utils;
 using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 
 namespace MatrixUWP.ViewModels
 {
-    internal class HomeViewModel : INotifyPropertyChanged
+    internal class HomeViewModel : INotifyPropertyChanged, IDisposable
     {
         private SvgImageSource captchaData = new SvgImageSource();
+        private readonly DispatcherTimer timer = new DispatcherTimer();
         private bool captchaNeeded = false;
         private string userName = "";
         private string password = "";
         private string captcha = "";
         private bool loading;
+
+        public HomeViewModel()
+        {
+            timer.Interval = TimeSpan.FromSeconds(1);
+            timer.Tick += (sender, args) => OnPropertyChanged(nameof(CurrentDateTime));
+            timer.Start();
+        }
 
         public SvgImageSource CaptchaData
         {
@@ -108,7 +117,15 @@ namespace MatrixUWP.ViewModels
             }
         }
 
+        public string CurrentDateTime => DateTime.Now.ToString("yyyy”NMMŒŽdd“ú");
+
         public event PropertyChangedEventHandler? PropertyChanged;
+
+        public void Dispose()
+        {
+            timer.Stop();
+        }
+
         protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

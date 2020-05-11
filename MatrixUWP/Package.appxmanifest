@@ -54,7 +54,7 @@
             <Task Type="controlChannel"/>
           </BackgroundTasks>
         </Extension>
-        <Extension Category="windows.backgroundTasks" Executable="$targetnametoken$.exe" EntryPoint="MatrixUWP.BackgroundService.Tasks.WebSocketKeepAliveTask" ResourceGroup="Notification">
+        <Extension Category="windows.backgroundTasks" Executable="$targetnametoken$.exe" EntryPoint="Windows.Networking.Sockets.WebSocketKeepAlive" ResourceGroup="Notification">
           <BackgroundTasks>
             <Task Type="controlChannel" />
           </BackgroundTasks>

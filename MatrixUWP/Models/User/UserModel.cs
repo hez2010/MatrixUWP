@@ -24,6 +24,7 @@ namespace MatrixUWP.Models.User
                 AppModel.AppConfiguration.SavedUserName = userName;
                 AppModel.AppConfiguration.SavedPassword = password;
                 result.Data.CopyTo(CurrentUser);
+                await NotificationService.RegistTaskAsync();
                 await PushService.RegistTaskAsync();
             }
             else
