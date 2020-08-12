@@ -5,9 +5,13 @@ using MatrixUWP.Shared.Models;
 using MatrixUWP.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
+using NavigationView = Microsoft.UI.Xaml.Controls.NavigationView;
+using NavigationViewItem = Microsoft.UI.Xaml.Controls.NavigationViewItem;
 
 namespace MatrixUWP.Views
 {
@@ -19,6 +23,7 @@ namespace MatrixUWP.Views
         private readonly LayoutViewModel viewModel = new LayoutViewModel();
         private static bool loaded = false;
         private static int previousUserId = -1;
+        private object? lastSelectedItem;
 
         public Layout()
         {
@@ -26,50 +31,39 @@ namespace MatrixUWP.Views
             AppModel.NavigateToPage = NavigateToPage;
 
             InitializeComponent();
-
-            Window.Current.SetTitleBar(MyTitleBar);
             Windows.UI.Core.SystemNavigationManager.GetForCurrentView().BackRequested += App_BackRequested;
         }
 
-        private void UserData_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void UserDataChanged()
         {
-            if (!(sender is UserDataModel userData)) return;
+            var userData = UserModel.CurrentUser;
             if (previousUserId == userData.UserId) return;
             previousUserId = userData.UserId;
             if (userData.SignedIn) return;
 
-            NavigateToPage(HomeNaviPage, false, NaviMenu.PaneDisplayMode);
-            // clear all states
             navimenuNaviHistory.Clear();
+            lastSelectedItem = null;
+            NavigateToPage(typeof(Home), null);
             NaviContent.BackStack.Clear();
             Course.CourseAssignments.LastCourseId = -1;
-        }
-
-        private void NaviContent_Navigated(object sender, Windows.UI.Xaml.Navigation.NavigationEventArgs e)
-        {
-            if (e.NavigationMode == Windows.UI.Xaml.Navigation.NavigationMode.Back) return;
-            // Update navi history and last selected index of navimenu
-            if (lastSelectedItemIndex != -1) navimenuNaviHistory.Push(lastSelectedItemIndex);
         }
 
         /// <summary>
         /// Get target navi page and parameter
         /// </summary>
-        /// <param name="naviPageName"></param>
-        /// <param name="isSettingsPage"></param>
+        /// <param name="naviPageTag"></param>
         /// <returns></returns>
-        private Type? GetTargetNaviInfo(string naviPageName, bool isSettingsPage)
+        private Type? GetTargetNaviInfo(string? naviPageTag)
         {
             // Get target page
-            var page = (naviPageName, isSettingsPage) switch
+            var page = naviPageTag switch
             {
-                (_, true) => typeof(Settings),
-                (nameof(HomeNaviPage), _) => typeof(Home),
-                (nameof(CourseNaviPage), _) => typeof(Course.Course),
-                (nameof(LibraryNaviPage), _) => typeof(Library),
-                (nameof(MessagesNaviPage), _) => typeof(Messages),
-                (nameof(ProfileNaviPage), _) => typeof(Profile),
-                (nameof(ManualNaviPage), _) => typeof(Manual),
+                "HomeNaviPage" => typeof(Home),
+                "CourseNaviPage" => typeof(Course.Course),
+                "MessagesNaviPage" => typeof(Messages),
+                "ProfileNaviPage" => typeof(Profile),
+                "HelpNaviPage" => typeof(Manual),
+                "SettingsNaviPage" => typeof(Settings),
                 _ => null
             };
 
@@ -77,45 +71,20 @@ namespace MatrixUWP.Views
         }
 
         /// <summary>
-        /// The last selected index of navimenu
-        /// </summary>
-        private int lastSelectedItemIndex = -1;
-        /// <summary>
         /// Page navi history
         /// </summary>
-        private readonly Stack<int> navimenuNaviHistory = new Stack<int>();
-        private void NavigateToPage(object naviItem, bool isSettingsPage, NavigationViewPaneDisplayMode paneDisplayMode)
+        private readonly Stack<object> navimenuNaviHistory = new Stack<object>();
+        private void NavigateToPage(NavigationViewItem naviItem, object? parameters, NavigationTransitionInfo transInfo)
         {
-            if (!(naviItem is NavigationViewItem item)) return;
-
-            var targetInfo = GetTargetNaviInfo(item.Name, isSettingsPage);
+            var targetInfo = GetTargetNaviInfo(naviItem.Tag as string);
             if (targetInfo == null || targetInfo == NaviContent.Content?.GetType()) return;
 
-            // Get current selected index of navimenu
-            var index = NaviMenu.MenuItems.IndexOf(item);
-            if (isSettingsPage)
-            {
-                item.Content = AppModel.CultureResource.GetString("NaviMenu_Item_Settings/Content");
-                index = NaviMenu.MenuItems.Count;
-            }
-
-            // Set up page transition effect base on pane display mode
-            var transition = paneDisplayMode == NavigationViewPaneDisplayMode.Top
-                ? new SlideNavigationTransitionInfo
-                {
-                    Effect = lastSelectedItemIndex <= index ? SlideNavigationTransitionEffect.FromRight : SlideNavigationTransitionEffect.FromLeft
-                }
-                : (NavigationTransitionInfo)new DrillInNavigationTransitionInfo();
-
             // Navigate to page
-            NaviContent.Navigate(targetInfo, null, transition);
-
-            // Set current selected item for navimenu
-            NaviMenu.SelectedItem = naviItem;
-            lastSelectedItemIndex = index;
+            NaviContent.Navigate(targetInfo, parameters, transInfo);
         }
 
-        private void NavigateToPage(Type pageType, object parameter, NavigationTransitionInfo? transitionInfo) => NaviContent.Navigate(pageType, parameter, transitionInfo ?? new DrillInNavigationTransitionInfo());
+        private void NavigateToPage(Type pageType, object? parameter)
+            => NaviContent.Navigate(pageType, parameter, new DrillInNavigationTransitionInfo());
 
         private void ShowMessage(string message)
         {
@@ -123,18 +92,15 @@ namespace MatrixUWP.Views
             viewModel.ShowMessage = true;
         }
 
-        private void NaviMenu_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args) => NavigateToPage(args.InvokedItemContainer, args.IsSettingsInvoked, sender.PaneDisplayMode);
-
         private bool NavigateBack()
         {
             if (NaviContent.CanGoBack)
             {
                 NaviContent.GoBack();
-                if (navimenuNaviHistory.TryPop(out var index))
+                if (navimenuNaviHistory.TryPop(out var item))
                 {
-                    if (index == -1) return true;
-                    NaviMenu.SelectedItem = index != NaviMenu.MenuItems.Count ? NaviMenu.MenuItems[index] : NaviMenu.SettingsItem;
-                    lastSelectedItemIndex = index;
+                    NaviMenu.SelectedItem = item;
+                    lastSelectedItem = item;
                 }
                 return true;
             }
@@ -143,15 +109,13 @@ namespace MatrixUWP.Views
 
         private void App_BackRequested(object sender, Windows.UI.Core.BackRequestedEventArgs e) => e.Handled = NavigateBack();
 
-        private void NaviMenu_BackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args) => NavigateBack();
-
-        private void Page_Unloaded(object sender, RoutedEventArgs e) => viewModel.UserData.PropertyChanged -= UserData_PropertyChanged;
+        private void Page_Unloaded(object sender, RoutedEventArgs e) => UserModel.OnUserDataUpdate -= UserDataChanged;
 
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            // Navigate to Home
-            NavigateToPage(HomeNaviPage, false, NaviMenu.PaneDisplayMode);
-            viewModel.UserData.PropertyChanged += UserData_PropertyChanged;
+            NaviMenu.SelectedItem = NaviMenu.MenuItems.FirstOrDefault();
+            NavigateToPage(typeof(Home), null);
+            UserModel.OnUserDataUpdate += UserDataChanged;
 
             if (!loaded)
             {
@@ -168,11 +132,59 @@ namespace MatrixUWP.Views
                 }
                 catch { /* ignored */ }
                 viewModel.Loading = false;
-                //try
-                //{
-                //    await PushService.RegistTaskAsync();
-                //}
-                //catch { /* ignored */ }
+            }
+        }
+
+        private void NaviContent_Navigated(object sender, Windows.UI.Xaml.Navigation.NavigationEventArgs e)
+        {
+            if (e.NavigationMode != Windows.UI.Xaml.Navigation.NavigationMode.Back)
+            {
+                if (lastSelectedItem != null)
+                {
+                    navimenuNaviHistory.Push(lastSelectedItem);
+                }
+                lastSelectedItem = NaviMenu.SelectedItem;
+            }
+        }
+
+        private void NaviMenu_ItemInvoked(NavigationView sender, Microsoft.UI.Xaml.Controls.NavigationViewItemInvokedEventArgs args)
+        {
+            if (args.InvokedItemContainer is NavigationViewItem nvi && nvi.Tag != null)
+            {
+                NavigateToPage(nvi, null, args.RecommendedNavigationTransitionInfo);
+            }
+        }
+
+        private void NaviMenu_BackRequested(NavigationView sender, Microsoft.UI.Xaml.Controls.NavigationViewBackRequestedEventArgs args)
+        {
+            NavigateBack();
+        }
+
+        private void BackButton_Click(object sender, RoutedEventArgs e)
+        {
+            NavigateBack();
+        }
+
+        private Visibility BindingAndToVisibility(bool left, bool right) 
+            => (left && right) ? Visibility.Visible : Visibility.Collapsed;
+
+        private async void HyperlinkButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var result = await UserModel.SignOutAsync();
+                ShowMessage(result?.Message ?? "发生错误");
+            }
+            catch (Exception ex)
+            {
+                AppModel.ShowMessage?.Invoke(ex.Message);
+#if FAIL_ON_DEBUG
+                Debug.Fail(ex.Message, ex.StackTrace);
+#endif
+            }
+            finally
+            {
+                viewModel.Loading = false;
             }
         }
     }

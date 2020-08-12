@@ -2,6 +2,7 @@
 using MatrixUWP.Shared.Extensions;
 using MatrixUWP.Shared.Models;
 using MatrixUWP.Shared.Utils;
+using Microsoft.Toolkit.Uwp.Notifications;
 using System;
 using System.Collections.Concurrent;
 using System.Diagnostics;
@@ -76,6 +77,48 @@ namespace MatrixUWP.BackgroundService.Tasks
                         if (notification is ToastNotification toast)
                         {
                             ToastNotificationManager.CreateToastNotifier().Show(toast);
+                        }
+                        break;
+                    case PushNotificationType.Badge:
+                        if (notification is BadgeNotification badge)
+                        {
+                            BadgeUpdateManager.CreateBadgeUpdaterForApplication().Update(badge);
+                        }
+                        break;
+                    case PushNotificationType.Tile:
+                        if (notification is TileNotification tile)
+                        {
+                            TileUpdateManager.CreateTileUpdaterForApplication().Update(tile);
+                        }
+                        break;
+                    case PushNotificationType.TileFlyout:
+                        if (notification is TileFlyoutNotification tileFlyout)
+                        {
+                            TileFlyoutUpdateManager.CreateTileFlyoutUpdaterForApplication().Update(tileFlyout);
+                        }
+                        break;
+                    case PushNotificationType.Raw:
+                        if (notification is RawNotification raw)
+                        {
+                            var visual = new ToastVisual
+                            {
+                                BindingGeneric = new ToastBindingGeneric
+                                {
+                                    Children =
+                                    {
+                                        new AdaptiveText
+                                        {
+                                            Text = "通知"
+                                        },
+                                        new AdaptiveText
+                                        {
+                                            Text = raw.Content
+                                        }
+                                    }
+                                }
+                            };
+                            var rawToast = new ToastNotification(new ToastContent { Visual = visual }.GetXml());
+                            ToastNotificationManager.CreateToastNotifier().Show(rawToast);
                         }
                         break;
                 }

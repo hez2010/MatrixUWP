@@ -5,56 +5,63 @@
     xmlns:local="using:MatrixUWP.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:ctl="using:MatrixUWP.Controls"
     xmlns:app="using:MatrixUWP.Models"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:user="using:MatrixUWP.Models.User"
     mc:Ignorable="d"
     RequestedTheme="{x:Bind app:AppModel.AppConfiguration.AppThemeValue, Mode=OneWay}"
-    Background="{ThemeResource SystemControlChromeHighAcrylicWindowMediumBrush}" Unloaded="Page_Unloaded" Loaded="Page_Loaded">
+    Unloaded="Page_Unloaded" Loaded="Page_Loaded">
 
     <Grid>
-        <VisualStateManager.VisualStateGroups>
-            <VisualStateGroup>
-                <VisualState>
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="{x:Bind NaviMenu.ExpandedModeThresholdWidth}"/>
-                    </VisualState.StateTriggers>
-                    <VisualState.Setters>
-                        <Setter Target="NaviMenu.PaneDisplayMode" Value="Top"/>
-                        <Setter Target="NaviMenu.HeaderVisibility" Value="Collapsed"/>
-                    </VisualState.Setters>
-                </VisualState>
-            </VisualStateGroup>
-        </VisualStateManager.VisualStateGroups>
-
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-
-        <Grid Grid.Row="0" x:Name="MyTitleBar">
-            <Rectangle x:Name="BackgroundElement" Fill="Transparent" />
-            <Grid Height="32">
-                <TextBlock Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Text="Matrix UWP" />
+        <muxc:NavigationView PaneTitle="Matrix UWP" x:Name="NaviMenu" IsSettingsVisible="False" IsBackButtonVisible="Collapsed" ItemInvoked="NaviMenu_ItemInvoked" BackRequested="NaviMenu_BackRequested">
+            <muxc:NavigationView.Resources>
+                <ResourceDictionary>
+                    <AcrylicBrush
+                        x:Key="NavigationViewExpandedPaneBackground"
+                        TintLuminosityOpacity="0.8"
+                        TintColor="{ThemeResource SystemAltLowColor}"
+                        BackgroundSource="HostBackdrop" />
+                </ResourceDictionary>
+            </muxc:NavigationView.Resources>
+            <muxc:NavigationView.PaneCustomContent>
+                <StackPanel Margin="0,0,0,24" Visibility="{x:Bind BindingAndToVisibility(user:UserModel.CurrentUser.SignedIn, NaviMenu.IsPaneOpen), Mode=OneWay}">
+                    <Ellipse Margin="48,24,48,24" Height="100" Width="100">
+                        <Ellipse.Fill>
+                            <ImageBrush ImageSource="{x:Bind user:UserModel.CurrentUser.Avatar, Mode=OneWay}" />
+                        </Ellipse.Fill>
+                    </Ellipse>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <TextBlock Margin="4,0" Text="{x:Bind user:UserModel.CurrentUser.UserName, Mode=OneWay}" />
+                        <TextBlock Margin="4,0" Text="{x:Bind user:UserModel.CurrentUser.RealName, Mode=OneWay}" />
+                    </StackPanel>
+                    <HyperlinkButton HorizontalAlignment="Center" Content="退出" Click="HyperlinkButton_Click" />
+                </StackPanel>
+            </muxc:NavigationView.PaneCustomContent>
+            <muxc:NavigationView.MenuItems>
+                <muxc:NavigationViewItem Margin="0,2" Tag="HomeNaviPage" Icon="Home" Content="主页"></muxc:NavigationViewItem>
+                <muxc:NavigationViewItem Margin="0,2" Tag="CourseNaviPage" Icon="Edit" Content="课程 &amp; 作业" Visibility="{x:Bind viewModel.UserData.SignedIn, Mode=OneWay}"></muxc:NavigationViewItem>
+                <muxc:NavigationViewItem Margin="0,2" Tag="MessagesNaviPage" Icon="Message" Content="通知" Visibility="{x:Bind viewModel.UserData.SignedIn, Mode=OneWay}"></muxc:NavigationViewItem>
+                <muxc:NavigationViewItem Margin="0,2" Tag="ProfileNaviPage" Icon="ContactInfo" Content="个人账户" Visibility="{x:Bind viewModel.UserData.SignedIn, Mode=OneWay}"></muxc:NavigationViewItem>
+                <muxc:NavigationViewItem Margin="0,2" Tag="SettingsNaviPage" Icon="Setting" Content="设置"></muxc:NavigationViewItem>
+                <muxc:NavigationViewItem Margin="0,2" Tag="HelpNaviPage" Icon="Help" Content="帮助 &amp; 关于"></muxc:NavigationViewItem>
+            </muxc:NavigationView.MenuItems>
+            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <StackPanel Margin="24,0" Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Button CornerRadius="50" Width="40" Height="40" Visibility="{x:Bind NaviContent.CanGoBack, Mode=OneWay}" Click="BackButton_Click">
+                        <FontIcon FontSize="14" Glyph="&#xE09E;" />
+                    </Button>
+                    <TextBlock Margin="16,4" FontSize="20" Text="{Binding ElementName=NaviMenu, Path=SelectedItem.Content}" />
+                </StackPanel>
+                <Frame Grid.Row="1" IsEnabled="{x:Bind viewModel.Loading, Mode=OneWay, Converter={StaticResource NotConverter}}" VerticalContentAlignment="Stretch" x:Name="NaviContent" Navigated="NaviContent_Navigated" />
             </Grid>
-        </Grid>
-        <Grid Grid.Row="1">
-            <ctl:MyNavigationView CompactModeThresholdWidth="720" BackRequested="NaviMenu_BackRequested" x:Name="NaviMenu" AlwaysShowHeader="False" Header="{x:Bind ((NavigationViewItem)NaviMenu.SelectedItem).Content, Mode=OneWay}" IsBackEnabled="{x:Bind NaviContent.CanGoBack, Mode=OneWay}" ItemInvoked="NaviMenu_ItemInvoked">
-                <ctl:MyNavigationView.MenuItems>
-                    <NavigationViewItem x:Name="HomeNaviPage" Icon="Home" x:Uid="NaviMenu_Item_Home"></NavigationViewItem>
-                    <NavigationViewItem x:Name="CourseNaviPage" Icon="Edit" x:Uid="NaviMenu_Item_Course" Visibility="{x:Bind viewModel.UserData.SignedIn, Mode=OneWay}"></NavigationViewItem>
-                    <NavigationViewItem x:Name="LibraryNaviPage" Icon="Library" x:Uid="NaviMenu_Item_Library" Visibility="{x:Bind viewModel.UserData.SignedIn, Mode=OneWay}"></NavigationViewItem>
-                    <NavigationViewItem x:Name="MessagesNaviPage" Icon="Message" x:Uid="NaviMenu_Item_Messages" Visibility="{x:Bind viewModel.UserData.SignedIn, Mode=OneWay}"></NavigationViewItem>
-                    <NavigationViewItem x:Name="ProfileNaviPage" Icon="ContactInfo" x:Uid="NaviMenu_Item_Profile" Visibility="{x:Bind viewModel.UserData.SignedIn, Mode=OneWay}"></NavigationViewItem>
-                    <NavigationViewItem x:Name="ManualNaviPage" Icon="Help" x:Uid="NaviMenu_Item_Manual"></NavigationViewItem>
-                </ctl:MyNavigationView.MenuItems>
-                <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                    <Frame IsEnabled="{x:Bind viewModel.Loading, Mode=OneWay, Converter={StaticResource NotConverter}}" VerticalContentAlignment="Stretch" x:Name="NaviContent" Navigated="NaviContent_Navigated"/>
-                </Grid>
-            </ctl:MyNavigationView>
-        </Grid>
+        </muxc:NavigationView>
         <Border Grid.Row="1" Visibility="{x:Bind viewModel.ShowMessage, Mode=OneWay}" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="50" Background="Black" Padding="16,8" Opacity="0.75" CornerRadius="2">
             <TextBlock Foreground="White" Text="{x:Bind viewModel.Message, Mode=OneWay}"/>
         </Border>
-        <ProgressRing Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-50,0,0" Width="60" Height="60" IsActive="{x:Bind viewModel.Loading, Mode=OneWay}"></ProgressRing>
+        <muxc:ProgressRing Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-50,0,0" Width="60" Height="60" IsActive="{x:Bind viewModel.Loading, Mode=OneWay}"></muxc:ProgressRing>
     </Grid>
 </Page>

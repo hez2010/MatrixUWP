@@ -1,4 +1,5 @@
-﻿#nullable enable
+﻿#if WS_ENABLED
+#nullable enable
 using MatrixUWP.BackgroundService.Extensions;
 using MatrixUWP.BackgroundService.Models.Notification;
 using MatrixUWP.BackgroundService.Models.Notification.Content;
@@ -67,3 +68,4 @@ namespace MatrixUWP.BackgroundService.Tasks
         }
     }
 }
+#endif

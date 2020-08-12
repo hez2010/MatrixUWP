@@ -12,7 +12,7 @@
     xmlns:monaco="using:Monaco"
     xmlns:viewmodels="using:MatrixUWP.ViewModels"
     mc:Ignorable="d"
-    Background="{ThemeResource SystemControlAcrylicWindowMediumHighBrush}" Loaded="Page_Loaded">
+    Loaded="Page_Loaded">
 
     <Grid Margin="8,0">
         <TextBlock x:Name="TitleViewer" Margin="8" FontSize="22" Text="{x:Bind viewModel.Title, Mode=OneWay}"></TextBlock>

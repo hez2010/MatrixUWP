@@ -49,16 +49,6 @@
         </uap:InitialRotationPreference>
       </uap:VisualElements>
       <Extensions>
-        <Extension Category="windows.backgroundTasks" Executable="$targetnametoken$.exe" EntryPoint="MatrixUWP.BackgroundService.Tasks.NotificationBackgroundTask" ResourceGroup="Notification">
-          <BackgroundTasks>
-            <Task Type="controlChannel"/>
-          </BackgroundTasks>
-        </Extension>
-        <Extension Category="windows.backgroundTasks" Executable="$targetnametoken$.exe" EntryPoint="Windows.Networking.Sockets.WebSocketKeepAlive" ResourceGroup="Notification">
-          <BackgroundTasks>
-            <Task Type="controlChannel" />
-          </BackgroundTasks>
-        </Extension>
         <Extension Category="windows.backgroundTasks" EntryPoint="MatrixUWP.BackgroundService.Tasks.PushServiceBackgroundTask" ResourceGroup="Push">
           <BackgroundTasks>
             <Task Type="pushNotification"/>

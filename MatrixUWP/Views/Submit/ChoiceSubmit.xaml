@@ -6,12 +6,11 @@
     xmlns:utils="using:MatrixUWP.Shared.Utils"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:controls="using:Microsoft.UI.Xaml.Controls"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:choice="using:MatrixUWP.Models.Course.Assignment.Choice"
-    xmlns:controls1="using:Microsoft.Toolkit.Uwp.UI.Controls"
-    xmlns:controls2="using:MatrixUWP.Controls"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     mc:Ignorable="d"
-    Background="{ThemeResource SystemControlAcrylicWindowMediumHighBrush}" Loaded="Page_Loaded">
+    Loaded="Page_Loaded">
 
     <Grid Margin="8,0">
         <TextBlock x:Name="TitleViewer" Margin="8" FontSize="22" Text="{x:Bind viewModel.Title, Mode=OneWay}"></TextBlock>
@@ -22,14 +21,14 @@
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
             <ScrollViewer Margin="0,0,16,0" Grid.Column="0" x:Name="DescriptionViewer">
-                <controls1:MarkdownTextBlock
+                <controls:MarkdownTextBlock
                                 LinkClicked="MarkdownTextBlock_LinkClicked"
                                 ImageClicked="MarkdownTextBlock_ImageClicked"
                                 Background="Transparent"
                                 UriPrefix="{x:Bind utils:HttpUtils.MatrixHttpClient.BaseUri.AbsoluteUri}"
-                                Text="{x:Bind viewModel.Description, Mode=OneWay}"></controls1:MarkdownTextBlock>
+                                Text="{x:Bind viewModel.Description, Mode=OneWay}"></controls:MarkdownTextBlock>
             </ScrollViewer>
-            <controls1:GridSplitter
+            <controls:GridSplitter
                 GripperCursor="Default"
                 HorizontalAlignment="Left"
                 ResizeDirection="Auto"
@@ -37,62 +36,62 @@
                 ResizeBehavior="BasedOnAlignment"
                 CursorBehavior="ChangeOnSplitterHover"
                 Width="16">
-            </controls1:GridSplitter>
+            </controls:GridSplitter>
             <ScrollViewer x:Name="QuestionContainer" Margin="16,0,0,0" Grid.Column="1">
-                <controls:ItemsRepeater ItemsSource="{x:Bind viewModel.Questions, Mode=OneWay}">
-                    <controls:ItemsRepeater.ItemTemplate>
+                <muxc:ItemsRepeater ItemsSource="{x:Bind viewModel.Questions, Mode=OneWay}">
+                    <muxc:ItemsRepeater.ItemTemplate>
                         <DataTemplate x:DataType="choice:ChoiceAssignmentQuestion">
                             <StackPanel Margin="8,8,0,0">
-                                <controls1:WrapPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                <controls:WrapPanel Orientation="Horizontal" HorizontalAlignment="Left">
                                     <TextBlock Margin="0,0,0,0" Text="{x:Bind Id, Converter={StaticResource IndexOffsetConverter}}"></TextBlock>
                                     <TextBlock Margin="0,0,8,0" Text="."></TextBlock>
                                     <StackPanel Orientation="Vertical">
-                                        <controls1:MarkdownTextBlock
+                                        <controls:MarkdownTextBlock
                                             LinkClicked="MarkdownTextBlock_LinkClicked"
                                             ImageClicked="MarkdownTextBlock_ImageClicked"
                                             Background="Transparent"
                                             UriPrefix="{x:Bind utils:HttpUtils.MatrixHttpClient.BaseUri.AbsoluteUri}"
-                                            Text="{x:Bind Description}"></controls1:MarkdownTextBlock>
+                                            Text="{x:Bind Description}"></controls:MarkdownTextBlock>
                                         <TextBlock Foreground="Gray" Text="{x:Bind Explanation}"></TextBlock>
                                     </StackPanel>
-                                </controls1:WrapPanel>
+                                </controls:WrapPanel>
                                 <StackPanel>
-                                    <controls:ItemsRepeater x:Name="MultipleChoicePanel" x:Load="{x:Bind IsMultipleChoice}" Margin="20,0,0,0" ItemsSource="{x:Bind Choices}">
-                                        <controls:ItemsRepeater.ItemTemplate>
+                                    <muxc:ItemsRepeater x:Name="MultipleChoicePanel" x:Load="{x:Bind IsMultipleChoice}" Margin="20,0,0,0" ItemsSource="{x:Bind Choices}">
+                                        <muxc:ItemsRepeater.ItemTemplate>
                                             <DataTemplate x:DataType="choice:ChoiceAssignmentElement">
                                                 <CheckBox IsThreeState="False" IsChecked="{x:Bind IsChecked, Mode=TwoWay}">
-                                                    <controls1:WrapPanel Orientation="Horizontal" VerticalAlignment="Bottom">
+                                                    <controls:WrapPanel Orientation="Horizontal" VerticalAlignment="Bottom">
                                                         <TextBlock Text="{x:Bind Id, Converter={StaticResource NumberLetterConverter}}"></TextBlock>
                                                         <TextBlock Text="."></TextBlock>
-                                                        <controls1:MarkdownTextBlock Margin="8,0,0,0"
+                                                        <controls:MarkdownTextBlock Margin="8,0,0,0"
                                                             LinkClicked="MarkdownTextBlock_LinkClicked"
                                                             ImageClicked="MarkdownTextBlock_ImageClicked"
                                                             Background="Transparent"
                                                             UriPrefix="{x:Bind utils:HttpUtils.MatrixHttpClient.BaseUri.AbsoluteUri}"
-                                                            Text="{x:Bind Description}"></controls1:MarkdownTextBlock>
-                                                    </controls1:WrapPanel>
+                                                            Text="{x:Bind Description}"></controls:MarkdownTextBlock>
+                                                    </controls:WrapPanel>
                                                 </CheckBox>
                                             </DataTemplate>
-                                        </controls:ItemsRepeater.ItemTemplate>
-                                    </controls:ItemsRepeater>
-                                    <controls:ItemsRepeater x:Name="SingleChoicePanel" x:Load="{x:Bind IsMultipleChoice, Converter={StaticResource NotConverter}}" Margin="20,0,0,0" ItemsSource="{x:Bind Choices}">
-                                        <controls:ItemsRepeater.ItemTemplate>
+                                        </muxc:ItemsRepeater.ItemTemplate>
+                                    </muxc:ItemsRepeater>
+                                    <muxc:ItemsRepeater x:Name="SingleChoicePanel" x:Load="{x:Bind IsMultipleChoice, Converter={StaticResource NotConverter}}" Margin="20,0,0,0" ItemsSource="{x:Bind Choices}">
+                                        <muxc:ItemsRepeater.ItemTemplate>
                                             <DataTemplate x:DataType="choice:ChoiceAssignmentElement">
                                                 <RadioButton GroupName="{x:Bind Question.Id}" IsChecked="{x:Bind IsChecked, Mode=TwoWay}">
-                                                    <controls1:WrapPanel Orientation="Horizontal" VerticalAlignment="Bottom">
+                                                    <controls:WrapPanel Orientation="Horizontal" VerticalAlignment="Bottom">
                                                         <TextBlock Text="{x:Bind Id, Converter={StaticResource NumberLetterConverter}}"></TextBlock>
                                                         <TextBlock Text="."></TextBlock>
-                                                        <controls1:MarkdownTextBlock Margin="8,0,0,0"
+                                                        <controls:MarkdownTextBlock Margin="8,0,0,0"
                                                             LinkClicked="MarkdownTextBlock_LinkClicked"
                                                             ImageClicked="MarkdownTextBlock_ImageClicked"
                                                             Background="Transparent"
                                                             UriPrefix="{x:Bind utils:HttpUtils.MatrixHttpClient.BaseUri.AbsoluteUri}"
-                                                            Text="{x:Bind Description}"></controls1:MarkdownTextBlock>
-                                                    </controls1:WrapPanel>
+                                                            Text="{x:Bind Description}"></controls:MarkdownTextBlock>
+                                                    </controls:WrapPanel>
                                                 </RadioButton>
                                             </DataTemplate>
-                                        </controls:ItemsRepeater.ItemTemplate>
-                                    </controls:ItemsRepeater>
+                                        </muxc:ItemsRepeater.ItemTemplate>
+                                    </muxc:ItemsRepeater>
                                 </StackPanel>
                                 <Grid>
                                     <TextBlock Margin="20,0,0,0" Foreground="Gray" Text="{x:Bind StandardAnswerDisplayText}"></TextBlock>
@@ -100,22 +99,22 @@
                                 </Grid>
                             </StackPanel>
                         </DataTemplate>
-                    </controls:ItemsRepeater.ItemTemplate>
-                </controls:ItemsRepeater>
+                    </muxc:ItemsRepeater.ItemTemplate>
+                </muxc:ItemsRepeater>
             </ScrollViewer>
         </Grid>
 
-        <controls:TeachingTip x:Name="LoadPreviousSubmissionTip"
+        <muxc:TeachingTip x:Name="LoadPreviousSubmissionTip"
                               Target="{x:Bind QuestionContainer}"
                               Title="是否加载上一次的提交内容？"
                               Subtitle="注意：加载后将覆盖当前答题状态"
                               ActionButtonClick="LoadSubmission_Clicked"
                               ActionButtonContent="是"
                               CloseButtonContent="否">
-            <controls:TeachingTip.IconSource>
-                <controls:SymbolIconSource Symbol="Refresh" />
-            </controls:TeachingTip.IconSource>
-        </controls:TeachingTip>
+            <muxc:TeachingTip.IconSource>
+                <muxc:SymbolIconSource Symbol="Refresh" />
+            </muxc:TeachingTip.IconSource>
+        </muxc:TeachingTip>
         <ProgressRing HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-50,0,0" Width="60" Height="60" IsActive="{x:Bind viewModel.Loading, Mode=OneWay}"></ProgressRing>
     </Grid>
 

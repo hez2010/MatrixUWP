@@ -92,8 +92,7 @@ namespace MatrixUWP.Views.Course
         {
             if (parameters is null) return;
             AppModel.NavigateToPage?.Invoke(typeof(CourseAssignments),
-                new CourseAssignmentsParameters { CourseId = parameters.CourseId, Title = viewModel.Course?.CourseName },
-                new EntranceNavigationTransitionInfo());
+                new CourseAssignmentsParameters { CourseId = parameters.CourseId, Title = viewModel.Course?.CourseName });
         }
     }
 }

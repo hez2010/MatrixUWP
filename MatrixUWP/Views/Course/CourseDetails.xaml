@@ -9,7 +9,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     mc:Ignorable="d"
-    Background="{ThemeResource SystemControlAcrylicWindowMediumHighBrush}" Loaded="Page_Loaded" SizeChanged="Page_SizeChanged">
+    Loaded="Page_Loaded" SizeChanged="Page_SizeChanged">
 
     <Grid>
         <StackPanel x:Name="Container" Margin="24">

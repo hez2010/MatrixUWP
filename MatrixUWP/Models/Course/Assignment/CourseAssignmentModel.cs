@@ -14,5 +14,8 @@ namespace MatrixUWP.Models.Course.Assignment
 
         public static async ValueTask<ResponseModel<CourseAssignmentDetailsModel>?> FetchCourseAssignmentAsync(int courseId, int courseAssignmentId) => await HttpUtils.MatrixHttpClient.GetAsync($"/api/courses/{courseId}/assignments/{courseAssignmentId}")
                 .JsonAsync<ResponseModel<CourseAssignmentDetailsModel>>();
+
+        public static async ValueTask<ResponseModel<List<ProgressingAssignmentModel>>?> FetchProgressingAssignmentListAsync() => await HttpUtils.MatrixHttpClient.GetAsync("/api/courses/assignments?state=progressing")
+                .JsonAsync<ResponseModel<List<ProgressingAssignmentModel>>>();
     }
 }

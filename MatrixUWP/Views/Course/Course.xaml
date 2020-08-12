@@ -8,7 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     mc:Ignorable="d"
-    Background="{ThemeResource SystemControlAcrylicWindowMediumHighBrush}" Loaded="Page_Loaded">
+    Loaded="Page_Loaded">
 
     <Grid>
         <GridView Margin="24" ItemsSource="{x:Bind viewModel.Courses, Mode=OneWay}" SelectionMode="Single" SelectionChanged="CoursesView_SelectionChanged">

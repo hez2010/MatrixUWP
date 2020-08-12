@@ -1,5 +1,6 @@
 #nullable enable
 using MatrixUWP.Models;
+using MatrixUWP.Models.Course.Assignment;
 using MatrixUWP.Models.User;
 using MatrixUWP.ViewModels;
 using System;
@@ -28,7 +29,7 @@ namespace MatrixUWP.Views
 
         private async void SignIn_Click(object sender, RoutedEventArgs? e)
         {
-            viewModel.Loading = true;
+            viewModel.Signining = true;
 
             try
             {
@@ -63,7 +64,7 @@ namespace MatrixUWP.Views
             }
             finally
             {
-                viewModel.Loading = false;
+                viewModel.Signining = false;
             }
         }
 
@@ -81,6 +82,28 @@ namespace MatrixUWP.Views
                 viewModel.UserName = AppModel.AppConfiguration.SavedUserName;
                 viewModel.Password = AppModel.AppConfiguration.SavedPassword;
             }
+            else
+            {
+                LoadProgressingAssignments();
+            }
+            UserModel.OnUserDataUpdate += LoadProgressingAssignments;
+        }
+
+        private async void LoadProgressingAssignments()
+        {
+            if (!UserModel.CurrentUser.SignedIn) return; 
+            viewModel.Signining = true;
+            var response = await CourseAssignmentModel.FetchProgressingAssignmentListAsync();
+            if (response?.Status == Shared.Models.StatusCode.OK)
+            {
+                viewModel.ProgressingAssignments = response.Data;
+            }
+            viewModel.Signining = false;
+        }
+
+        private void Page_Unloaded(object sender, RoutedEventArgs e)
+        {
+            UserModel.OnUserDataUpdate -= LoadProgressingAssignments;
         }
     }
 }

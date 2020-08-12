@@ -9,7 +9,6 @@
     xmlns:models="using:MatrixUWP.Models.Course.Assignment"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     mc:Ignorable="d"
-    Background="{ThemeResource SystemControlAcrylicWindowMediumHighBrush}" 
     Loaded="Page_Loaded">
 
     <Grid>

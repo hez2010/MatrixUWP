@@ -198,8 +198,7 @@ namespace MatrixUWP.Views.Course
                                 AssignmentId = model.CourseAssignmentId,
                                 GetContent = GetContent,
                                 SetContent = SetContent
-                            },
-                            new EntranceNavigationTransitionInfo());
+                            });
                         break;
                     }
                 case ChoiceAssignmentConfig asgnConfig:
@@ -211,8 +210,7 @@ namespace MatrixUWP.Views.Course
                             Description = model.Description,
                             CourseId = model.CourseId,
                             AssignmentId = model.CourseAssignmentId
-                        },
-                        new EntranceNavigationTransitionInfo());
+                        });
                     break;
                 case ReportAssignmentConfig asgnConfig:
                     AppModel.ShowMessage?.Invoke($"不支持的题目配置:\n{asgnConfig.SerializeJson()}");

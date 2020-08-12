@@ -54,8 +54,7 @@ namespace MatrixUWP.Views.Course
             if (!(e.AddedItems.First() is CourseInfoModel course)) return;
             AppModel.NavigateToPage?.Invoke(
                 typeof(CourseDetails),
-                new CourseDetailsParameters { CourseId = course.CourseId },
-                new EntranceNavigationTransitionInfo());
+                new CourseDetailsParameters { CourseId = course.CourseId });
         }
     }
 }

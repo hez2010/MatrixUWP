@@ -3,6 +3,7 @@ using MatrixUWP.Services;
 using MatrixUWP.Shared.Extensions;
 using MatrixUWP.Shared.Models;
 using MatrixUWP.Shared.Utils;
+using System;
 using System.Threading.Tasks;
 using Windows.Storage;
 
@@ -10,7 +11,12 @@ namespace MatrixUWP.Models.User
 {
     public class UserModel
     {
-        public static void UpdateUserData(UserDataModel userData) => userData.CopyTo(CurrentUser);
+        public static event Action? OnUserDataUpdate;
+        public static void UpdateUserData(UserDataModel userData)
+        {
+            userData.CopyTo(CurrentUser);
+            OnUserDataUpdate?.Invoke();
+        }
 
         public static UserDataModel CurrentUser { get; } = new UserDataModel();
         public static async ValueTask<ResponseModel<UserDataModel>?> SignInAsync(string userName, string password, string captcha = "")
@@ -23,8 +29,7 @@ namespace MatrixUWP.Models.User
             {
                 AppModel.AppConfiguration.SavedUserName = userName;
                 AppModel.AppConfiguration.SavedPassword = password;
-                result.Data.CopyTo(CurrentUser);
-                await NotificationService.RegistTaskAsync();
+                UpdateUserData(result.Data);
                 await PushService.RegistTaskAsync();
             }
             else
@@ -47,7 +52,7 @@ namespace MatrixUWP.Models.User
         {
             AppModel.AppConfiguration.SavedUserName = "";
             AppModel.AppConfiguration.SavedPassword = "";
-            new UserDataModel().CopyTo(CurrentUser);
+            UpdateUserData(new UserDataModel());
             await PushService.RegistTaskAsync();
             return await HttpUtils.MatrixHttpClient.PostJsonAsync("/api/users/logout", new { }).JsonAsync<ResponseModel>();
         }

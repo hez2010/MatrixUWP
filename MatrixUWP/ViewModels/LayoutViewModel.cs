@@ -17,7 +17,11 @@ namespace MatrixUWP.ViewModels
         private bool showMessage;
         private string message = "";
         private bool loading;
-        private readonly DispatcherTimer messageTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(3) };
+        private bool isPaneOpened;
+        private readonly DispatcherTimer messageTimer = new DispatcherTimer
+        {
+            Interval = TimeSpan.FromSeconds(3)
+        };
 
         public UserDataModel UserData { get; } = UserModel.CurrentUser;
 
@@ -47,6 +51,16 @@ namespace MatrixUWP.ViewModels
             set
             {
                 message = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsPaneOpened
+        {
+            get => isPaneOpened;
+            set
+            {
+                isPaneOpened = value;
                 OnPropertyChanged();
             }
         }

@@ -1,6 +1,8 @@
 #nullable enable
+using MatrixUWP.Models.Course.Assignment;
 using MatrixUWP.Shared.Utils;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Windows.UI.Xaml;
@@ -9,7 +11,7 @@ using Windows.UI.Xaml.Media.Imaging;
 
 namespace MatrixUWP.ViewModels
 {
-    internal class HomeViewModel : INotifyPropertyChanged, IDisposable
+    class HomeViewModel : INotifyPropertyChanged, IDisposable
     {
         private SvgImageSource captchaData = new SvgImageSource();
         private readonly DispatcherTimer timer = new DispatcherTimer();
@@ -17,6 +19,8 @@ namespace MatrixUWP.ViewModels
         private string userName = "";
         private string password = "";
         private string captcha = "";
+        private bool signining;
+        private List<ProgressingAssignmentModel> progressingAssignments = new List<ProgressingAssignmentModel>();
         private bool loading;
 
         public HomeViewModel()
@@ -94,6 +98,17 @@ namespace MatrixUWP.ViewModels
             }
         }
 
+        public bool Signining
+        {
+            get => signining;
+            set
+            {
+                signining = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(SignInButtonEnabled));
+            }
+        }
+
         public bool Loading
         {
             get => loading;
@@ -101,11 +116,10 @@ namespace MatrixUWP.ViewModels
             {
                 loading = value;
                 OnPropertyChanged();
-                OnPropertyChanged(nameof(SignInButtonEnabled));
             }
         }
 
-        public bool SignInButtonEnabled => !loading && !string.IsNullOrEmpty(userName) && !string.IsNullOrEmpty(password);
+        public bool SignInButtonEnabled => !signining && !string.IsNullOrEmpty(userName) && !string.IsNullOrEmpty(password);
 
         public bool CaptchaNeeded
         {
@@ -117,7 +131,20 @@ namespace MatrixUWP.ViewModels
             }
         }
 
-        public string CurrentDateTime => DateTime.Now.ToString("yyyy”NMMŒŽdd“ú");
+        public List<ProgressingAssignmentModel> ProgressingAssignments
+        {
+            get => progressingAssignments;
+            set
+            {
+                progressingAssignments = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(HasProgressingAssignments));
+            }
+        }
+
+        public bool HasProgressingAssignments => ProgressingAssignments.Count != 0;
+
+        public string CurrentDateTime => DateTime.Now.ToString("yyyy ”N MM ŒŽ dd “ú");
 
         public event PropertyChangedEventHandler? PropertyChanged;
 

@@ -24,31 +24,7 @@ namespace MatrixUWP.Views
         {
             InitializeComponent();
             viewModel.UserData = new UserDataModel();
-            UserModel.CurrentUser?.CopyTo(viewModel.UserData);
-        }
-
-        private async void SignOut_Click(object sender, RoutedEventArgs e)
-        {
-            viewModel.Loading = true;
-
-            try
-            {
-                var result = await UserModel.SignOutAsync();
-
-                AppModel.ShowMessage?.Invoke(result?.Message ?? "发生错误");
-                UserModel.UpdateUserData(new UserDataModel());
-            }
-            catch (Exception ex)
-            {
-                AppModel.ShowMessage?.Invoke(ex.Message);
-#if FAIL_ON_DEBUG
-                Debug.Fail(ex.Message, ex.StackTrace);
-#endif
-            }
-            finally
-            {
-                viewModel.Loading = false;
-            }
+            UserModel.CurrentUser.CopyTo(viewModel.UserData);
         }
 
         private async void ChangeAvatar_Click(object sender, RoutedEventArgs e)

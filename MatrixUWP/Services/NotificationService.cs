@@ -1,4 +1,5 @@
-﻿#nullable enable
+﻿#if WS_ENABLED
+#nullable enable
 using MatrixUWP.BackgroundService.Tasks;
 using System;
 using System.Diagnostics;
@@ -15,8 +16,7 @@ namespace MatrixUWP.Services
 #if DEBUG
         private static readonly Uri baseUri = new Uri("wss://test.vmatrix.org.cn");
 #else
-#warning Restore uri before publishing stable version of Matrix UWP
-        private static readonly Uri baseUri = new Uri("wss://test.vmatrix.org.cn");
+        private static readonly Uri baseUri = new Uri("wss://vmatrix.org.cn");
 #endif
         private static ControlChannelTrigger? channel;
         public static void UnregistTask()
@@ -118,3 +118,4 @@ namespace MatrixUWP.Services
         }
     }
 }
+#endif

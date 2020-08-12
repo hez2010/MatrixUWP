@@ -16,11 +16,7 @@ namespace MatrixUWP.Models
         /// <summary>
         /// PageType, Parameter, TransitionInfo?
         /// </summary>
-        public static Action<Type, object, NavigationTransitionInfo?>? NavigateToPage { get; set; }
-        /// <summary>
-        /// Culture strings resource
-        /// </summary>
-        internal static readonly ResourceLoader CultureResource = ResourceLoader.GetForCurrentView();
+        public static Action<Type, object?>? NavigateToPage { get; set; }
 
         internal static readonly Configuration AppConfiguration = new Configuration();
     }
