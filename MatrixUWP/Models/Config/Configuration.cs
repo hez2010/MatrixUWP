@@ -3,7 +3,6 @@ using Newtonsoft.Json;
 using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using Windows.Globalization;
 using Windows.Storage;
 using Windows.UI.Xaml;
 
@@ -11,8 +10,7 @@ namespace MatrixUWP.Models.Config
 {
     internal class Configuration : INotifyPropertyChanged
     {
-        private Language appLanguage = GetConfiguration(nameof(AppLanguage), Language.Default);
-        private Theme appTheme = GetConfiguration(nameof(AppTheme), Theme.Default);
+        private ElementTheme appTheme = GetConfiguration(nameof(AppTheme), ElementTheme.Default);
         private string savedUserName = GetConfiguration<string>(nameof(SavedUserName));
         private string savedPassword = GetConfiguration<string>(nameof(SavedPassword));
 
@@ -35,39 +33,17 @@ namespace MatrixUWP.Models.Config
             }
         }
 
-        public Language AppLanguage
-        {
-            get => appLanguage;
-            set
-            {
-                if (!Enum.IsDefined(typeof(Language), value)) value = Language.Default;
-                appLanguage = value;
-                SaveConfiguration((int)value);
-                ApplicationLanguages.PrimaryLanguageOverride = value switch
-                {
-                    Language.English => "en-us",
-                    Language.Chinese => "zh-cn",
-                    _ => ""
-                };
-            }
-        }
-
-        public Theme AppTheme
+        public ElementTheme AppTheme
         {
             get => appTheme;
             set
             {
-                if (!Enum.IsDefined(typeof(Theme), value)) value = Theme.Default;
+                if (!Enum.IsDefined(typeof(ElementTheme), value)) value = ElementTheme.Default;
                 appTheme = value;
                 SaveConfiguration((int)value);
-                OnPropertyChanged(nameof(AppThemeValue));
+                OnPropertyChanged();
             }
         }
-
-        /// <summary>
-        /// Binding value for RequestTheme
-        /// </summary>
-        public ElementTheme AppThemeValue => (ElementTheme)(int)AppTheme;
 
         public event PropertyChangedEventHandler? PropertyChanged;
         protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

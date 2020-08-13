@@ -7,32 +7,13 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
-    
-    <Pivot>
-        <PivotItem x:Uid="Settings_Header_Preference">
-            <RelativePanel>
-                <TextBlock Margin="8" x:Name="LanguageTitle" FontSize="20" x:Uid="Settings_Item_Title_Language" />
-                <ComboBox x:Name="LanguageBox" Margin="8" RelativePanel.RightOf="LanguageTitle" SelectedIndex="{x:Bind app:AppModel.AppConfiguration.AppLanguage, Converter={StaticResource EnumConverter}, Mode=TwoWay}">
-                    <ComboBoxItem x:Uid="Settings_Item_Language_Default"/>
-                    <ComboBoxItem Content="English"></ComboBoxItem>
-                    <ComboBoxItem Content="简体中文"></ComboBoxItem>
-                </ComboBox>
-                <TextBlock Margin="8" x:Name="RestartPrompt" RelativePanel.Below="LanguageBox" Foreground="Gray" x:Uid="Settings_Item_Language_Restart"/>
-                <TextBlock Margin="8" x:Name="ThemeTitle" RelativePanel.Below="RestartPrompt" FontSize="20" x:Uid="Settings_Item_Title_Theme" />
-                <ComboBox x:Name="ThemeBox" Margin="8" RelativePanel.RightOf="ThemeTitle" RelativePanel.Below="RestartPrompt" SelectedIndex="{x:Bind app:AppModel.AppConfiguration.AppTheme, Converter={StaticResource EnumConverter}, Mode=TwoWay}">
-                    <ComboBoxItem x:Uid="Settings_Item_Theme_Default"/>
-                    <ComboBoxItem x:Uid="Settings_Item_Theme_Light"/>
-                    <ComboBoxItem x:Uid="Settings_Item_Theme_Dark"/>
-                </ComboBox>
-            </RelativePanel>
-        </PivotItem>
-        <PivotItem x:Uid="Settings_Header_Privacy">
-            <TextBlock Margin="8" Text="Matrix UWP 仅收集用于识别用户身份和通知推送的必要信息，并确保数据已被加密储存，不会将用户数据用于任何形式的商业用途。">
-                
-            </TextBlock>
-        </PivotItem>
-        <PivotItem x:Uid="Settings_Header_About">
-            <TextBlock Margin="8" Text="vmatrix 2020 版权所有"></TextBlock>
-        </PivotItem>
-    </Pivot>
+
+    <RelativePanel Margin="16,8">
+        <TextBlock Margin="8" x:Name="ThemeTitle" FontSize="20" Text="主题" />
+        <ComboBox x:Name="ThemeBox" Margin="8" RelativePanel.RightOf="ThemeTitle" SelectedIndex="{x:Bind app:AppModel.AppConfiguration.AppTheme, Converter={StaticResource EnumConverter}, Mode=TwoWay}">
+            <ComboBoxItem Content="跟随系统" />
+            <ComboBoxItem Content="亮" />
+            <ComboBoxItem Content="暗" />
+        </ComboBox>
+    </RelativePanel>
 </Page>

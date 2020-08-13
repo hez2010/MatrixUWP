@@ -5,11 +5,12 @@
     xmlns:local="using:MatrixUWP.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:app="using:MatrixUWP.Models"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:user="using:MatrixUWP.Models.User"
+    xmlns:models="using:MatrixUWP.Models"
     mc:Ignorable="d"
-    RequestedTheme="{x:Bind app:AppModel.AppConfiguration.AppThemeValue, Mode=OneWay}"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    RequestedTheme="{x:Bind models:AppModel.AppConfiguration.AppTheme, Mode=OneWay}"
     Unloaded="Page_Unloaded" Loaded="Page_Loaded">
 
     <Grid>
@@ -20,11 +21,12 @@
                         x:Key="NavigationViewExpandedPaneBackground"
                         TintLuminosityOpacity="0.8"
                         TintColor="{ThemeResource SystemAltLowColor}"
+                        FallbackColor="{ThemeResource SystemAltHighColor}"
                         BackgroundSource="HostBackdrop" />
                 </ResourceDictionary>
             </muxc:NavigationView.Resources>
             <muxc:NavigationView.PaneCustomContent>
-                <StackPanel Margin="0,0,0,24" Visibility="{x:Bind BindingAndToVisibility(user:UserModel.CurrentUser.SignedIn, NaviMenu.IsPaneOpen), Mode=OneWay}">
+                <StackPanel Margin="0,0,0,24" Visibility="{x:Bind local:Layout.BindingAndToVisibility(user:UserModel.CurrentUser.SignedIn, NaviMenu.IsPaneOpen), Mode=OneWay}">
                     <Ellipse Margin="48,24,48,24" Height="100" Width="100">
                         <Ellipse.Fill>
                             <ImageBrush ImageSource="{x:Bind user:UserModel.CurrentUser.Avatar, Mode=OneWay}" />
@@ -51,10 +53,10 @@
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <StackPanel Margin="24,0" Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Center">
-                    <Button CornerRadius="50" Width="40" Height="40" Visibility="{x:Bind NaviContent.CanGoBack, Mode=OneWay}" Click="BackButton_Click">
+                    <Button Margin="0,0,16,0" CornerRadius="50" Width="40" Height="40" Visibility="{x:Bind NaviContent.CanGoBack, Mode=OneWay}" Click="BackButton_Click">
                         <FontIcon FontSize="14" Glyph="&#xE09E;" />
                     </Button>
-                    <TextBlock Margin="16,4" FontSize="20" Text="{Binding ElementName=NaviMenu, Path=SelectedItem.Content}" />
+                    <TextBlock Margin="0,4" FontSize="20" Text="{Binding ElementName=NaviMenu, Path=SelectedItem.Content}" />
                 </StackPanel>
                 <Frame Grid.Row="1" IsEnabled="{x:Bind viewModel.Loading, Mode=OneWay, Converter={StaticResource NotConverter}}" VerticalContentAlignment="Stretch" x:Name="NaviContent" Navigated="NaviContent_Navigated" />
             </Grid>

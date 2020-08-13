@@ -155,24 +155,6 @@ namespace MatrixUWP.Models.Course.Assignment
 
         public bool Expired => DateTime.Now < StartTime || DateTime.Now >= EndTime;
 
-        public Brush? TitleBrush
-        {
-            get
-            {
-                if (Expired || Finished)
-                {
-                    return new SolidColorBrush(
-                        Application.Current.RequestedTheme == ApplicationTheme.Dark ?
-                            Color.FromArgb(0x99, 0xFF, 0xFF, 0xFF) :
-                            Color.FromArgb(0x99, 0x00, 0x00, 0x00)
-                    );
-                }
-
-                return new SolidColorBrush(Colors.SteelBlue);
-            }
-        }
-
-
         public Type? ConfigType { get; set; }
 
         public bool Loaded { get; set; } = false;

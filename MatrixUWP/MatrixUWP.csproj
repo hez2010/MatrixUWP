@@ -14,7 +14,7 @@
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.20175.0</TargetPlatformVersion>
-    <TargetPlatformMinVersion>10.0.20175.0</TargetPlatformMinVersion>
+    <TargetPlatformMinVersion>10.0.18362.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -140,8 +140,6 @@
     <Compile Include="Extensions\TaskExtensions.cs" />
     <Compile Include="Models\AppModel.cs" />
     <Compile Include="Models\Config\Configuration.cs" />
-    <Compile Include="Models\Config\Language.cs" />
-    <Compile Include="Models\Config\Theme.cs" />
     <Compile Include="Models\Course\Assignment\Answer\AnswerAssignmentConfig.cs" />
     <Compile Include="Models\Course\Assignment\Answer\AnswerAssignmentQuestion.cs" />
     <Compile Include="Models\Course\Assignment\Choice\ChoiceAssignmentQuestion.cs" />

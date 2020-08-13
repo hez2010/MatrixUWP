@@ -25,6 +25,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Windows.Storage.Pickers;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
@@ -379,7 +380,10 @@ namespace MatrixUWP.Views.Course
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
-
         private void OnPropertyChanged([CallerMemberName] string? propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
+        private Visibility BindingAndToVisibility(bool left, bool right)
+            => (left && right) ? Visibility.Visible : Visibility.Collapsed;
+
     }
 }

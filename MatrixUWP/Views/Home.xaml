@@ -12,7 +12,7 @@
     Loaded="Page_Loaded"
     Unloaded="Page_Unloaded">
 
-    <Grid Margin="0,8">
+    <Grid Margin="8">
         <StackPanel x:Name="UnsignedInPanel" VerticalAlignment="Center" HorizontalAlignment="Center" x:Load="{x:Bind user:UserModel.CurrentUser.SignedIn, Mode=OneWay, Converter={StaticResource NotConverter}}">
             <Image Height="100" Source="{ThemeResource MatrixLogo}"></Image>
             <Border Margin="0,0,0,50" Background="{ThemeResource SystemChromeMediumColor}" CornerRadius="2">
@@ -39,7 +39,7 @@
                 </StackPanel>
             </Border>
         </StackPanel>
-        <Grid x:Name="SignedInPanel" Margin="40,0,40,0" x:Load="{x:Bind user:UserModel.CurrentUser.SignedIn, Mode=OneWay}">
+        <Grid x:Name="SignedInPanel" Margin="16,0" x:Load="{x:Bind user:UserModel.CurrentUser.SignedIn, Mode=OneWay}">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />

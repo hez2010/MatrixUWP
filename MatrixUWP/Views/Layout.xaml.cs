@@ -1,6 +1,7 @@
 ﻿#nullable enable
 using MatrixUWP.Models;
 using MatrixUWP.Models.User;
+using MatrixUWP.Services;
 using MatrixUWP.Shared.Models;
 using MatrixUWP.ViewModels;
 using System;
@@ -136,6 +137,11 @@ namespace MatrixUWP.Views
                 }
                 catch { /* ignored */ }
                 viewModel.Loading = false;
+                try
+                {
+                    await PushService.RegistTaskAsync();
+                }
+                catch { /* ignored */ }
             }
         }
 
@@ -169,8 +175,9 @@ namespace MatrixUWP.Views
             NavigateBack();
         }
 
-        private Visibility BindingAndToVisibility(bool left, bool right) 
-            => (left && right) ? Visibility.Visible : Visibility.Collapsed;
+        public static Visibility BindingAndToVisibility(bool left, bool right) => (left && right) ? Visibility.Visible : Visibility.Collapsed;
+        public static Visibility BindingOrToVisibility(bool left, bool right) => (left || right) ? Visibility.Visible : Visibility.Collapsed;
+        public static Visibility BindingOrNotToVisibility(bool left, bool right) => (left || right) ? Visibility.Collapsed : Visibility.Visible;
 
         private async void HyperlinkButton_Click(object sender, RoutedEventArgs e)
         {

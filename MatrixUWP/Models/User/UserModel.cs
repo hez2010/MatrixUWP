@@ -27,10 +27,14 @@ namespace MatrixUWP.Models.User
             .JsonAsync<ResponseModel<UserDataModel>>();
             if (result?.Data?.SignedIn ?? false)
             {
+                try
+                {
+                    await PushService.RegistTaskAsync();
+                }
+                catch { /* ignored */ }
                 AppModel.AppConfiguration.SavedUserName = userName;
                 AppModel.AppConfiguration.SavedPassword = password;
                 UpdateUserData(result.Data);
-                await PushService.RegistTaskAsync();
             }
             else
             {
@@ -53,7 +57,11 @@ namespace MatrixUWP.Models.User
             AppModel.AppConfiguration.SavedUserName = "";
             AppModel.AppConfiguration.SavedPassword = "";
             UpdateUserData(new UserDataModel());
-            await PushService.RegistTaskAsync();
+            try
+            {
+                await PushService.RegistTaskAsync();
+            }
+            catch { /* ignored */ }
             return await HttpUtils.MatrixHttpClient.PostJsonAsync("/api/users/logout", new { }).JsonAsync<ResponseModel>();
         }
 

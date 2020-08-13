@@ -3,7 +3,8 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:cvt="using:MatrixUWP.Converters"
-    xmlns:local="using:MatrixUWP">
+    xmlns:local="using:MatrixUWP"
+    xmlns:models="using:MatrixUWP.Models">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -12,11 +13,9 @@
             <ResourceDictionary.ThemeDictionaries>
                 <ResourceDictionary x:Key="Light">
                     <BitmapImage x:Key="MatrixLogo" UriSource="/Assets/Home/logoblack.png"></BitmapImage>
-                    <SolidColorBrush x:Key="MasterDetailsViewBorderBrush" Color="LightGray"></SolidColorBrush>
                 </ResourceDictionary>
                 <ResourceDictionary x:Key="Dark">
                     <BitmapImage x:Key="MatrixLogo" UriSource="/Assets/Home/logowhite.png"></BitmapImage>
-                    <SolidColorBrush x:Key="MasterDetailsViewBorderBrush" Color="DimGray"></SolidColorBrush>
                 </ResourceDictionary>
             </ResourceDictionary.ThemeDictionaries>
 

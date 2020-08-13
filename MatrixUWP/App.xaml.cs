@@ -1,5 +1,6 @@
 #nullable enable
 using Exceptionless;
+using MatrixUWP.Models;
 #if !DEBUG
 using Exceptionless.Plugins;
 #endif
