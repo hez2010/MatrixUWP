@@ -8,6 +8,6 @@
     mc:Ignorable="d">
 
     <Grid>
-
+        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" Text="正在开发中，敬请期待~" />
     </Grid>
 </Page>
