@@ -1,4 +1,4 @@
-#nullable enable
+﻿#nullable enable
 using MatrixUWP.Models;
 using MatrixUWP.Models.Course.Assignment;
 using MatrixUWP.Models.User;
@@ -95,12 +95,20 @@ namespace MatrixUWP.Views
 
         private async void LoadProgressingAssignments()
         {
-            if (!UserModel.CurrentUser.SignedIn) return; 
+            if (!UserModel.CurrentUser.SignedIn) return;
             viewModel.Signining = true;
-            var response = await CourseAssignmentModel.FetchProgressingAssignmentListAsync();
-            if (response?.Status == Shared.Models.StatusCode.OK)
+            try
             {
-                viewModel.ProgressingAssignments = response.Data;
+                var response = await CourseAssignmentModel.FetchProgressingAssignmentListAsync();
+                if (response?.Status == Shared.Models.StatusCode.OK)
+                {
+                    viewModel.ProgressingAssignments = response.Data;
+                }
+                else throw new Exception(response?.Message ?? "网络错误");
+            }
+            catch (Exception ex)
+            {
+                AppModel.ShowMessage?.Invoke(ex.Message);
             }
             viewModel.Signining = false;
         }
