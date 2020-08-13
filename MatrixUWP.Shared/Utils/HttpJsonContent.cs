@@ -31,60 +31,64 @@ namespace MatrixUWP.Shared.Utils
             };
         }
 
-        public IAsyncOperationWithProgress<ulong, ulong> BufferAllAsync() => AsyncInfo.Run<ulong, ulong>((cancellationToken, progress) => Task.Run(() =>
-                                                                                       {
-                                                                                           cancellationToken.ThrowIfCancellationRequested();
-                                                                                           var length = GetLength();
+        public IAsyncOperationWithProgress<ulong, ulong> BufferAllAsync()
+            => AsyncInfo.Run<ulong, ulong>((cancellationToken, progress) => Task.Run(() =>
+                {
+                    cancellationToken.ThrowIfCancellationRequested();
+                    var length = GetLength();
 
-                                                                                           // Report progress.
-                                                                                           progress.Report(length);
+                    // Report progress.
+                    progress.Report(length);
 
-                                                                                           // Just return the size in bytes.
-                                                                                           return length;
-                                                                                       }));
+                    // Just return the size in bytes.
+                    return length;
+                }));
 
-        public IAsyncOperationWithProgress<IBuffer, ulong> ReadAsBufferAsync() => AsyncInfo.Run<IBuffer, ulong>((cancellationToken, progress) => Task.Run(() =>
-                                                                                            {
-                                                                                                cancellationToken.ThrowIfCancellationRequested();
-                                                                                                var writer = new DataWriter();
-                                                                                                writer.WriteString(SerializedJson);
+        public IAsyncOperationWithProgress<IBuffer, ulong> ReadAsBufferAsync()
+            => AsyncInfo.Run<IBuffer, ulong>((cancellationToken, progress) => Task.Run(() =>
+                {
+                    cancellationToken.ThrowIfCancellationRequested();
+                    var writer = new DataWriter();
+                    writer.WriteString(SerializedJson);
 
-                                                                                                // Make sure that the DataWriter destructor does not free the buffer.
-                                                                                                var buffer = writer.DetachBuffer();
+                    // Make sure that the DataWriter destructor does not free the buffer.
+                    var buffer = writer.DetachBuffer();
 
-                                                                                                // Report progress.
-                                                                                                progress.Report(buffer.Length);
+                    // Report progress.
+                    progress.Report(buffer.Length);
 
-                                                                                                return buffer;
-                                                                                            }));
+                    return buffer;
+                }));
 
-        public IAsyncOperationWithProgress<IInputStream, ulong> ReadAsInputStreamAsync() => AsyncInfo.Run<IInputStream, ulong>(async (cancellationToken, progress) =>
-                                                                                                      {
-                                                                                                          cancellationToken.ThrowIfCancellationRequested();
-                                                                                                          var randomAccessStream = new InMemoryRandomAccessStream();
-                                                                                                          var writer = new DataWriter(randomAccessStream);
-                                                                                                          writer.WriteString(SerializedJson);
+        public IAsyncOperationWithProgress<IInputStream, ulong> ReadAsInputStreamAsync()
+            => AsyncInfo.Run<IInputStream, ulong>(async (cancellationToken, progress) =>
+                {
+                    cancellationToken.ThrowIfCancellationRequested();
+                    var randomAccessStream = new InMemoryRandomAccessStream();
+                    var writer = new DataWriter(randomAccessStream);
+                    writer.WriteString(SerializedJson);
 
-                                                                                                          var bytesStored = await writer.StoreAsync().AsTask(cancellationToken);
+                    var bytesStored = await writer.StoreAsync().AsTask(cancellationToken);
 
-                                                                                                          // Make sure that the DataWriter destructor does not close the stream.
-                                                                                                          writer.DetachStream();
+                    // Make sure that the DataWriter destructor does not close the stream.
+                    writer.DetachStream();
 
-                                                                                                          // Report progress.
-                                                                                                          progress.Report(randomAccessStream.Size);
+                    // Report progress.
+                    progress.Report(randomAccessStream.Size);
 
-                                                                                                          return randomAccessStream.GetInputStreamAt(0);
-                                                                                                      });
+                    return randomAccessStream.GetInputStreamAt(0);
+                });
 
-        public IAsyncOperationWithProgress<string, ulong> ReadAsStringAsync() => AsyncInfo.Run<string, ulong>((cancellationToken, progress) => Task.Run(() =>
-                                                                                           {
-                                                                                               cancellationToken.ThrowIfCancellationRequested();
+        public IAsyncOperationWithProgress<string, ulong> ReadAsStringAsync()
+            => AsyncInfo.Run<string, ulong>((cancellationToken, progress) => Task.Run(() =>
+                {
+                    cancellationToken.ThrowIfCancellationRequested();
 
-                                                                                               // Report progress (length of string).
-                                                                                               progress.Report((ulong)SerializedJson.Length);
+                    // Report progress (length of string).
+                    progress.Report((ulong)SerializedJson.Length);
 
-                                                                                               return SerializedJson;
-                                                                                           }));
+                    return SerializedJson;
+                }));
 
         public bool TryComputeLength(out ulong length)
         {
@@ -92,21 +96,22 @@ namespace MatrixUWP.Shared.Utils
             return true;
         }
 
-        public IAsyncOperationWithProgress<ulong, ulong> WriteToStreamAsync(IOutputStream outputStream) => AsyncInfo.Run<ulong, ulong>(async (cancellationToken, progress) =>
-                                                                                                                     {
-                                                                                                                         cancellationToken.ThrowIfCancellationRequested();
-                                                                                                                         var writer = new DataWriter(outputStream);
-                                                                                                                         writer.WriteString(SerializedJson);
-                                                                                                                         var bytesWritten = await writer.StoreAsync().AsTask(cancellationToken);
+        public IAsyncOperationWithProgress<ulong, ulong> WriteToStreamAsync(IOutputStream outputStream)
+            => AsyncInfo.Run<ulong, ulong>(async (cancellationToken, progress) =>
+                {
+                    cancellationToken.ThrowIfCancellationRequested();
+                    var writer = new DataWriter(outputStream);
+                    writer.WriteString(SerializedJson);
+                    var bytesWritten = await writer.StoreAsync().AsTask(cancellationToken);
 
-                                                                                                                         // Make sure that DataWriter destructor does not close the stream.
-                                                                                                                         writer.DetachStream();
+                    // Make sure that DataWriter destructor does not close the stream.
+                    writer.DetachStream();
 
-                                                                                                                         // Report progress.
-                                                                                                                         progress.Report(bytesWritten);
+                    // Report progress.
+                    progress.Report(bytesWritten);
 
-                                                                                                                         return bytesWritten;
-                                                                                                                     });
+                    return bytesWritten;
+                });
 
         private ulong GetLength()
         {
