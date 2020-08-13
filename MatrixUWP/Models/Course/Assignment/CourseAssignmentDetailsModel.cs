@@ -6,6 +6,9 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using Windows.UI;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Media;
 
 namespace MatrixUWP.Models.Course.Assignment
 {
@@ -44,6 +47,12 @@ namespace MatrixUWP.Models.Course.Assignment
         public int GradeAtEnd { get; set; }
 
         public string GradeAtEndDescription => GradeAtEnd == 0 ? "实时评测" : "定时评测";
+
+        [JsonProperty("grade")]
+        public int Grade { get; set; }
+
+        [JsonProperty("finished")]
+        public bool Finished { get; set; }
 
         [JsonProperty("pub_answer")]
         public int PubAnswer { get; set; }
@@ -128,6 +137,26 @@ namespace MatrixUWP.Models.Course.Assignment
                 OnPropertyChanged();
             }
         }
+
+        public bool Expired => DateTime.Now < StartTime || DateTime.Now >= EndTime;
+
+        public Brush? TitleBrush
+        {
+            get
+            {
+                if (Expired || Finished)
+                {
+                    return new SolidColorBrush(
+                        Application.Current.RequestedTheme == ApplicationTheme.Dark ?
+                            Color.FromArgb(0x99, 0xFF, 0xFF, 0xFF) :
+                            Color.FromArgb(0x99, 0x00, 0x00, 0x00)
+                    );
+                }
+
+                return new SolidColorBrush(Colors.SteelBlue);
+            }
+        }
+
 
         public Type? ConfigType { get; set; }
 

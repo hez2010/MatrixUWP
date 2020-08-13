@@ -1,7 +1,7 @@
 ﻿#nullable enable
 using MatrixUWP.Models.Course.Assignment.Choice;
 using System.Collections.Generic;
-namespace MatrixUWP.Views.Parameters.Submit
+namespace MatrixUWP.Parameters.Submit
 {
     internal class ChoiceSubmitParameters
     {

@@ -1,5 +1,5 @@
 #nullable enable
-namespace MatrixUWP.Views.Parameters.Course
+namespace MatrixUWP.Parameters.Course
 {
     internal class CourseDetailsParameters
     {

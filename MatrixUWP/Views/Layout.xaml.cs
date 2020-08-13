@@ -6,7 +6,6 @@ using MatrixUWP.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
@@ -43,7 +42,7 @@ namespace MatrixUWP.Views
 
             navimenuNaviHistory.Clear();
             lastSelectedItem = null;
-            NavigateToPage(typeof(Home), null);
+            NavigateToPage(typeof(Home), null, 0);
             NaviContent.BackStack.Clear();
             Course.CourseAssignments.LastCourseId = -1;
         }
@@ -83,8 +82,14 @@ namespace MatrixUWP.Views
             NaviContent.Navigate(targetInfo, parameters, transInfo);
         }
 
-        private void NavigateToPage(Type pageType, object? parameter)
-            => NaviContent.Navigate(pageType, parameter, new DrillInNavigationTransitionInfo());
+        private void NavigateToPage(Type pageType, object? parameter, int navimenuIndex)
+        {
+            if (navimenuIndex >= 0 && navimenuIndex < NaviMenu.MenuItems.Count)
+            {
+                NaviMenu.SelectedItem = NaviMenu.MenuItems[navimenuIndex];
+            }
+            NaviContent.Navigate(pageType, parameter, new DrillInNavigationTransitionInfo());
+        }
 
         private void ShowMessage(string message)
         {
@@ -113,8 +118,7 @@ namespace MatrixUWP.Views
 
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            NaviMenu.SelectedItem = NaviMenu.MenuItems.FirstOrDefault();
-            NavigateToPage(typeof(Home), null);
+            NavigateToPage(typeof(Home), null, 0);
             UserModel.OnUserDataUpdate += UserDataChanged;
 
             if (!loaded)

@@ -14,9 +14,9 @@ namespace MatrixUWP.Models
     {
         public static Action<string>? ShowMessage { get; set; }
         /// <summary>
-        /// PageType, Parameter, TransitionInfo?
+        /// PageType, Parameter, NaviMenuIndex
         /// </summary>
-        public static Action<Type, object?>? NavigateToPage { get; set; }
+        public static Action<Type, object?, int>? NavigateToPage { get; set; }
 
         internal static readonly Configuration AppConfiguration = new Configuration();
     }

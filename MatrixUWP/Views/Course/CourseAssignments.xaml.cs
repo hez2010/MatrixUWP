@@ -8,12 +8,12 @@ using MatrixUWP.Models.Course.Assignment.Output;
 using MatrixUWP.Models.Course.Assignment.Programming;
 using MatrixUWP.Models.Course.Assignment.Report;
 using MatrixUWP.Models.Submission;
+using MatrixUWP.Parameters.Course;
+using MatrixUWP.Parameters.Submit;
 using MatrixUWP.Shared.Extensions;
 using MatrixUWP.Shared.Models;
 using MatrixUWP.Utils;
 using MatrixUWP.ViewModels;
-using MatrixUWP.Views.Parameters.Course;
-using MatrixUWP.Views.Parameters.Submit;
 using MatrixUWP.Views.Submit;
 using Microsoft.Toolkit.Uwp.UI.Controls;
 using Newtonsoft.Json;
@@ -88,6 +88,14 @@ namespace MatrixUWP.Views.Course
             animation.GetAnimation("CourseTitleViewer")?.TryStart(TitleViewer);
         }
 
+        private void TryJumpToAssignment()
+        {
+            if ((parameters?.JumpAssignmentId) == null) return;
+            var item = viewModel.Assignments.FirstOrDefault(i => i.AssignmentId == parameters.JumpAssignmentId);
+            AssignmentView.SelectedItem = item;
+            AssignmentView.FindChildOfType<ListView>()?.ScrollIntoView(item);
+        }
+
         private async void Page_Loaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
             if (parameters is null)
@@ -95,19 +103,30 @@ namespace MatrixUWP.Views.Course
                 viewModel.Assignments = null;
                 return;
             }
-            if (LastCourseId == parameters.CourseId) return;
+            if (LastCourseId == parameters.CourseId)
+            {
+                TryJumpToAssignment();
+                return;
+            }
             viewModel.Assignments = null;
             viewModel.Loading = true;
 
             try
             {
-                var response = await CourseAssignmentModel.FetchCourseAssignmentListAsync(parameters?.CourseId ?? 0);
+                var response = await CourseAssignmentModel.FetchCourseAssignmentListAsync(parameters.CourseId);
                 if (response?.Status != StatusCode.OK)
                 {
                     AppModel.ShowMessage?.Invoke(response?.Message ?? "课程作业列表获取失败");
                     return;
                 }
-                viewModel.Assignments = response.Data;
+                viewModel.Assignments = response.Data
+                    .OrderBy(i => i.Expired)
+                    .ThenBy(i => i.Finished)
+                    .ThenByDescending(i => i.StartTime)
+                    .ThenBy(i => i.EndTime)
+                    .ToList();
+
+                TryJumpToAssignment();
             }
             catch (Exception ex)
             {
@@ -198,7 +217,7 @@ namespace MatrixUWP.Views.Course
                                 AssignmentId = model.CourseAssignmentId,
                                 GetContent = GetContent,
                                 SetContent = SetContent
-                            });
+                            }, -1);
                         break;
                     }
                 case ChoiceAssignmentConfig asgnConfig:
@@ -210,7 +229,7 @@ namespace MatrixUWP.Views.Course
                             Description = model.Description,
                             CourseId = model.CourseId,
                             AssignmentId = model.CourseAssignmentId
-                        });
+                        }, -1);
                     break;
                 case ReportAssignmentConfig asgnConfig:
                     AppModel.ShowMessage?.Invoke($"不支持的题目配置:\n{asgnConfig.SerializeJson()}");

@@ -7,17 +7,17 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="using:MatrixUWP.Models.Course.Assignment"
-    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls" 
     mc:Ignorable="d"
     Loaded="Page_Loaded">
 
-    <Grid>
+    <Grid Margin="16,0">
         <TextBlock x:Name="TitleViewer" VerticalAlignment="Top" Margin="12,8,0,0" FontSize="22" Text="{x:Bind viewModel.Title, Mode=OneWay}"></TextBlock>
         <controls:MasterDetailsView
             Margin="0,48,0,0"
             BorderBrush="{ThemeResource MasterDetailsViewBorderBrush}"
             BackButtonBehavior="Manual"
-            Background="{ThemeResource SystemControlAcrylicWindowMediumHighBrush}" 
             ItemsSource="{x:Bind viewModel.Assignments, Mode=OneWay}"
             CompactModeThresholdWidth="720"
             x:Name="AssignmentView" SelectionChanged="AssignmentView_SelectionChanged">
@@ -29,18 +29,20 @@
             <controls:MasterDetailsView.ItemTemplate>
                 <DataTemplate x:DataType="models:CourseAssignmentDetailsModel">
                     <StackPanel Margin="0,8">
-                        <TextBlock Foreground="SteelBlue" FontSize="18" Text="{x:Bind Title}"></TextBlock>
+                        <TextBlock Foreground="{x:Bind TitleBrush}" FontSize="18" Text="{x:Bind Title}"></TextBlock>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock FontSize="12" Foreground="Gray" Text="开始时间："></TextBlock>
-                            <TextBlock FontSize="12" Foreground="Gray" Text="{x:Bind StartTime}"></TextBlock>
+                            <TextBlock FontSize="12" Foreground="{ThemeResource SystemBaseMediumColor}" Text="开始时间："></TextBlock>
+                            <TextBlock FontSize="12" Foreground="{ThemeResource SystemBaseMediumColor}" Text="{x:Bind StartTime}"></TextBlock>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock FontSize="12" Foreground="Gray" Text="结束时间："></TextBlock>
-                            <TextBlock FontSize="12" Foreground="Gray" Text="{x:Bind EndTime}"></TextBlock>
+                            <TextBlock FontSize="12" Foreground="{ThemeResource SystemBaseMediumColor}" Text="结束时间："></TextBlock>
+                            <TextBlock FontSize="12" Foreground="{ThemeResource SystemBaseMediumColor}" Text="{x:Bind EndTime}"></TextBlock>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock FontSize="12" Text="{x:Bind TypeDisplayText}"></TextBlock>
                             <TextBlock FontSize="12" Margin="8,0,0,0" Text="{x:Bind GradeAtEndDescription}"></TextBlock>
+                            <TextBlock FontSize="12" Margin="8,0,0,0" Text="得分：" />
+                            <TextBlock FontSize="12" Text="{x:Bind Grade}" />
                         </StackPanel>
                     </StackPanel>
                 </DataTemplate>
@@ -61,24 +63,24 @@
                                 UriPrefix="{x:Bind utils:HttpUtils.MatrixHttpClient.BaseUri.AbsoluteUri}"
                                 Text="{x:Bind Description, Mode=OneWay}"></controls:MarkdownTextBlock>
                         </ScrollViewer>
-                        <ProgressRing HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-50,0,0" Width="60" Height="60" IsActive="{x:Bind Loading, Mode=OneWay}"></ProgressRing>
+                        <muxc:ProgressRing HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-50,0,0" Width="60" Height="60" IsActive="{x:Bind Loading, Mode=OneWay}"></muxc:ProgressRing>
                     </Grid>
                 </DataTemplate>
             </controls:MasterDetailsView.DetailsTemplate>
             <controls:MasterDetailsView.MasterCommandBar>
-                <CommandBar Background="{ThemeResource SystemControlAcrylicWindowBrush}" DefaultLabelPosition="Right">
+                <CommandBar DefaultLabelPosition="Right">
                     <AppBarButton Icon="Find" Label="查找"></AppBarButton>
                     <AppBarButton Icon="Filter" Label="筛选"></AppBarButton>
                 </CommandBar>
             </controls:MasterDetailsView.MasterCommandBar>
             <controls:MasterDetailsView.DetailsCommandBar>
-                <CommandBar Background="{ThemeResource SystemControlAcrylicWindowBrush}" DefaultLabelPosition="Right">
+                <CommandBar DefaultLabelPosition="Right">
                     <AppBarButton Icon="Up" Label="提交" Click="Submit_Clicked"></AppBarButton>
                     <AppBarButton Icon="Page2" Label="成绩" Click="Report_Clicked"></AppBarButton>
                     <AppBarButton Icon="OutlineStar" Label="收藏" Click="Star_Clicked"></AppBarButton>
                 </CommandBar>
             </controls:MasterDetailsView.DetailsCommandBar>
         </controls:MasterDetailsView>
-        <ProgressRing HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-50,0,0" Width="60" Height="60" IsActive="{x:Bind viewModel.Loading, Mode=OneWay}"></ProgressRing>
+        <muxc:ProgressRing HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-50,0,0" Width="60" Height="60" IsActive="{x:Bind viewModel.Loading, Mode=OneWay}"></muxc:ProgressRing>
     </Grid>
 </Page>

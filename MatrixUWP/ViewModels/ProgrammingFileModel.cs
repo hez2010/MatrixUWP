@@ -1,4 +1,6 @@
 ﻿#nullable enable
+using Microsoft.UI.Xaml.Controls;
+using Monaco.Editor;
 using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -16,29 +18,24 @@ namespace MatrixUWP.ViewModels
         /// </summary>
         public Action<string, string>? SetContent;
         public bool SuppressSetDispatcher = false;
-        private string? language;
 
-        public string? Language
+        private StandaloneEditorConstructionOptions options = new StandaloneEditorConstructionOptions();
+
+        public StandaloneEditorConstructionOptions Options
         {
-            get => language;
+            get => options;
             set
             {
-                language = value;
+                var oldOptions = options;
+                options = value;
                 OnPropertyChanged();
+                if (oldOptions.ReadOnly != value.ReadOnly)
+                {
+                    OnPropertyChanged(nameof(ReadOnlyIcon));
+                }
             }
         }
 
-        private bool readOnly;
-
-        public bool ReadOnly
-        {
-            get => readOnly;
-            set
-            {
-                readOnly = value;
-                OnPropertyChanged();
-            }
-        }
         public string FileName { get; set; } = "";
         public string? Content
         {
@@ -47,7 +44,7 @@ namespace MatrixUWP.ViewModels
             {
                 if (!SuppressSetDispatcher)
                 {
-                    if (!ReadOnly)
+                    if (!(options.ReadOnly ?? false))
                         SetContent?.Invoke(FileName, value ?? "");
                 }
                 else
@@ -59,6 +56,20 @@ namespace MatrixUWP.ViewModels
             }
         }
         public bool IsSupportFile { get; set; }
+
+        private static FontIconSource LockIcon = new FontIconSource
+        {
+            Glyph = "\uE72E",
+            FontFamily = new Windows.UI.Xaml.Media.FontFamily("Segoe MDL2 Assets")
+        };
+
+        private static FontIconSource UnlockIcon = new FontIconSource
+        {
+            Glyph = "\uE785",
+            FontFamily = new Windows.UI.Xaml.Media.FontFamily("Segoe MDL2 Assets")
+        };
+
+        public IconSource ReadOnlyIcon => (options.ReadOnly ?? false) ? LockIcon : UnlockIcon;
 
         public event PropertyChangedEventHandler? PropertyChanged;
         protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

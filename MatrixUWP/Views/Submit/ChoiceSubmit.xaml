@@ -12,7 +12,7 @@
     mc:Ignorable="d"
     Loaded="Page_Loaded">
 
-    <Grid Margin="8,0">
+    <Grid Margin="16,0">
         <TextBlock x:Name="TitleViewer" Margin="8" FontSize="22" Text="{x:Bind viewModel.Title, Mode=OneWay}"></TextBlock>
         <Button x:Name="Submit" Margin="0,8,8,0" Content="提交" VerticalAlignment="Top" HorizontalAlignment="Right" Click="Submit_Click"></Button>
         <Grid Margin="8,54,8,0">
@@ -115,7 +115,7 @@
                 <muxc:SymbolIconSource Symbol="Refresh" />
             </muxc:TeachingTip.IconSource>
         </muxc:TeachingTip>
-        <ProgressRing HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-50,0,0" Width="60" Height="60" IsActive="{x:Bind viewModel.Loading, Mode=OneWay}"></ProgressRing>
+        <muxc:ProgressRing HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-50,0,0" Width="60" Height="60" IsActive="{x:Bind viewModel.Loading, Mode=OneWay}"></muxc:ProgressRing>
     </Grid>
 
 </Page>

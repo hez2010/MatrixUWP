@@ -6,15 +6,22 @@
     xmlns:model="using:MatrixUWP.Models.Course"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d"
     Loaded="Page_Loaded">
 
     <Grid>
         <GridView Margin="24" ItemsSource="{x:Bind viewModel.Courses, Mode=OneWay}" SelectionMode="Single" SelectionChanged="CoursesView_SelectionChanged">
+            <GridView.ItemContainerStyle>
+                <Style TargetType="GridViewItem">
+                    <Setter Property="Background" Value="{ThemeResource SystemControlBackgroundListMediumBrush}" />
+                    <Setter Property="CornerRadius" Value="2" />
+                    <Setter Property="Margin" Value="0 0 16 16" />
+                </Style>
+            </GridView.ItemContainerStyle>
             <GridView.ItemTemplate>
                 <DataTemplate x:DataType="model:CourseInfoModel">
-                    <RelativePanel Height="140" Width="300" Margin="8" Padding="16" BorderBrush="Gray" BorderThickness="1" >
+                    <RelativePanel Height="140" Width="280" Margin="8" Padding="12" CornerRadius="2">
                         <TextBlock x:Name="CourseTitle" Foreground="SteelBlue" FontSize="18" Text="{x:Bind CourseName}"></TextBlock>
                         <StackPanel Orientation="Horizontal" Margin="0,8,0,0" RelativePanel.Below="CourseTitle">
                             <Ellipse Margin="0,2" Height="18" Width="18">
@@ -84,6 +91,6 @@
                 </DataTemplate>
             </GridView.ItemTemplate>
         </GridView>
-        <ProgressRing HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-50,0,0" Width="60" Height="60" IsActive="{x:Bind viewModel.Loading, Mode=OneWay}"></ProgressRing>
+        <muxc:ProgressRing HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-50,0,0" Width="60" Height="60" IsActive="{x:Bind viewModel.Loading, Mode=OneWay}"></muxc:ProgressRing>
     </Grid>
 </Page>

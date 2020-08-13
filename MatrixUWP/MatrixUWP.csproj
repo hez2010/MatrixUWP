@@ -133,7 +133,6 @@
     </Compile>
     <Compile Include="Converters\EnumConverter.cs" />
     <Compile Include="Converters\IndexOffsetConverter.cs" />
-    <Compile Include="Converters\LanguageConverter.cs" />
     <Compile Include="Converters\NumberCalculator.cs" />
     <Compile Include="Converters\NotConverter.cs" />
     <Compile Include="Converters\NotVisibilityConverter.cs" />
@@ -212,8 +211,8 @@
     <Compile Include="Views\Course\Course.xaml.cs">
       <DependentUpon>Course.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Parameters\Course\CourseAssignmentsParameters.cs" />
-    <Compile Include="Views\Parameters\Course\CourseDetailsParameters.cs" />
+    <Compile Include="Parameters\Course\CourseAssignmentsParameters.cs" />
+    <Compile Include="Parameters\Course\CourseDetailsParameters.cs" />
     <Compile Include="Views\Messages.xaml.cs">
       <DependentUpon>Messages.xaml</DependentUpon>
     </Compile>
@@ -223,8 +222,8 @@
     <Compile Include="Views\Layout.xaml.cs">
       <DependentUpon>Layout.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Parameters\Submit\ChoiceSubmitParameters.cs" />
-    <Compile Include="Views\Parameters\Submit\ProgrammingSubmitParameters.cs" />
+    <Compile Include="Parameters\Submit\ChoiceSubmitParameters.cs" />
+    <Compile Include="Parameters\Submit\ProgrammingSubmitParameters.cs" />
     <Compile Include="Views\Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
     </Compile>
@@ -358,13 +357,13 @@
       <Version>6.2.10</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Toolkit.Uwp.UI.Controls">
-      <Version>6.1.0</Version>
+      <Version>6.1.1</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.UI.Xaml">
-      <Version>2.4.2</Version>
+      <Version>2.4.3</Version>
     </PackageReference>
     <PackageReference Include="Monaco.Editor">
-      <Version>0.9.0-alpha</Version>
+      <Version>0.899.0-beta</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>12.0.3</Version>

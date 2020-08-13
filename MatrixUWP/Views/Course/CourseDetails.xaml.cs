@@ -1,9 +1,9 @@
 ﻿#nullable enable
 using MatrixUWP.Models;
 using MatrixUWP.Models.Course;
+using MatrixUWP.Parameters.Course;
 using MatrixUWP.Shared.Models;
 using MatrixUWP.ViewModels;
-using MatrixUWP.Views.Parameters.Course;
 using System;
 using System.Diagnostics;
 using Windows.UI.Xaml;
@@ -92,7 +92,7 @@ namespace MatrixUWP.Views.Course
         {
             if (parameters is null) return;
             AppModel.NavigateToPage?.Invoke(typeof(CourseAssignments),
-                new CourseAssignmentsParameters { CourseId = parameters.CourseId, Title = viewModel.Course?.CourseName });
+                new CourseAssignmentsParameters { CourseId = parameters.CourseId, Title = viewModel.Course?.CourseName }, -1);
         }
     }
 }

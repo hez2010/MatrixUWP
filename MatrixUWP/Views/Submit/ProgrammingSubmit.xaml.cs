@@ -3,12 +3,11 @@ using MatrixUWP.Converters;
 using MatrixUWP.Models;
 using MatrixUWP.Models.Submission;
 using MatrixUWP.Models.Submission.Programming;
+using MatrixUWP.Parameters.Submit;
 using MatrixUWP.Shared.Models;
 using MatrixUWP.ViewModels;
 using MatrixUWP.Views.Course;
-using MatrixUWP.Views.Parameters.Submit;
 using Microsoft.Toolkit.Uwp.UI.Controls;
-using Monaco;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -29,6 +28,29 @@ namespace MatrixUWP.Views.Submit
     {
         private readonly ProgrammingSubmitViewModel viewModel = new ProgrammingSubmitViewModel();
         private ProgrammingSubmitParameters? parameters;
+
+        private string GetCodeLanguage(string? fileName)
+        {
+            if (fileName is null) return "";
+            var extName = System.IO.Path.GetExtension(fileName).ToLowerInvariant();
+            return extName switch
+            {
+                ".c" => "cpp",
+                ".cpp" => "cpp",
+                ".h" => "cpp",
+                ".hpp" => "cpp",
+                ".py" => "python",
+                ".cs" => "csharp",
+                ".hs" => "haskell",
+                ".fs" => "fsharp",
+                ".rs" => "rust",
+                ".kt" => "kotlin",
+                ".js" => "javascript",
+                ".ts" => "typescript",
+                _ => extName.Length == 0 ? "" : extName.Substring(1)
+            };
+        }
+
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
@@ -43,7 +65,7 @@ namespace MatrixUWP.Views.Submit
                 viewModel.Title = p.Title;
                 viewModel.Languages = p.Languages;
                 viewModel.Files = new List<ProgrammingFileModel>();
-                var languageConverter = new LanguageConverter();
+
                 if (p.Submissions != null)
                 {
                     foreach (var i in p.Submissions)
@@ -51,8 +73,11 @@ namespace MatrixUWP.Views.Submit
                         viewModel.Files.Add(new ProgrammingFileModel
                         {
                             FileName = i,
-                            ReadOnly = false,
-                            Language = languageConverter.Convert(p.Languages?.FirstOrDefault()!, typeof(string), null!, null!)?.ToString() ?? "",
+                            Options =
+                            {
+                                ReadOnly = false,
+                                Language = GetCodeLanguage(i)
+                            },
                             IsSupportFile = false,
                             SetContent = p.SetContent,
                             GetContent = p.GetContent
@@ -66,8 +91,11 @@ namespace MatrixUWP.Views.Submit
                         viewModel.Files.Add(new ProgrammingFileModel
                         {
                             FileName = i,
-                            ReadOnly = true,
-                            Language = languageConverter.Convert(p.Languages?.FirstOrDefault()!, typeof(string), null!, null!)?.ToString() ?? "",
+                            Options =
+                            {
+                                ReadOnly = true,
+                                Language = GetCodeLanguage(i)
+                            },
                             IsSupportFile = true,
                             GetContent = p.GetContent
                         });
@@ -221,13 +249,6 @@ namespace MatrixUWP.Views.Submit
             {
                 viewModel.Loading = false;
             }
-        }
-
-        private async void MainCodeEditor_Loaded(object sender, RoutedEventArgs e)
-        {
-            if (!(sender is CodeEditor editor)) return;
-            var languages = editor.Languages;
-            var avaliableLanguages = await languages.GetLanguagesAsync();
         }
     }
 }

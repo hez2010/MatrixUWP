@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace MatrixUWP.Views.Parameters.Submit
+namespace MatrixUWP.Parameters.Submit
 {
     internal class ProgrammingSubmitParameters
     {

@@ -2,7 +2,11 @@
 using MatrixUWP.Models;
 using MatrixUWP.Models.Course.Assignment;
 using MatrixUWP.Models.User;
+using MatrixUWP.Parameters.Course;
 using MatrixUWP.ViewModels;
+using MatrixUWP.Views.Course;
+using MatrixUWP.Parameters.Submit;
+using MatrixUWP.Views.Submit;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -104,6 +108,22 @@ namespace MatrixUWP.Views
         private void Page_Unloaded(object sender, RoutedEventArgs e)
         {
             UserModel.OnUserDataUpdate -= LoadProgressingAssignments;
+        }
+
+        private void ListView_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            if (!(sender is ListView lv)) return;
+            if (!(lv.SelectedItem is ProgressingAssignmentModel assignment)) return;
+
+            if (assignment.Type.EndsWith("Programming"))
+            {
+                AppModel.NavigateToPage?.Invoke(typeof(CourseAssignments), new CourseAssignmentsParameters
+                {
+                    CourseId = assignment.CourseId,
+                    Title = assignment.CourseName,
+                    JumpAssignmentId = assignment.AssignmentId
+                }, 1);
+            }
         }
     }
 }

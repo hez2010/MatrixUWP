@@ -2,10 +2,10 @@
 using MatrixUWP.Models;
 using MatrixUWP.Models.Submission;
 using MatrixUWP.Models.Submission.Answer;
+using MatrixUWP.Parameters.Submit;
 using MatrixUWP.Shared.Models;
 using MatrixUWP.ViewModels;
 using MatrixUWP.Views.Course;
-using MatrixUWP.Views.Parameters.Submit;
 using Microsoft.Toolkit.Uwp.UI.Controls;
 using System;
 using System.Collections.Generic;
