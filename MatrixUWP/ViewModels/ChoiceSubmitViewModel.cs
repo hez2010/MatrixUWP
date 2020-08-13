@@ -22,6 +22,8 @@ namespace MatrixUWP.ViewModels
         public List<ChoiceAssignmentQuestion>? Questions { get; set; }
         public string Description { get; set; } = "";
         public string Title { get; set; } = "";
+        public int RemainingSubmitTimes { get; set; }
+        public string RemainingSubmitText => $"剩余提交次数：{(RemainingSubmitTimes == -1 ? "无限" : RemainingSubmitTimes.ToString())}";
 
         public event PropertyChangedEventHandler? PropertyChanged;
         protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

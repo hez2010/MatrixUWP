@@ -22,7 +22,8 @@ namespace MatrixUWP.ViewModels
         public string Description { get; set; } = "";
         public string Title { get; set; } = "";
         public List<ProgrammingFileModel>? Files { get; set; }
-        public List<string>? Languages { get; set; }
+        public int RemainingSubmitTimes { get; set; }
+        public string RemainingSubmitText => $"剩余提交次数：{(RemainingSubmitTimes == -1 ? "无限" : RemainingSubmitTimes.ToString())}";
 
         public event PropertyChangedEventHandler? PropertyChanged;
         protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

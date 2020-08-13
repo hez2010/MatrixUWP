@@ -16,6 +16,7 @@ namespace MatrixUWP.Models.Course.Assignment
     {
         private bool loading;
         private string description = "";
+        private int rate = -1;
 
         [JsonProperty("type")]
         public string Type { get; set; } = "";
@@ -127,6 +128,20 @@ namespace MatrixUWP.Models.Course.Assignment
         [JsonProperty("config")]
         public JObject? Config { get; set; }
         public object? DeserialzedConfig { get; set; }
+
+        [JsonProperty("rate")]
+        public int Rate
+        {
+            get => rate < 0 ? 0 : rate;
+            set
+            {
+                rate = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(Favorited));
+            }
+        }
+
+        public bool Favorited => rate >= 0;
 
         public bool Loading
         {

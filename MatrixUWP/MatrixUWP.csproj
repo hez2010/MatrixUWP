@@ -156,6 +156,7 @@
     <Compile Include="Models\Course\Assignment\Programming\ProgrammingAssignmentConfig.cs" />
     <Compile Include="Models\Course\Assignment\Programming\ProgrammingStandard.cs" />
     <Compile Include="Models\Course\Assignment\ProgressingAssignmentModel.cs" />
+    <Compile Include="Models\Course\Assignment\RankModel.cs" />
     <Compile Include="Models\Course\Assignment\Report\ReportAssignmentConfig.cs" />
     <Compile Include="Models\Submission\Programming\ProgrammingAnswer.cs" />
     <Compile Include="Models\Submission\SubmitAnswerModel.cs" />
@@ -228,6 +229,9 @@
       <DependentUpon>Settings.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Views\Submit\SubmissionReport.xaml.cs">
+      <DependentUpon>SubmissionReport.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -345,6 +349,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\Settings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Submit\SubmissionReport.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

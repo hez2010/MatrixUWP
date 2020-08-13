@@ -63,7 +63,7 @@ namespace MatrixUWP.Views.Submit
                 parameters = p;
                 viewModel.Description = p.Description;
                 viewModel.Title = p.Title;
-                viewModel.Languages = p.Languages;
+                viewModel.RemainingSubmitTimes = p.RemainingSubmitTimes;
                 viewModel.Files = new List<ProgrammingFileModel>();
 
                 if (p.Submissions != null)

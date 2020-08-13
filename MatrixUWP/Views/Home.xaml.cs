@@ -121,7 +121,7 @@ namespace MatrixUWP.Views
                 {
                     CourseId = assignment.CourseId,
                     Title = assignment.CourseName,
-                    JumpAssignmentId = assignment.AssignmentId
+                    JumpAssignmentId = assignment.CourseAssignmentId
                 }, 1);
             }
         }

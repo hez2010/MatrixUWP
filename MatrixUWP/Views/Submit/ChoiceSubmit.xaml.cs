@@ -36,6 +36,7 @@ namespace MatrixUWP.Views.Submit
                 viewModel.Description = p.Description;
                 viewModel.Questions = p.Questions;
                 viewModel.Title = p.Title;
+                viewModel.RemainingSubmitTimes = p.RemainingSubmitTimes;
             }
             var animation = ConnectedAnimationService.GetForCurrentView();
             animation.GetAnimation("DescriptionViewer")?.TryStart(DescriptionViewer);

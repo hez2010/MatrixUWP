@@ -10,5 +10,6 @@ namespace MatrixUWP.Parameters.Submit
         public int CourseId { get; set; }
         public int AssignmentId { get; set; }
         public List<ChoiceAssignmentQuestion>? Questions { get; set; }
+        public int RemainingSubmitTimes { get; set; }
     }
 }

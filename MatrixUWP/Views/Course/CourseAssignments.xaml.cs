@@ -18,8 +18,11 @@ using MatrixUWP.Views.Submit;
 using Microsoft.Toolkit.Uwp.UI.Controls;
 using Newtonsoft.Json;
 using System;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Windows.Storage.Pickers;
 using Windows.UI.Xaml.Controls;
@@ -33,7 +36,7 @@ namespace MatrixUWP.Views.Course
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class CourseAssignments : Page
+    public sealed partial class CourseAssignments : Page, INotifyPropertyChanged
     {
         private readonly CourseAssignmentsViewModel viewModel = new CourseAssignmentsViewModel();
         private CourseAssignmentsParameters? parameters;
@@ -42,6 +45,18 @@ namespace MatrixUWP.Views.Course
             NullValueHandling = NullValueHandling.Ignore
         };
         public static int LastCourseId = -1;
+
+        private bool loadingRank;
+        private bool LoadingRank
+        {
+            get => loadingRank;
+            set
+            {
+                loadingRank = value;
+                OnPropertyChanged();
+            }
+        }
+        private readonly ObservableCollection<RankModel> rankInfo = new ObservableCollection<RankModel>();
 
         public CourseAssignments()
         {
@@ -145,6 +160,8 @@ namespace MatrixUWP.Views.Course
         {
             if (e.AddedItems.Count == 0 || parameters is null) return;
             if (!(e.AddedItems.First() is CourseAssignmentDetailsModel selectedItem)) return;
+            Rating.Value = selectedItem.Rate;
+            Star.IsChecked = selectedItem.Favorited;
             if (selectedItem.Loaded) return;
             selectedItem.Loading = true;
             try
@@ -210,7 +227,7 @@ namespace MatrixUWP.Views.Course
                             {
                                 Submissions = asgnConfig.Submission,
                                 Supports = asgnConfig.Standard?.Support,
-                                Languages = asgnConfig.Language,
+                                RemainingSubmitTimes = model.SubmitLimit == 0 ? -1 : model.SubmitLimit - model.SubmitTimes,
                                 Title = model.Title,
                                 Description = model.Description,
                                 CourseId = model.CourseId,
@@ -228,7 +245,8 @@ namespace MatrixUWP.Views.Course
                             Title = model.Title,
                             Description = model.Description,
                             CourseId = model.CourseId,
-                            AssignmentId = model.CourseAssignmentId
+                            AssignmentId = model.CourseAssignmentId,
+                            RemainingSubmitTimes = model.SubmitLimit == 0 ? -1 : model.SubmitLimit - model.SubmitTimes,
                         }, -1);
                     break;
                 case ReportAssignmentConfig asgnConfig:
@@ -317,9 +335,51 @@ namespace MatrixUWP.Views.Course
 
         }
 
-        private void Star_Clicked(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        private async void SubmitRate_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
-
+            if (!(AssignmentView.SelectedItem is CourseAssignmentDetailsModel model)) return;
+            model.Rate = Rating.Value == -1 ? 0 : (int)Rating.Value;
+            try
+            {
+                var res = await CourseAssignmentModel.RateAssignmentAsync(Star.IsChecked ?? false, model.CourseId, model.CourseAssignmentId, model.Rate);
+                if (res?.Status != StatusCode.OK)
+                {
+                    throw new Exception(res?.Message ?? "请求失败");
+                }
+            }
+            catch (Exception ex)
+            {
+                AppModel.ShowMessage?.Invoke(ex.Message);
+            }
+            RateFlyout.Hide();
         }
+
+        private async void RankFlyout_Opening(object sender, object e)
+        {
+            if (!(AssignmentView.SelectedItem is CourseAssignmentDetailsModel model)) return;
+            LoadingRank = true;
+            rankInfo.Clear();
+            try
+            {
+                var res = await CourseAssignmentModel.FetchRankInfoAsync(model.CourseId, model.CourseAssignmentId);
+                if (res is null || res.Status != StatusCode.OK)
+                {
+                    throw new Exception(res?.Message ?? "请求失败");
+                }
+                foreach (var i in res.Data)
+                {
+                    rankInfo.Add(i);
+                }
+            }
+            catch (Exception ex)
+            {
+                AppModel.ShowMessage?.Invoke(ex.Message);
+            }
+            LoadingRank = false;
+        }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        private void OnPropertyChanged([CallerMemberName] string? propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

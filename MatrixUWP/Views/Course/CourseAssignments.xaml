@@ -77,7 +77,68 @@
                 <CommandBar DefaultLabelPosition="Right">
                     <AppBarButton Icon="Up" Label="提交" Click="Submit_Clicked"></AppBarButton>
                     <AppBarButton Icon="Page2" Label="成绩" Click="Report_Clicked"></AppBarButton>
-                    <AppBarButton Icon="OutlineStar" Label="收藏" Click="Star_Clicked"></AppBarButton>
+                    <AppBarButton Icon="List" Label="排名">
+                        <AppBarButton.Flyout>
+                            <Flyout x:Name="RankFlyout" Opening="RankFlyout_Opening">
+                                <Grid Height="300" Width="400">
+                                    <muxc:ProgressRing HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-50,0,0" Width="60" Height="60" IsActive="{x:Bind LoadingRank, Mode=OneWay}"></muxc:ProgressRing>
+
+                                    <ListView ItemsSource="{x:Bind rankInfo, Mode=OneWay}" Visibility="{x:Bind LoadingRank, Mode=OneWay, Converter={StaticResource NotVisibilityConverter}}">
+                                        <ListView.ItemTemplate>
+                                            <DataTemplate x:DataType="models:RankModel">
+                                                <Grid>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="*"/>
+                                                        <RowDefinition Height="*"/>
+                                                    </Grid.RowDefinitions>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <Grid Grid.RowSpan="2">
+                                                        <Ellipse x:Name="Ellipse"
+                                                            Width ="32"
+                                                            Height="32"
+                                                            Margin="6"
+                                                            VerticalAlignment="Center"
+                                                            HorizontalAlignment="Center"
+                                                            Fill="{ThemeResource SystemControlBackgroundBaseMediumBrush}">
+                                                        </Ellipse>
+                                                        <TextBlock FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{x:Bind Rank}" />
+                                                    </Grid>
+                                                    <TextBlock Grid.Column="1"
+                                                        Text="{x:Bind NickName}"
+                                                        x:Phase="1"
+                                                        Style="{ThemeResource BaseTextBlockStyle}"
+                                                        Margin="12,6,0,0"/>
+                                                    <TextBlock  Grid.Column="1"
+                                                        Grid.Row="1"
+                                                        Text="{x:Bind Description}"
+                                                        x:Phase="2"
+                                                        FontSize="12"
+                                                        Style="{ThemeResource BodyTextBlockStyle}"
+                                                        Margin="12,0,0,6"/>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ListView.ItemTemplate>
+                                    </ListView>
+                                </Grid>
+                            </Flyout>
+                        </AppBarButton.Flyout>
+                    </AppBarButton>
+                    <AppBarButton Icon="OutlineStar" Label="评分">
+                        <AppBarButton.Flyout>
+                            <Flyout x:Name="RateFlyout">
+                                <StackPanel>
+                                    <muxc:RatingControl x:Name="Rating" MaxRating="5" IsClearEnabled="True"></muxc:RatingControl>
+                                    <StackPanel Orientation="Horizontal">
+                                        <CheckBox x:Name="Star" Content="收藏题目" />
+                                        <Button Content="确定" Click="SubmitRate_Click" />
+                                    </StackPanel>
+                                </StackPanel>
+                            </Flyout>
+                        </AppBarButton.Flyout>
+                    </AppBarButton>
                 </CommandBar>
             </controls:MasterDetailsView.DetailsCommandBar>
         </controls:MasterDetailsView>

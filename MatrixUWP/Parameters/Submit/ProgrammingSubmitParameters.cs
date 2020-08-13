@@ -12,8 +12,8 @@ namespace MatrixUWP.Parameters.Submit
         public int AssignmentId { get; set; }
         public List<string>? Submissions { get; set; }
         public List<string>? Supports { get; set; }
-        public List<string>? Languages { get; set; }
         public Func<string, bool, string>? GetContent { get; set; }
         public Action<string, string>? SetContent { get; set; }
+        public int RemainingSubmitTimes { get; set; }
     }
 }

@@ -17,5 +17,11 @@ namespace MatrixUWP.Models.Course.Assignment
 
         public static async ValueTask<ResponseModel<List<ProgressingAssignmentModel>>?> FetchProgressingAssignmentListAsync() => await HttpUtils.MatrixHttpClient.GetAsync("/api/courses/assignments?state=progressing")
                 .JsonAsync<ResponseModel<List<ProgressingAssignmentModel>>>();
+
+        public static async ValueTask<ResponseModel?> RateAssignmentAsync(bool star, int courseId, int courseAssignmentId, int rate) => await HttpUtils.MatrixHttpClient.PostJsonAsync($"/api/courses/{courseId}/assignments/{courseAssignmentId}/star?star={(star ? 1 : 0)}", new { rate })
+                .JsonAsync<ResponseModel>();
+
+        public static async ValueTask<ResponseModel<List<RankModel>>?> FetchRankInfoAsync(int courseId, int courseAssignmentId) => await HttpUtils.MatrixHttpClient.GetAsync($"/api/courses/{courseId}/assignments/{courseAssignmentId}/rank?append_current_user=true")
+                .JsonAsync<ResponseModel<List<RankModel>>>();
     }
 }

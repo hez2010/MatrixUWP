@@ -17,7 +17,7 @@
     <Grid Margin="16,0">
         <TextBlock x:Name="TitleViewer" Margin="8" FontSize="22" Text="{x:Bind viewModel.Title, Mode=OneWay}"></TextBlock>
         <StackPanel Orientation="Horizontal" Margin="0,8,8,0" VerticalAlignment="Top" HorizontalAlignment="Right">
-            <Button x:Name="Submit" Content="提交" Click="Submit_Click"></Button>
+            <Button x:Name="Submit" Content="提交" Click="Submit_Click" ToolTipService.ToolTip="{x:Bind viewModel.RemainingSubmitText}"></Button>
         </StackPanel>
         <Grid Margin="8,54,8,0">
             <Grid.ColumnDefinitions>
