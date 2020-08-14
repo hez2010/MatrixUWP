@@ -12,7 +12,7 @@ namespace MatrixUWP.Shared.Utils
 #if DEBUG
         private static readonly Uri baseUri = new Uri("https://test.vmatrix.org.cn/");
 #else
-        private static readonly Uri baseUri = new Uri("https://vmatrix.org.cn/");
+        private static readonly Uri baseUri = new Uri("https://matrix.sysu.edu.cn/");
 #endif
 
         public MatrixJsonHttpRequestBuilder()

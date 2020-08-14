@@ -126,13 +126,13 @@ namespace MatrixUWP.Models.Course.Assignment
         public UserEssentialDataModel Author { get; set; } = new UserEssentialDataModel();
 
         [JsonProperty("config")]
-        public JObject? Config { get; set; }
+        public JToken? Config { get; set; }
         public object? DeserialzedConfig { get; set; }
 
         [JsonProperty("rate")]
         public int Rate
         {
-            get => rate < 0 ? 0 : rate;
+            get => rate;
             set
             {
                 rate = value;

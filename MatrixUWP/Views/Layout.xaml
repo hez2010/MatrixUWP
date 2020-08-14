@@ -14,6 +14,19 @@
     Unloaded="Page_Unloaded" Loaded="Page_Loaded">
 
     <Grid>
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{x:Bind NaviMenu.CompactModeThresholdWidth}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="NaviHeader.Margin" Value="24,0,24,0" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups >
+
         <muxc:NavigationView PaneTitle="Matrix UWP" x:Name="NaviMenu" IsSettingsVisible="False" IsBackButtonVisible="Collapsed" ItemInvoked="NaviMenu_ItemInvoked" BackRequested="NaviMenu_BackRequested">
             <muxc:NavigationView.Resources>
                 <ResourceDictionary>
@@ -42,17 +55,17 @@
             <muxc:NavigationView.MenuItems>
                 <muxc:NavigationViewItem Margin="0,2" Tag="HomeNaviPage" Icon="Home" Content="主页"></muxc:NavigationViewItem>
                 <muxc:NavigationViewItem Margin="0,2" Tag="CourseNaviPage" Icon="Edit" Content="课程 &amp; 作业" Visibility="{x:Bind viewModel.UserData.SignedIn, Mode=OneWay}"></muxc:NavigationViewItem>
-                <muxc:NavigationViewItem Margin="0,2" Tag="MessagesNaviPage" Icon="Message" Content="通知" Visibility="{x:Bind viewModel.UserData.SignedIn, Mode=OneWay}"></muxc:NavigationViewItem>
+                <muxc:NavigationViewItem Margin="0,2" Tag="MessagesNaviPage" Icon="Message" Content="消息通知" Visibility="{x:Bind viewModel.UserData.SignedIn, Mode=OneWay}"></muxc:NavigationViewItem>
                 <muxc:NavigationViewItem Margin="0,2" Tag="ProfileNaviPage" Icon="ContactInfo" Content="个人账户" Visibility="{x:Bind viewModel.UserData.SignedIn, Mode=OneWay}"></muxc:NavigationViewItem>
                 <muxc:NavigationViewItem Margin="0,2" Tag="SettingsNaviPage" Icon="Setting" Content="设置"></muxc:NavigationViewItem>
-                <muxc:NavigationViewItem Margin="0,2" Tag="HelpNaviPage" Icon="Help" Content="帮助 &amp; 关于"></muxc:NavigationViewItem>
+                <muxc:NavigationViewItem Margin="0,2" Tag="AboutNaviPage" Icon="Help" Content="关于"></muxc:NavigationViewItem>
             </muxc:NavigationView.MenuItems>
             <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-                <StackPanel Margin="24,0" Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Center">
+                <StackPanel x:Name="NaviHeader" Margin="48,0,48,0" Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Center">
                     <Button Margin="0,0,16,0" CornerRadius="50" Width="40" Height="40" Visibility="{x:Bind NaviContent.CanGoBack, Mode=OneWay}" Click="BackButton_Click">
                         <FontIcon FontSize="14" Glyph="&#xE09E;" />
                     </Button>

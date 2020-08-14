@@ -1,0 +1,17 @@
+﻿<Page
+    x:Class="MatrixUWP.Views.About"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MatrixUWP.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <StackPanel Margin="16">
+        <TextBlock FontSize="20" Text="隐私声明"></TextBlock>
+        <TextBlock Margin="0,8,0,0" Text="Matrix UWP 将收集您的设备 ID 和 Matrix 账户信息用于识别身份。"></TextBlock>
+        <TextBlock Text="这些信息仅用于提供 Matrix 服务，不会以任何形式将这些信息提供给第三方服务。"></TextBlock>
+        <TextBlock Margin="0,24,0,0" Text="中山大学 Matrix 团队"></TextBlock>
+        <TextBlock Text="2015-2021 保留所有权利"></TextBlock>
+    </StackPanel>
+</Page>

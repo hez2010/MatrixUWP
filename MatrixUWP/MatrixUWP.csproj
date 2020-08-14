@@ -13,7 +13,7 @@
     <AssemblyName>MatrixUWP</AssemblyName>
     <DefaultLanguage>zh-CN</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
-    <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.20175.0</TargetPlatformVersion>
+    <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.19041.0</TargetPlatformVersion>
     <TargetPlatformMinVersion>10.0.18362.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
@@ -22,11 +22,12 @@
     <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
     <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
     <AppxBundlePlatforms>x86|x64|arm|arm64</AppxBundlePlatforms>
-    <PackageCertificateThumbprint>0A3E5D47F93F2242C791EA647E8CDCDFFD061B5A</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>01E6B44BE1ADB64F7AB909B0AD14C367D4C9816F</PackageCertificateThumbprint>
     <AppInstallerUpdateFrequency>0</AppInstallerUpdateFrequency>
     <AppInstallerCheckForUpdateFrequency>OnApplicationRun</AppInstallerCheckForUpdateFrequency>
     <AppxBundle>Always</AppxBundle>
-    <PackageCertificateKeyFile>MatrixUWP_TemporaryKey.pfx</PackageCertificateKeyFile>
+    <PackageCertificateKeyFile>
+    </PackageCertificateKeyFile>
     <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
     <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
     <GenerateTestArtifacts>True</GenerateTestArtifacts>
@@ -156,6 +157,15 @@
     <Compile Include="Models\Course\Assignment\ProgressingAssignmentModel.cs" />
     <Compile Include="Models\Course\Assignment\RankModel.cs" />
     <Compile Include="Models\Course\Assignment\Report\ReportAssignmentConfig.cs" />
+    <Compile Include="Models\Message\AnnouncementModel.cs" />
+    <Compile Include="Models\Message\MessageDataModel.cs" />
+    <Compile Include="Models\Message\MessageModel.cs" />
+    <Compile Include="Models\Message\MessageModelBase.cs" />
+    <Compile Include="Models\Message\MessageSender.cs" />
+    <Compile Include="Models\Message\NotificationModel.cs" />
+    <Compile Include="Models\Message\NotificationResponseModel.cs" />
+    <Compile Include="Models\Message\NotificationSender.cs" />
+    <Compile Include="Models\Submission\Course\SubmissionReportModel.cs" />
     <Compile Include="Models\Submission\Programming\ProgrammingAnswer.cs" />
     <Compile Include="Models\Submission\SubmitAnswerModel.cs" />
     <Compile Include="Models\Submission\Answer\ChoiceAnswer.cs" />
@@ -184,6 +194,7 @@
     <Compile Include="ViewModels\CourseAssignmentsViewModel.cs" />
     <Compile Include="ViewModels\CourseDetailsViewModel.cs" />
     <Compile Include="ViewModels\CourseViewModel.cs" />
+    <Compile Include="ViewModels\MessageViewModel.cs" />
     <Compile Include="ViewModels\ProfileViewModel.cs" />
     <Compile Include="ViewModels\ProgrammingFileModel.cs" />
     <Compile Include="ViewModels\ProgrammingSubmitViewModel.cs" />
@@ -215,8 +226,8 @@
     <Compile Include="Views\Messages.xaml.cs">
       <DependentUpon>Messages.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Manual.xaml.cs">
-      <DependentUpon>Manual.xaml</DependentUpon>
+    <Compile Include="Views\About.xaml.cs">
+      <DependentUpon>About.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Layout.xaml.cs">
       <DependentUpon>Layout.xaml</DependentUpon>
@@ -245,6 +256,7 @@
     <Content Include="Assets\Home\finishall.png" />
     <Content Include="Assets\Home\logoblack.png" />
     <Content Include="Assets\Home\logowhite.png" />
+    <Content Include="Assets\Home\matrix.png" />
     <Content Include="Assets\Home\user.png" />
     <Content Include="Assets\LargeTile.scale-100.png" />
     <Content Include="Assets\LargeTile.scale-125.png" />
@@ -338,7 +350,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Manual.xaml">
+    <Page Include="Views\About.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

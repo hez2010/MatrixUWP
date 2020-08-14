@@ -27,14 +27,14 @@ namespace MatrixUWP.Models.User
             .JsonAsync<ResponseModel<UserDataModel>>();
             if (result?.Data?.SignedIn ?? false)
             {
+                AppModel.AppConfiguration.SavedUserName = userName;
+                AppModel.AppConfiguration.SavedPassword = password;
+                UpdateUserData(result.Data);
                 try
                 {
                     await PushService.RegistTaskAsync();
                 }
                 catch { /* ignored */ }
-                AppModel.AppConfiguration.SavedUserName = userName;
-                AppModel.AppConfiguration.SavedPassword = password;
-                UpdateUserData(result.Data);
             }
             else
             {

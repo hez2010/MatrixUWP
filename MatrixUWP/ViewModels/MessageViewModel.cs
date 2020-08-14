@@ -1,11 +1,13 @@
 ﻿#nullable enable
-using System.Collections.Generic;
+using MatrixUWP.Models.Message;
+using MatrixUWP.Shared.Utils;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 namespace MatrixUWP.ViewModels
 {
-    internal class ProgrammingSubmitViewModel : INotifyPropertyChanged
+    public class MessageViewModel : INotifyPropertyChanged
     {
         private bool loading;
 
@@ -19,14 +21,7 @@ namespace MatrixUWP.ViewModels
             }
         }
 
-        public string Description { get; set; } = "";
-        public string Title { get; set; } = "";
-        /// <summary>
-        /// 题目的支持文件和待提交文件
-        /// </summary>
-        public List<ProgrammingFileModel>? Files { get; set; }
-        public int RemainingSubmitTimes { get; set; }
-        public string RemainingSubmitText => $"剩余提交次数：{(RemainingSubmitTimes == -1 ? "无限" : RemainingSubmitTimes.ToString())}";
+        public ObservableDictionary<MessageSender, ObservableCollection<MessageContent>> Messages { get; } = new ObservableDictionary<MessageSender, ObservableCollection<MessageContent>>();
 
         public event PropertyChangedEventHandler? PropertyChanged;
         protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

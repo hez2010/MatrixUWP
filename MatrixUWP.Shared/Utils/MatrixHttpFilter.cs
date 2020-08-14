@@ -32,8 +32,10 @@ namespace MatrixUWP.Shared.Utils
                    if (csrf != null) request.Headers.Add(csrf.Name, csrf.Value);
 
                    var response = await innerFilter.SendRequestAsync(request).AsTask(cancellationToken, progress);
+#if DEBUG
                    Debug.WriteLine(
                        $"Sent request: {request.Method.Method} {uri}, with data: {(request.Content == null ? "null" : await request.Content.ReadAsStringAsync())}, with headers: {JsonConvert.SerializeObject(request.Headers)}");
+#endif
                    return response;
                });
 

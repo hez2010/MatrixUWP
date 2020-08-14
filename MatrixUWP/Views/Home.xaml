@@ -55,58 +55,62 @@
                     <StackPanel>
                         <StackPanel Margin="40,40,0,0" Orientation="Horizontal">
                             <TextBlock FontSize="32" FontWeight="Bold" Text="欢迎回来，"></TextBlock>
-                            <TextBlock FontSize="32" FontWeight="Bold" Text="{x:Bind user:UserModel.CurrentUser.UserName, Mode=OneWay}"></TextBlock>
+                            <TextBlock FontSize="32" FontWeight="Bold" Text="{x:Bind user:UserModel.CurrentUser.RealName, Mode=OneWay}"></TextBlock>
                         </StackPanel>
-                        <StackPanel Margin="40,20,0,0" Orientation="Horizontal" Visibility="{x:Bind viewModel.HasProgressingAssignments, Mode=OneWay}">
-                            <TextBlock FontSize="18" FontWeight="Bold" Foreground="{ThemeResource SystemBaseMediumColor}" Text="你还有"></TextBlock>
-                            <TextBlock Margin="4,0" FontSize="18" FontWeight="Bold" Foreground="{ThemeResource SystemBaseMediumColor}" Text="{x:Bind viewModel.ProgressingAssignments.Count, Mode=OneWay}"></TextBlock>
-                            <TextBlock FontSize="18" FontWeight="Bold" Foreground="{ThemeResource SystemBaseMediumColor}" Text="个作业题目待完成，加油！"></TextBlock>
-                        </StackPanel>
-                        <TextBlock Visibility="{x:Bind viewModel.HasProgressingAssignments, Converter={StaticResource NotVisibilityConverter}, Mode=OneWay}" Margin="40,20,0,0" FontSize="18" FontWeight="Bold" Foreground="{ThemeResource SystemBaseMediumColor}"  Text="你已经完成了全部的作业，真棒！" />
+                        <Grid Visibility="{x:Bind viewModel.Loading, Mode=OneWay, Converter={StaticResource NotVisibilityConverter}}">
+                            <StackPanel Margin="40,20,0,0" Orientation="Horizontal" Visibility="{x:Bind viewModel.HasProgressingAssignments, Mode=OneWay}">
+                                <TextBlock FontSize="18" FontWeight="Bold" Foreground="{ThemeResource SystemBaseMediumColor}" Text="你还有"></TextBlock>
+                                <TextBlock Margin="4,0" FontSize="18" FontWeight="Bold" Foreground="{ThemeResource SystemBaseMediumColor}" Text="{x:Bind viewModel.ProgressingAssignments.Count, Mode=OneWay}"></TextBlock>
+                                <TextBlock FontSize="18" FontWeight="Bold" Foreground="{ThemeResource SystemBaseMediumColor}" Text="个作业题目待完成，加油！"></TextBlock>
+                            </StackPanel>
+                            <TextBlock Visibility="{x:Bind viewModel.HasProgressingAssignments, Converter={StaticResource NotVisibilityConverter}, Mode=OneWay}" Margin="40,20,0,0" FontSize="18" FontWeight="Bold" Foreground="{ThemeResource SystemBaseMediumColor}"  Text="你已经完成了全部的作业，真棒！" />
+                        </Grid>
                     </StackPanel>
                 </Border>
                 <TextBlock Grid.Row="2" Margin="0,20,0,0" Text="TO DO LIST" FontSize="20" FontWeight="Bold"></TextBlock>
                 <Grid Grid.Row="3" Margin="0,20,0,40">
                     <muxc:ProgressRing Width="64" Height="64" Visibility="{x:Bind viewModel.Loading, Mode=OneWay}" IsActive="True"/>
-                    <ListView Visibility="{x:Bind viewModel.HasProgressingAssignments, Mode=OneWay}" 
+                    <Grid Visibility="{x:Bind viewModel.Loading, Mode=OneWay, Converter={StaticResource NotVisibilityConverter}}">
+                        <ListView Visibility="{x:Bind viewModel.HasProgressingAssignments, Mode=OneWay}" 
                               Background="{ThemeResource SystemChromeMediumColor}"
                               ShowsScrollingPlaceholders="True"
                               ItemsSource="{x:Bind viewModel.ProgressingAssignments, Mode=OneWay}"
                               SelectionMode="Single" ItemClick="ListView_ItemClick" IsItemClickEnabled="True">
-                        <ListView.ItemContainerStyle>
-                            <Style TargetType="ListViewItem">
-                                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                            </Style>
-                        </ListView.ItemContainerStyle>
-                        <ListView.ItemTemplate>
-                            <DataTemplate x:DataType="courseasgn:ProgressingAssignmentModel">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="2*"></ColumnDefinition>
-                                        <ColumnDefinition Width="100"></ColumnDefinition>
-                                        <ColumnDefinition Width="1*"></ColumnDefinition>
-                                    </Grid.ColumnDefinitions>
-                                    <StackPanel Margin="8" Grid.Column="0">
-                                        <TextBlock FontWeight="Bold" Text="{x:Bind Title}"></TextBlock>
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock Foreground="{ThemeResource SystemBaseMediumColor}" Text="{x:Bind CourseName}"></TextBlock>
-                                            <TextBlock Margin="4,0" Foreground="{ThemeResource SystemBaseMediumColor}" Text="-"></TextBlock>
-                                            <TextBlock Foreground="{ThemeResource SystemBaseMediumColor}" Text="{x:Bind Type}"></TextBlock>
+                            <ListView.ItemContainerStyle>
+                                <Style TargetType="ListViewItem">
+                                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                </Style>
+                            </ListView.ItemContainerStyle>
+                            <ListView.ItemTemplate>
+                                <DataTemplate x:DataType="courseasgn:ProgressingAssignmentModel">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="2*"></ColumnDefinition>
+                                            <ColumnDefinition Width="100"></ColumnDefinition>
+                                            <ColumnDefinition Width="1*"></ColumnDefinition>
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Margin="8" Grid.Column="0">
+                                            <TextBlock FontWeight="Bold" Text="{x:Bind Title}"></TextBlock>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Foreground="{ThemeResource SystemBaseMediumColor}" Text="{x:Bind CourseName}"></TextBlock>
+                                                <TextBlock Margin="4,0" Foreground="{ThemeResource SystemBaseMediumColor}" Text="-"></TextBlock>
+                                                <TextBlock Foreground="{ThemeResource SystemBaseMediumColor}" Text="{x:Bind Type}"></TextBlock>
+                                            </StackPanel>
                                         </StackPanel>
-                                    </StackPanel>
-                                    <StackPanel Margin="8" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-                                        <TextBlock Text="得分："></TextBlock>
-                                        <TextBlock Text="{x:Bind Grade}"></TextBlock>
-                                    </StackPanel>
-                                    <StackPanel Margin="8" Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right">
-                                        <TextBlock Foreground="#ff6a77" Text="{x:Bind RemainingTimeText}"></TextBlock>
-                                        <TextBlock Foreground="#ff6a77" Text="后截止"></TextBlock>
-                                    </StackPanel>
-                                </Grid>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
-                    <Image Margin="20" Visibility="{x:Bind viewModel.HasProgressingAssignments, Mode=OneWay, Converter={StaticResource NotVisibilityConverter}}" Source="/Assets/Home/finishall.png" Stretch="Uniform" />
+                                        <StackPanel Margin="8" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                                            <TextBlock Text="得分："></TextBlock>
+                                            <TextBlock Text="{x:Bind Grade}"></TextBlock>
+                                        </StackPanel>
+                                        <StackPanel Margin="8" Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right">
+                                            <TextBlock Foreground="#ff6a77" Text="{x:Bind RemainingTimeText}"></TextBlock>
+                                            <TextBlock Foreground="#ff6a77" Text="后截止"></TextBlock>
+                                        </StackPanel>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                        <Image Margin="20" Visibility="{x:Bind viewModel.HasProgressingAssignments, Mode=OneWay, Converter={StaticResource NotVisibilityConverter}}" Source="/Assets/Home/finishall.png" Stretch="Uniform" />
+                    </Grid>
                 </Grid>
             </Grid>
         </Grid>

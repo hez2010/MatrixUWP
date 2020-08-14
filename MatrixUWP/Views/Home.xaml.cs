@@ -96,7 +96,7 @@ namespace MatrixUWP.Views
         private async void LoadProgressingAssignments()
         {
             if (!UserModel.CurrentUser.SignedIn) return;
-            viewModel.Signining = true;
+            viewModel.Loading = true;
             try
             {
                 var response = await CourseAssignmentModel.FetchProgressingAssignmentListAsync();
@@ -110,7 +110,7 @@ namespace MatrixUWP.Views
             {
                 AppModel.ShowMessage?.Invoke(ex.Message);
             }
-            viewModel.Signining = false;
+            viewModel.Loading = false;
         }
 
         private void Page_Unloaded(object sender, RoutedEventArgs e)

@@ -25,7 +25,7 @@ namespace MatrixUWP.Shared.Utils
             try
             {
                 var uri = new Uri(BaseUri, "/api/users/login");
-                await httpClient.GetAsync(uri);
+                await httpClient.GetAsync(uri, HttpCompletionOption.ResponseHeadersRead);
             }
             catch
             {
@@ -36,7 +36,6 @@ namespace MatrixUWP.Shared.Utils
 
         public async ValueTask<HttpResponseMessage> GetAsync(string path)
         {
-            await EnsureTokenSavedAsync();
             var uri = new Uri(BaseUri, path);
             return await httpClient.GetAsync(uri);
         }

@@ -62,7 +62,7 @@ namespace MatrixUWP.Views
                 "CourseNaviPage" => typeof(Course.Course),
                 "MessagesNaviPage" => typeof(Messages),
                 "ProfileNaviPage" => typeof(Profile),
-                "HelpNaviPage" => typeof(Manual),
+                "AboutNaviPage" => typeof(About),
                 "SettingsNaviPage" => typeof(Settings),
                 _ => null
             };

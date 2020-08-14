@@ -29,6 +29,11 @@ namespace MatrixUWP.Views.Submit
         private readonly ProgrammingSubmitViewModel viewModel = new ProgrammingSubmitViewModel();
         private ProgrammingSubmitParameters? parameters;
 
+        /// <summary>
+        /// 根据文件名获取语言名称
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
         private string GetCodeLanguage(string? fileName)
         {
             if (fileName is null) return "";

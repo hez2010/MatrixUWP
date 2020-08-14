@@ -8,6 +8,8 @@ using MatrixUWP.Models.Course.Assignment.Output;
 using MatrixUWP.Models.Course.Assignment.Programming;
 using MatrixUWP.Models.Course.Assignment.Report;
 using MatrixUWP.Models.Submission;
+using MatrixUWP.Models.Submission.Course;
+using MatrixUWP.Models.Submission.Programming;
 using MatrixUWP.Parameters.Course;
 using MatrixUWP.Parameters.Submit;
 using MatrixUWP.Shared.Extensions;
@@ -17,16 +19,18 @@ using MatrixUWP.ViewModels;
 using MatrixUWP.Views.Submit;
 using Microsoft.Toolkit.Uwp.UI.Controls;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Windows.Storage.Pickers;
+using Windows.UI;
+using Windows.UI.Text;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
 
@@ -37,7 +41,7 @@ namespace MatrixUWP.Views.Course
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class CourseAssignments : Page, INotifyPropertyChanged
+    public sealed partial class CourseAssignments : Page
     {
         private readonly CourseAssignmentsViewModel viewModel = new CourseAssignmentsViewModel();
         private CourseAssignmentsParameters? parameters;
@@ -46,18 +50,6 @@ namespace MatrixUWP.Views.Course
             NullValueHandling = NullValueHandling.Ignore
         };
         public static int LastCourseId = -1;
-
-        private bool loadingRank;
-        private bool LoadingRank
-        {
-            get => loadingRank;
-            set
-            {
-                loadingRank = value;
-                OnPropertyChanged();
-            }
-        }
-        private readonly ObservableCollection<RankModel> rankInfo = new ObservableCollection<RankModel>();
 
         public CourseAssignments()
         {
@@ -207,9 +199,11 @@ namespace MatrixUWP.Views.Course
             {
                 case ProgrammingAssignmentConfig asgnConfig:
                     {
+                        // 设置文件内容的函数
                         void SetContent(string fileName, string content) => asgnConfig.SubmitContents[fileName] = content;
 
-                        string GetContent(string fileName, bool isSupportFile) => isSupportFile switch
+                        // 获取文件内容的函数
+                        string GetContent(string fileName, bool isSupportFile /* 是否是支持文件 */) => isSupportFile switch
                         {
                             true => (asgnConfig.SupportContents?.ContainsKey(fileName) ?? false) ? asgnConfig.SupportContents[fileName] : "",
                             false => asgnConfig.SubmitContents.ContainsKey(fileName) ? asgnConfig.SubmitContents[fileName] : ""
@@ -289,6 +283,9 @@ namespace MatrixUWP.Views.Course
                 case AnswerAssignmentConfig asgnConfig:
                     AppModel.ShowMessage?.Invoke($"不支持的题目配置:\n{asgnConfig.SerializeJson()}");
                     break;
+                default:
+                    AppModel.ShowMessage?.Invoke($"不支持的题目配置: 未知");
+                    break;
             }
         }
 
@@ -307,9 +304,9 @@ namespace MatrixUWP.Views.Course
                         2 => typeof(ReportAssignmentConfig),
                         3 => typeof(FileAssignmentConfig),
                         4 => typeof(OutputAssignmentConfig),
-                        5 => throw new NotSupportedException("Problem blank fill problem is no longer supported."),
+                        5 => throw new NotSupportedException("不支持空白填充题目"),
                         6 => typeof(AnswerAssignmentConfig),
-                        _ => throw new NotSupportedException($"Problem type ${model.Type}(${model.ProblemTypeId}) is not supported.")
+                        _ => throw new NotSupportedException($"不支持的题目类型: ${model.Type}(${model.ProblemTypeId})")
                     };
                 }
 
@@ -329,11 +326,6 @@ namespace MatrixUWP.Views.Course
 #endif
                 AppModel.ShowMessage?.Invoke(ex.Message);
             }
-        }
-
-        private void Report_Clicked(object sender, Windows.UI.Xaml.RoutedEventArgs e)
-        {
-
         }
 
         private async void SubmitRate_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
@@ -358,32 +350,96 @@ namespace MatrixUWP.Views.Course
         private async void RankFlyout_Opening(object sender, object e)
         {
             if (!(AssignmentView.SelectedItem is CourseAssignmentDetailsModel model)) return;
-            LoadingRank = true;
-            rankInfo.Clear();
+            viewModel.RankInfo = null;
+            viewModel.LoadingRank = true;
             try
             {
                 var res = await CourseAssignmentModel.FetchRankInfoAsync(model.CourseId, model.CourseAssignmentId);
                 if (res is null || res.Status != StatusCode.OK)
                 {
-                    throw new Exception(res?.Message ?? "请求失败");
+                    throw new Exception(res?.Message ?? "排名信息加载失败");
                 }
-                foreach (var i in res.Data)
-                {
-                    rankInfo.Add(i);
-                }
+                viewModel.RankInfo = res.Data;
             }
             catch (Exception ex)
             {
                 AppModel.ShowMessage?.Invoke(ex.Message);
             }
-            LoadingRank = false;
+            viewModel.LoadingRank = false;
         }
 
-        public event PropertyChangedEventHandler? PropertyChanged;
-        private void OnPropertyChanged([CallerMemberName] string? propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        private async void ReportFlyout_Opened(object sender, object e)
+        {
+            if (!(AssignmentView.SelectedItem is CourseAssignmentDetailsModel model)) return;
+            viewModel.SubmissionInfo = null;
+            viewModel.LoadingSubmission = true;
+            try
+            {
+                var res = await SubmissionModel.FetchCourseSubmissionListAsync(model.CourseId, model.CourseAssignmentId);
+                if (res is null || res.Status != StatusCode.OK)
+                {
+                    throw new Exception(res?.Message ?? "提交记录加载失败");
+                }
+                viewModel.SubmissionInfo = res.Data;
+            }
+            catch (Exception ex)
+            {
+                AppModel.ShowMessage?.Invoke(ex.Message);
+            }
+            viewModel.LoadingSubmission = false;
+        }
 
-        private Visibility BindingAndToVisibility(bool left, bool right)
-            => (left && right) ? Visibility.Visible : Visibility.Collapsed;
+        private async void ReportView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (!(ReportView.SelectedItem is CourseSubmissionInfoModel submission)) return;
+            if (!(AssignmentView.SelectedItem is CourseAssignmentDetailsModel assignment)) return;
 
+            submission.LoadingReport = true;
+            try
+            {
+                var res = await SubmissionModel.FetchCourseSubmissionAsync<List<ProgrammingAnswer>, JToken>(assignment.CourseId, assignment.CourseAssignmentId, submission.SubmissionId);
+                if (res?.Data.Report is null || res.Status != StatusCode.OK)
+                {
+                    throw new Exception(res?.Message ?? "成绩报告加载失败");
+                }
+
+                var report = new List<SubmissionReportModel>();
+
+                foreach (var check in res.Data.Report.Children())
+                {
+                    if (!(check is JProperty p)) continue;
+                    var grade = p.Value["grade"]?.ToObject<int>() ?? 0;
+                    var contin = p.Value["continue"]?.ToObject<bool>() ?? false;
+                    var details = p.Value[p.Name];
+                    if (details is null) continue;
+
+                    var name = p.Name switch
+                    {
+                        "memory check" => "内存检查",
+                        "static check" => "静态检查",
+                        "compile check" => "编译检查",
+                        "standard tests" => "标准测试",
+                        "random tests" => "随机测试",
+                        "google tests" => "谷歌测试",
+                        _ => p.Name.Replace("check", "检查").Replace("tests", "测试")
+                    };
+
+                    report.Add(new SubmissionReportModel
+                    {
+                        Name = name,
+                        Grade = grade,
+                        Logs = details?.ToString(),
+                        Pass = contin
+                    });
+                }
+
+                submission.Report = report;
+            }
+            catch (Exception ex)
+            {
+                AppModel.ShowMessage?.Invoke(ex.Message);
+            }
+            submission.LoadingReport = false;
+        }
     }
 }

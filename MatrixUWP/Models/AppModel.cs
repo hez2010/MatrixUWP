@@ -1,8 +1,6 @@
 ﻿#nullable enable
 using MatrixUWP.Models.Config;
 using System;
-using Windows.ApplicationModel.Resources;
-using Windows.UI.Xaml.Media.Animation;
 
 namespace MatrixUWP.Models
 {
@@ -14,7 +12,7 @@ namespace MatrixUWP.Models
     {
         public static Action<string>? ShowMessage { get; set; }
         /// <summary>
-        /// PageType, Parameter, NaviMenuIndex
+        /// PageType, Parameter, NaviMenuIndex (-1 代表保持不变)
         /// </summary>
         public static Action<Type, object?, int>? NavigateToPage { get; set; }
 

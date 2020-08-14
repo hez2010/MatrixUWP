@@ -134,6 +134,7 @@
     <Compile Include="Utils\MatrixJsonHttpRequestBuilder.cs" />
     <Compile Include="Utils\MatrixJsonHttpRequestClient.cs" />
     <Compile Include="Utils\NullableTypesAttributes.cs" />
+    <Compile Include="Utils\ObservableDictionary.cs" />
     <EmbeddedResource Include="Properties\MatrixUWP.Shared.rd.xml" />
   </ItemGroup>
   <ItemGroup>

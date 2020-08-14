@@ -22,6 +22,7 @@
                             <ImageBrush ImageSource="{x:Bind viewModel.UserData.Avatar, Mode=OneWay}"/>
                         </Ellipse.Fill>
                     </Ellipse>
+                    <TextBlock Foreground="{ThemeResource SystemBaseMediumColor}" Text="点击更换头像" Margin="0,0,0,-32" HorizontalAlignment="Center" VerticalAlignment="Bottom" />
                     <muxc:ProgressRing Width="40" Height="40" Visibility="{x:Bind viewModel.Loading, Mode=OneWay}" IsActive="True"/>
                 </Grid>
             </Button>
