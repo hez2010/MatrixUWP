@@ -71,7 +71,7 @@
                                 UriPrefix="{x:Bind utils:HttpUtils.MatrixHttpClient.BaseUri.AbsoluteUri}"
                                 Text="{x:Bind Description, Mode=OneWay}"></controls:MarkdownTextBlock>
                         </ScrollViewer>
-                        <muxc:ProgressRing HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-50,0,0" Width="60" Height="60" IsActive="{x:Bind Loading, Mode=OneWay}"></muxc:ProgressRing>
+                        <muxc:ProgressRing HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-50,0,0" Width="60" Height="60" IsActive="True" Visibility="{x:Bind Loading, Mode=OneWay}"></muxc:ProgressRing>
                     </Grid>
                 </DataTemplate>
             </controls:MasterDetailsView.DetailsTemplate>
@@ -82,10 +82,11 @@
                         <AppBarButton.Flyout>
                             <Flyout Opened="ReportFlyout_Opened">
                                 <Grid Width="400" Height="300">
-                                    <muxc:ProgressRing HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-50,0,0" Width="60" Height="60" IsActive="{x:Bind viewModel.LoadingSubmission, Mode=OneWay}"></muxc:ProgressRing>
+                                    <muxc:ProgressRing HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-50,0,0" Width="60" Height="60" IsActive="True" Visibility="{x:Bind viewModel.LoadingSubmission, Mode=OneWay}"></muxc:ProgressRing>
 
                                     <controls:MasterDetailsView
                                         BackButtonBehavior="Inline"
+                                        Background="Transparent"
                                         x:Name="ReportView"
                                         ItemsSource="{x:Bind viewModel.SubmissionInfo, Mode=OneWay}"
                                         SelectionChanged="ReportView_SelectionChanged"
@@ -121,7 +122,7 @@
                                         <controls:MasterDetailsView.DetailsTemplate>
                                             <DataTemplate x:DataType="submission:CourseSubmissionInfoModel">
                                                 <Grid>
-                                                    <muxc:ProgressRing HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-50,0,0" Width="60" Height="60" IsActive="{x:Bind LoadingReport, Mode=OneWay}"></muxc:ProgressRing>
+                                                    <muxc:ProgressRing HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-50,0,0" Width="60" Height="60" Visibility="{x:Bind LoadingReport, Mode=OneWay}" IsActive="True"></muxc:ProgressRing>
                                                     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollMode="Disabled" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalAlignment="Stretch">
                                                         <StackPanel Margin="16" HorizontalAlignment="Stretch" Visibility="{x:Bind LoadingReport, Mode=OneWay, Converter={StaticResource NotVisibilityConverter}}">
                                                             <muxc:ItemsRepeater ItemsSource="{x:Bind Report, Mode=OneWay}">
@@ -155,7 +156,7 @@
                         <AppBarButton.Flyout>
                             <Flyout x:Name="RankFlyout" Opening="RankFlyout_Opening">
                                 <Grid Height="300" Width="400">
-                                    <muxc:ProgressRing HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-50,0,0" Width="60" Height="60" IsActive="{x:Bind viewModel.LoadingRank, Mode=OneWay}"></muxc:ProgressRing>
+                                    <muxc:ProgressRing HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-50,0,0" Width="60" Height="60" IsActive="True" Visibility="{x:Bind viewModel.LoadingRank, Mode=OneWay}"></muxc:ProgressRing>
 
                                     <ListView ItemsSource="{x:Bind viewModel.RankInfo, Mode=OneWay}" Visibility="{x:Bind viewModel.LoadingRank, Mode=OneWay, Converter={StaticResource NotVisibilityConverter}}">
                                         <ListView.ItemTemplate>
@@ -216,6 +217,6 @@
                 </CommandBar>
             </controls:MasterDetailsView.DetailsCommandBar>
         </controls:MasterDetailsView>
-        <muxc:ProgressRing HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-50,0,0" Width="60" Height="60" IsActive="{x:Bind viewModel.Loading, Mode=OneWay}"></muxc:ProgressRing>
+        <muxc:ProgressRing HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-50,0,0" Width="60" Height="60" IsActive="True" Visibility="{x:Bind viewModel.Loading, Mode=OneWay}"></muxc:ProgressRing>
     </Grid>
 </Page>
