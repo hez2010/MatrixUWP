@@ -136,7 +136,7 @@
                                                                                 <!--<TextBlock Text="{x:Bind PassText}" Foreground="{x:Bind PassColor}" Margin="8,0,0,0"></TextBlock>-->
                                                                             </StackPanel>
                                                                             <StackPanel Visibility="{x:Bind DisplayLogs}" Margin="0,0,0,8">
-                                                                                <TextBlock Text="{x:Bind Logs}" TextWrapping="Wrap"></TextBlock>
+                                                                                <TextBlock Text="{x:Bind Logs}" FontFamily="Consolas" TextWrapping="Wrap"></TextBlock>
                                                                             </StackPanel>
                                                                         </StackPanel>
                                                                     </DataTemplate>
