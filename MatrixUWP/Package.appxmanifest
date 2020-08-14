@@ -17,7 +17,7 @@
 
   <Properties>
     <DisplayName>Matrix UWP</DisplayName>
-    <PublisherDisplayName>vmatrix</PublisherDisplayName>
+    <PublisherDisplayName>中山大学 Matrix 团队</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 
