@@ -69,7 +69,7 @@
                 </Border>
                 <TextBlock Grid.Row="2" Margin="0,20,0,0" Text="TO DO LIST" FontSize="20" FontWeight="Bold"></TextBlock>
                 <Grid Grid.Row="3" Margin="0,20,0,40">
-                    <muxc:ProgressRing Width="64" Height="64" Visibility="{x:Bind viewModel.Loading, Mode=OneWay}" IsActive="True"/>
+                    <muxc:ProgressRing Width="60" Height="60" Visibility="{x:Bind viewModel.Loading, Mode=OneWay}" IsActive="True"/>
                     <Grid Visibility="{x:Bind viewModel.Loading, Mode=OneWay, Converter={StaticResource NotVisibilityConverter}}">
                         <ListView Visibility="{x:Bind viewModel.HasProgressingAssignments, Mode=OneWay}" 
                               Background="{ThemeResource SystemChromeMediumColor}"

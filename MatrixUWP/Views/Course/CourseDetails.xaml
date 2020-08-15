@@ -75,6 +75,6 @@
                 </controls:MarkdownTextBlock>
             </ScrollViewer>
         </StackPanel>
-        <muxc:ProgressRing HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-50,0,0" Width="60" Height="60" IsActive="{x:Bind viewModel.Loading, Mode=OneWay}"></muxc:ProgressRing>
+        <muxc:ProgressRing Margin="0,-48,0,0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="60" Height="60" IsActive="{x:Bind viewModel.Loading, Mode=OneWay}"></muxc:ProgressRing>
     </Grid>
 </Page>
