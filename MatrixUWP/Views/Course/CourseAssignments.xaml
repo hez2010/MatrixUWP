@@ -71,7 +71,7 @@
                                 UriPrefix="{x:Bind utils:HttpUtils.MatrixHttpClient.BaseUri.AbsoluteUri}"
                                 Text="{x:Bind Description, Mode=OneWay}"></controls:MarkdownTextBlock>
                         </ScrollViewer>
-                        <muxc:ProgressRing Margin="0,-48,0,0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="60" Height="60" IsActive="True" Visibility="{x:Bind Loading, Mode=OneWay}"></muxc:ProgressRing>
+                        <muxc:ProgressRing Margin="0,-60,0,0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="60" Height="60" IsActive="True" Visibility="{x:Bind Loading, Mode=OneWay}"></muxc:ProgressRing>
                     </Grid>
                 </DataTemplate>
             </controls:MasterDetailsView.DetailsTemplate>
@@ -217,6 +217,6 @@
                 </CommandBar>
             </controls:MasterDetailsView.DetailsCommandBar>
         </controls:MasterDetailsView>
-        <muxc:ProgressRing Margin="0,-48,0,0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="60" Height="60" IsActive="True" Visibility="{x:Bind viewModel.Loading, Mode=OneWay}"></muxc:ProgressRing>
+        <muxc:ProgressRing Margin="0,-60,0,0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="60" Height="60" IsActive="True" Visibility="{x:Bind viewModel.Loading, Mode=OneWay}"></muxc:ProgressRing>
     </Grid>
 </Page>
