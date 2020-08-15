@@ -24,7 +24,7 @@ namespace MatrixUWP.Shared.Utils
             httpClient = new HttpClient(filter);
 
             var version = Package.Current.Id.Version;
-            var userAgent = $"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36 Edg/79.0.309.68 UWP/{version.Major}.{version.Minor}.{version.Build}.{version.Revision}";
+            var userAgent = $"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.125 Safari/537.36 Edg/84.0.522.59 UWP/{version.Major}.{version.Minor}.{version.Build}.{version.Revision}";
 
             httpClient.DefaultRequestHeaders.UserAgent.ParseAdd(userAgent);
             httpClient.DefaultRequestHeaders.Referer = baseUri;
