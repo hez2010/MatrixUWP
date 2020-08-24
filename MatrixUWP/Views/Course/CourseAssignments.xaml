@@ -8,6 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="using:MatrixUWP.Models.Course.Assignment"
     xmlns:submission="using:MatrixUWP.Models.Submission.Course"
+    xmlns:programming="using:MatrixUWP.Models.Submission.Programming"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls" 
     mc:Ignorable="d"
@@ -83,7 +84,7 @@
                             <Flyout Opened="ReportFlyout_Opened">
                                 <Grid Width="400" Height="300">
                                     <muxc:ProgressRing HorizontalAlignment="Center" VerticalAlignment="Center" Width="60" Height="60" IsActive="True" Visibility="{x:Bind viewModel.LoadingSubmission, Mode=OneWay}"></muxc:ProgressRing>
-
+                                    <WebView x:Name="RefactorWebView" Visibility="Collapsed" />
                                     <controls:MasterDetailsView
                                         BackButtonBehavior="Inline"
                                         Background="Transparent"
@@ -125,19 +126,66 @@
                                                     <muxc:ProgressRing HorizontalAlignment="Center" VerticalAlignment="Center" Width="60" Height="60" Visibility="{x:Bind LoadingReport, Mode=OneWay}" IsActive="True"></muxc:ProgressRing>
                                                     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                                                         <StackPanel Margin="16" HorizontalAlignment="Stretch" Visibility="{x:Bind LoadingReport, Mode=OneWay, Converter={StaticResource NotVisibilityConverter}}">
-                                                            <muxc:ItemsRepeater ItemsSource="{x:Bind Report, Mode=OneWay}">
+                                                            <muxc:ItemsRepeater ItemsSource="{x:Bind Report.Stages, Mode=OneWay}">
                                                                 <muxc:ItemsRepeater.ItemTemplate>
-                                                                    <DataTemplate x:DataType="submission:SubmissionReportModel">
+                                                                    <DataTemplate x:DataType="programming:ProgrammingSubmissionReportStageModel">
                                                                         <StackPanel>
-                                                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                                                                                 <TextBlock Text="{x:Bind Name}" FontWeight="Bold"></TextBlock>
                                                                                 <TextBlock Text="得分:" Margin="8,0,0,0"></TextBlock>
-                                                                                <TextBlock Text="{x:Bind Grade}" Margin="4,0,0,0"></TextBlock>
-                                                                                <!--<TextBlock Text="{x:Bind PassText}" Foreground="{x:Bind PassColor}" Margin="8,0,0,0"></TextBlock>-->
+                                                                                <TextBlock Text="{x:Bind Score}" Margin="4,0,0,0"></TextBlock>
+                                                                                <TextBlock Text="/"></TextBlock>
+                                                                                <TextBlock Text="{x:Bind FullScore}"></TextBlock>
+                                                                                <TextBlock Text="{x:Bind StatusText}" Foreground="{x:Bind PassColor}" Margin="8,0,0,0"></TextBlock>
                                                                             </StackPanel>
-                                                                            <StackPanel Visibility="{x:Bind DisplayLogs}" Margin="0,0,0,8">
-                                                                                <TextBlock Text="{x:Bind Logs}" FontFamily="Consolas"></TextBlock>
-                                                                            </StackPanel>
+
+                                                                            <!-- 如果通过则多空 4 个单位的空间，使得界面更整洁 -->
+                                                                            <Border Margin="0,0,0,4" Background="Transparent" BorderBrush="Transparent" Visibility="{x:Bind Pass}" />
+
+                                                                            <muxc:ItemsRepeater ItemsSource="{x:Bind Cases}" Margin="16,0,0,0" Visibility="{x:Bind Pass, Converter={StaticResource NotVisibilityConverter}}">
+                                                                                <muxc:ItemsRepeater.ItemTemplate>
+                                                                                    <DataTemplate x:DataType="programming:ProgrammingSubmissionReportCaseModel">
+                                                                                        <StackPanel Margin="0,0,0,4">
+                                                                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                                                                                <TextBlock Text="{x:Bind Name}" />
+                                                                                                <TextBlock Text=":" />
+                                                                                                <TextBlock Margin="4,0,0,0" Text="{x:Bind StatusText}" Foreground="{x:Bind PassColor}" />
+                                                                                            </StackPanel>
+                                                                                            <TextBlock Margin="0,0,0,4" Text="{x:Bind Description}" />
+                                                                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4" Visibility="{x:Bind TimeUsed, Converter={StaticResource EmptyVisibilityConverter}}">
+                                                                                                <TextBlock Text="时间:" />
+                                                                                                <TextBlock Margin="4,0,0,0" Text="{x:Bind TimeUsed}" />
+                                                                                                <TextBlock Text="ms, 内存:" />
+                                                                                                <TextBlock Margin="4,0,0,0" Text="{x:Bind MemoryUsed}" />
+                                                                                                <TextBlock Text="b" />
+                                                                                            </StackPanel>
+                                                                                            <TextBlock Margin="0,0,0,4" Text="输入:" Visibility="{x:Bind StdIn, Converter={StaticResource EmptyVisibilityConverter}}" />
+                                                                                            <TextBlock Margin="0,0,0,4" IsTextSelectionEnabled="True" FontFamily="Consolas" Visibility="{x:Bind StdIn, Converter={StaticResource EmptyVisibilityConverter}}" Text="{x:Bind StdIn}" />
+                                                                                            <TextBlock Margin="0,0,0,4" Text="输出:" Visibility="{x:Bind StdOut, Converter={StaticResource EmptyVisibilityConverter}}" />
+                                                                                            <TextBlock Margin="0,0,0,4" IsTextSelectionEnabled="True" FontFamily="Consolas" Visibility="{x:Bind StdOut, Converter={StaticResource EmptyVisibilityConverter}}" Text="{x:Bind StdOut}" />
+                                                                                            <TextBlock Margin="0,0,0,4" Text="答案:" Visibility="{x:Bind StdOutExpect, Converter={StaticResource EmptyVisibilityConverter}}" />
+                                                                                            <TextBlock Margin="0,0,0,4" IsTextSelectionEnabled="True" FontFamily="Consolas" Visibility="{x:Bind StdOutExpect, Converter={StaticResource EmptyVisibilityConverter}}" Text="{x:Bind StdOutExpect}" />
+                                                                                            <StackPanel Margin="0,0,0,4" Visibility="{x:Bind Problems, Converter={StaticResource EmptyVisibilityConverter}}">
+                                                                                                <TextBlock Text="问题:" />
+                                                                                                <muxc:ItemsRepeater Margin="16,0,0,0" ItemsSource="{x:Bind Problems}">
+                                                                                                    <muxc:ItemsRepeater.ItemTemplate>
+                                                                                                        <DataTemplate x:DataType="programming:ProgrammingSubmissionReportProblemModel">
+                                                                                                            <StackPanel Margin="0,0,0,4">
+                                                                                                                <TextBlock Text="{x:Bind Header}" Foreground="{x:Bind TypeColor}" />
+                                                                                                                <TextBlock Text="{x:Bind Message}" FontFamily="Consolas" IsTextSelectionEnabled="True" Visibility="{x:Bind Message, Converter={StaticResource EmptyVisibilityConverter}}" />
+                                                                                                            </StackPanel>
+                                                                                                        </DataTemplate>
+                                                                                                    </muxc:ItemsRepeater.ItemTemplate>
+                                                                                                </muxc:ItemsRepeater>
+                                                                                            </StackPanel>
+                                                                                        </StackPanel>
+                                                                                    </DataTemplate>
+                                                                                </muxc:ItemsRepeater.ItemTemplate>
+                                                                            </muxc:ItemsRepeater>
+
+                                                                            <!-- 如果没通过则多空 4 个单位的空间，使得界面更整洁 -->
+                                                                            <Border Margin="0,0,0,4" Background="Transparent" BorderBrush="Transparent" Visibility="{x:Bind Pass, Converter={StaticResource NotVisibilityConverter}}" />
+
                                                                         </StackPanel>
                                                                     </DataTemplate>
                                                                 </muxc:ItemsRepeater.ItemTemplate>

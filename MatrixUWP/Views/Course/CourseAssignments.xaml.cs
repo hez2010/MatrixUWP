@@ -45,6 +45,7 @@ namespace MatrixUWP.Views.Course
     {
         private readonly CourseAssignmentsViewModel viewModel = new CourseAssignmentsViewModel();
         private CourseAssignmentsParameters? parameters;
+        private readonly Task refactorLoadTask;
         private static readonly JsonSerializer jsonSerializer = new JsonSerializer
         {
             NullValueHandling = NullValueHandling.Ignore
@@ -55,6 +56,10 @@ namespace MatrixUWP.Views.Course
         {
             NavigationCacheMode = NavigationCacheMode.Required;
             InitializeComponent();
+            var tcs = new TaskCompletionSource<bool>();
+            RefactorWebView.NavigationCompleted += (sender, args) => tcs.SetResult(true);
+            refactorLoadTask = tcs.Task;
+            RefactorWebView.Navigate(new Uri("ms-appx-web:///Contents/ReportRefactor.html"));
         }
 
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
@@ -102,6 +107,7 @@ namespace MatrixUWP.Views.Course
             var item = viewModel.Assignments.FirstOrDefault(i => i.AssignmentId == parameters.JumpAssignmentId);
             AssignmentView.SelectedItem = item;
             AssignmentView.FindChildOfType<ListView>()?.ScrollIntoView(item);
+            parameters.JumpAssignmentId = null;
         }
 
         private async void Page_Loaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)
@@ -402,37 +408,12 @@ namespace MatrixUWP.Views.Course
                 {
                     throw new Exception(res?.Message ?? "成绩报告加载失败");
                 }
-
-                var report = new List<SubmissionReportModel>();
-
-                foreach (var check in res.Data.Report.Children())
+                if (assignment.Config is null)
                 {
-                    if (!(check is JProperty p)) continue;
-                    var grade = p.Value["grade"]?.ToObject<int>() ?? 0;
-                    var contin = p.Value["continue"]?.ToObject<bool>() ?? false;
-                    var details = p.Value[p.Name];
-                    if (details is null) continue;
-
-                    var name = p.Name switch
-                    {
-                        "memory check" => "内存检查",
-                        "static check" => "静态检查",
-                        "compile check" => "编译检查",
-                        "standard tests" => "标准测试",
-                        "random tests" => "随机测试",
-                        "google tests" => "谷歌测试",
-                        _ => p.Name.Replace("check", "检查").Replace("tests", "测试")
-                    };
-
-                    report.Add(new SubmissionReportModel
-                    {
-                        Name = name,
-                        Grade = grade,
-                        Logs = details?.ToString(),
-                        Pass = contin
-                    });
+                    throw new Exception("题目配置信息不存在");
                 }
-
+                await refactorLoadTask;
+                var report = await ProgrammingReportUtils.RefactorProgrammingReportAsync(RefactorWebView, res.Data.Report, assignment.Config);
                 submission.Report = report;
             }
             catch (Exception ex)

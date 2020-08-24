@@ -134,6 +134,7 @@
     </Compile>
     <Compile Include="Converters\EnumConverter.cs" />
     <Compile Include="Converters\IndexOffsetConverter.cs" />
+    <Compile Include="Converters\EmptyVisibilityConverter.cs" />
     <Compile Include="Converters\NumberCalculator.cs" />
     <Compile Include="Converters\NotConverter.cs" />
     <Compile Include="Converters\NotVisibilityConverter.cs" />
@@ -165,8 +166,11 @@
     <Compile Include="Models\Message\NotificationModel.cs" />
     <Compile Include="Models\Message\NotificationResponseModel.cs" />
     <Compile Include="Models\Message\NotificationSender.cs" />
-    <Compile Include="Models\Submission\Course\SubmissionReportModel.cs" />
     <Compile Include="Models\Submission\Programming\ProgrammingAnswer.cs" />
+    <Compile Include="Models\Submission\Programming\ProgrammingSubmissionReportCaseModel.cs" />
+    <Compile Include="Models\Submission\Programming\ProgrammingSubmissionReportModel.cs" />
+    <Compile Include="Models\Submission\Programming\ProgrammingSubmissionReportStageModel.cs" />
+    <Compile Include="Models\Submission\Programming\ProgrammingSubmissionReportProblemModel.cs" />
     <Compile Include="Models\Submission\SubmitAnswerModel.cs" />
     <Compile Include="Models\Submission\Answer\ChoiceAnswer.cs" />
     <Compile Include="Models\Submission\Course\CourseSubmissionInfoModel.cs" />
@@ -189,6 +193,7 @@
     <Compile Include="Services\NotificationService.cs" />
     <Compile Include="Services\PushService.cs" />
     <Compile Include="Utils\LogHelper.cs" />
+    <Compile Include="Utils\ProgrammingReportUtils.cs" />
     <Compile Include="Utils\VisualTreeUtils.cs" />
     <Compile Include="ViewModels\ChoiceSubmitViewModel.cs" />
     <Compile Include="ViewModels\CourseAssignmentsViewModel.cs" />
@@ -305,6 +310,7 @@
     <Content Include="Assets\Wide310x150Logo.scale-400.png" />
     <None Include="MatrixUWP_TemporaryKey.pfx" />
     <None Include="Package.StoreAssociation.xml" />
+    <Content Include="Contents\ReportRefactor.html" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />

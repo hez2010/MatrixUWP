@@ -1,7 +1,7 @@
 ﻿#nullable enable
+using MatrixUWP.Models.Submission.Programming;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
@@ -10,7 +10,7 @@ namespace MatrixUWP.Models.Submission.Course
     public class CourseSubmissionInfoModel : INotifyPropertyChanged
     {
         private bool loadingReport;
-        private List<SubmissionReportModel>? report;
+        private ProgrammingSubmissionReportModel? report;
 
         public bool LoadingReport
         {
@@ -22,7 +22,7 @@ namespace MatrixUWP.Models.Submission.Course
             }
         }
 
-        public List<SubmissionReportModel>? Report
+        public ProgrammingSubmissionReportModel? Report
         {
             get => report; 
             set

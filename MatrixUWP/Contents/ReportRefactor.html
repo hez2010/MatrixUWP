@@ -1,0 +1,745 @@
+﻿<!DOCTYPE html>
+
+<html lang="zh-cn" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+</head>
+<body>
+    <script>
+        var CheckName;
+        (function (CheckName) {
+            CheckName["CompileCheck"] = "CompileCheck";
+            CheckName["StaticCheck"] = "StaticCheck";
+            CheckName["StandardCheck"] = "StandardCheck";
+            CheckName["RandomCheck"] = "RandomCheck";
+            CheckName["MemoryCheck"] = "MemoryCheck";
+            CheckName["GTestCheck"] = "GTestCheck";
+        })(CheckName || (CheckName = {}));
+        const StdTestResText = new Map(Object.entries({
+            OK: ['OK', '通过'],
+            CR: ['OK', '通过'],
+            AC: ['OK', '通过'],
+            WA: ['Wrong Answer', '输出与期望不匹配'],
+            RE: ['Runtime Error', '提交的代码运行时崩溃了'],
+            RF: ['Restricted Function', '调用了危险的函数'],
+            TL: ['Time Limit Exceeded', '运行时间过长'],
+            ML: ['Memory Limit Exceeded', '内存使用过多'],
+            OL: ['Output Limit Exceeded', '输出超过限制'],
+            IE: ['Internal Error', '评测系统出错'],
+            PE: ['Presentation Error', '输出格式错误'],
+            SF: ['Segmentation Fault', '提交的代码可能访问了无效内存'],
+            FPE: ['Floating Point Error', '提交的代码中可能发生了无效的数学运算'],
+            RG: [
+                'Random Generator Error',
+                '随机数据生成器或标准答案的程序运行失败了，请联系出题人更正题目'
+            ]
+        }));
+        class ProgrammingReportV3 {
+            constructor(error) {
+                /** 前端内部辅助变量：评测报告文件基准 URL */
+                this._baseURL = '';
+                this._version = 3;
+                this.addStage = () => {
+                    const stage = new ProgrammingReportV3Stage();
+                    this.stages.push(stage);
+                    return stage;
+                };
+                this.addProblem = (type, header, message) => {
+                    const problem = new ProgrammingReportV3Problem(type, header, message);
+                    this.internal_problems.push(problem);
+                    return problem;
+                };
+                this.stages = [];
+                this.internal_problems = [];
+                if (error) {
+                    this.addProblem('error', error);
+                }
+            }
+        }
+        class ProgrammingReportV3Stage {
+            constructor() {
+                this.addCase = () => {
+                    const scase = new ProgrammingReportV3Case();
+                    this.cases.push(scase);
+                    return scase;
+                };
+                this.score = -1;
+                this.full_score = -1;
+                this.name = 'VOID';
+                this.cases = [];
+                this.status = 'pending';
+            }
+        }
+        class ProgrammingReportV3Case {
+            constructor() {
+                this.addProblem = (type, header, message) => {
+                    const problem = new ProgrammingReportV3Problem(type, header, message);
+                    this.problems.push(problem);
+                    return problem;
+                };
+                this.name = 'VOID';
+                this.status = 'pending';
+                this.time_used = -1;
+                this.memory_used = -1;
+                this.problems = [];
+            }
+        }
+        class ProgrammingReportV3Problem {
+            constructor(type, header, message) {
+                this.type = type;
+                this.header = header;
+                this.message = message;
+            }
+        }
+        function toArray(obj) {
+            return Array.isArray(obj) ? obj : [obj];
+        }
+        const MAX_IO_STRING_LEN = 10 * 1024;
+        const MAX_TEST_CASE = 3;
+        function cutString(str = '') {
+            if (str.length > MAX_IO_STRING_LEN) {
+                return `${str.slice(0, MAX_IO_STRING_LEN)}...`;
+            }
+            return str;
+        }
+        class Refactor {
+            from(rawReport, grading) {
+                this.rawReport = rawReport;
+                this.grading = grading;
+                this.report = {};
+                this.refactorCompileCheck();
+                this.refactorStaticCheck();
+                this.refactorStandardCheck();
+                this.refactorRandomCheck();
+                this.refactorMemoryCheck();
+                this.refactorGTestCheck();
+                if (this.report.error) {
+                    return new ProgrammingReportV3(this.report.error);
+                }
+                else {
+                    const report = new ProgrammingReportV3();
+                    const { CompileCheck, StaticCheck, StandardCheck, RandomCheck, MemoryCheck, GTestCheck } = this.report;
+                    ///// Refactor Compile Check /////
+                    if (CompileCheck) {
+                        const stage = report.addStage();
+                        stage.score = CompileCheck.grade;
+                        stage.full_score = CompileCheck.full_grade;
+                        stage.name = '编译检查';
+                        stage.status = CompileCheck.pass ? 'accepted' : 'failed';
+                        const c = stage.addCase();
+                        c.name = '编译检查';
+                        c.status = stage.status;
+                        if (CompileCheck.error) {
+                            c.addProblem('error', '评测系统异常', CompileCheck.error.message);
+                        }
+                        if (!CompileCheck.error && !CompileCheck.pass) {
+                            c.description = '编译失败';
+                            c.stdout = CompileCheck.report || '未知错误';
+                        }
+                    }
+                    ///// Refactor Static Check /////
+                    if (StaticCheck && StaticCheck.full_grade > 0) {
+                        const stage = report.addStage();
+                        stage.score = StaticCheck.grade;
+                        stage.full_score = StaticCheck.full_grade;
+                        stage.name = '静态检查';
+                        stage.status = StaticCheck.checked
+                            ? StaticCheck.pass
+                                ? 'accepted'
+                                : 'failed'
+                            : StaticCheck.grade === -1
+                                ? 'pending'
+                                : 'locked';
+                        if (stage.status !== 'locked') {
+                            const c = stage.addCase();
+                            c.name = '静态检查';
+                            c.status = stage.status;
+                            if (StaticCheck.error) {
+                                c.addProblem('error', StaticCheck.error.message);
+                            }
+                            if (!StaticCheck.error && !StaticCheck.pass && StaticCheck.report) {
+                                for (const lint of StaticCheck.report.oclintoutput || []) {
+                                    c.addProblem(lint.priority < 3 ? 'error' : 'warning', lint.rule.concat(lint.priority < 3 ? `（扣${3 - lint.priority}分）` : ''), `at ${lint.path}:${lint.startLine}:${lint.startColumn}${lint.message ? ` - ${lint.message}` : ''}`);
+                                }
+                            }
+                        }
+                    }
+                    ///// Refactor Standard Check /////
+                    for (const normalCheck of [StandardCheck, RandomCheck]) {
+                        if (normalCheck && normalCheck.full_grade > 0) {
+                            const stage = report.addStage();
+                            stage.score = normalCheck.grade;
+                            stage.full_score = normalCheck.full_grade;
+                            stage.name = normalCheck === StandardCheck ? '标准测试' : '随机测试';
+                            stage.status = normalCheck.checked
+                                ? normalCheck.pass
+                                    ? 'accepted'
+                                    : 'failed'
+                                : normalCheck.grade === -1
+                                    ? 'pending'
+                                    : 'locked';
+                            let case_id = 1; // loop iteration var
+                            for (const stdcase of normalCheck.report || []) {
+                                const cs = stage.addCase();
+                                cs.name = `${stage.name} ${case_id}`;
+                                cs.status = 'failed';
+                                cs.description = (StdTestResText.get(stdcase.result) || [
+                                    'Unknown Error',
+                                    '未知错误'
+                                ]).join(' - ');
+                                cs.stdin = stdcase.input;
+                                if (stdcase.output) {
+                                    cs.stdout = stdcase.output;
+                                }
+                                else {
+                                    cs.addProblem('warning', '没有记录到实际输出数据');
+                                }
+                                cs.stdout_expect = stdcase.std_output;
+                                if (stdcase.error) {
+                                    cs.addProblem('error', '内部错误', stdcase.error);
+                                }
+                                case_id += 1; // incr loop var
+                            }
+                        }
+                    }
+                    ///// Refactor Memory Check /////
+                    if (MemoryCheck && MemoryCheck.full_grade > 0) {
+                        const stage = report.addStage();
+                        stage.score = MemoryCheck.grade;
+                        stage.full_score = MemoryCheck.full_grade;
+                        stage.name = '内存检查';
+                        stage.status = MemoryCheck.checked
+                            ? MemoryCheck.pass
+                                ? 'accepted'
+                                : 'failed'
+                            : MemoryCheck.grade === -1
+                                ? 'pending'
+                                : 'locked';
+                        let case_id = 1; // loop iter var
+                        for (const origCase of MemoryCheck.report || []) {
+                            const cs = stage.addCase();
+                            cs.name = `标准测试 ${case_id}`;
+                            cs.status = 'failed';
+                            cs.description =
+                                "安装 valgrind 后，可以在本地通过命令 'valgrind --leak-check=full --track-origins=yes ./a.out' 复现";
+                            cs.stdin = origCase.input;
+                            if (origCase.error) {
+                                cs.addProblem('error', '内部错误', origCase.error);
+                            }
+                            for (const err of origCase.memErrs || []) {
+                                cs.addProblem('error', Refactor.valgrindKind2Text.get(err.kind) || '未知错误', err.stacks
+                                    .map((stack, stackIndex) => {
+                                        const behavior = `${stackIndex === 0 ? 'Behavior:' : ''} ${stack.what}\n`;
+                                        const frameText = stack.frames
+                                            .map((frame, frameIndex) => {
+                                                const leading = `   ${frameIndex === 0 ? 'at' : 'by'}: `;
+                                                const func = frame.file && frame.line
+                                                    ? `${frame.fn} (${frame.file}:${frame.line})`
+                                                    : `${frame.fn || '<some function>'} (${frame.obj})`;
+                                                return `${leading}${func}`;
+                                            })
+                                            .join('\n');
+                                        return `${behavior}${frameText}\n`;
+                                    })
+                                    .join('\n'));
+                            }
+                            case_id += 1; // incr loop var
+                        }
+                    }
+                    ///// Refactor GTest Check /////
+                    if (GTestCheck && GTestCheck.full_grade > 0) {
+                        const stage = report.addStage();
+                        stage.score = GTestCheck.grade;
+                        stage.full_score = GTestCheck.full_grade;
+                        stage.name = 'Google Test';
+                        stage.status = GTestCheck.checked
+                            ? GTestCheck.pass
+                                ? 'accepted'
+                                : 'failed'
+                            : GTestCheck.grade === -1
+                                ? 'pending'
+                                : 'locked';
+                        if (stage.status !== 'locked') {
+                            const cs = stage.addCase();
+                            cs.name = `Google Test`;
+                            cs.status = stage.status;
+                            if (!GTestCheck.error && !GTestCheck.pass) {
+                                cs.description = `通过率：${GTestCheck.pass_cases} / ${(GTestCheck.total_cases || 0) -
+                                    (GTestCheck.disabled_cases || 0)}${GTestCheck.disabled_cases
+                                        ? `，${GTestCheck.disabled_cases} 个测试未运行`
+                                        : ''}`;
+                            }
+                            for (const origCase of (GTestCheck.report &&
+                                GTestCheck.report.googletest) ||
+                                []) {
+                                cs.addProblem(origCase.pass ? 'success' : 'error', `${origCase.full_grade ? `${origCase.full_grade}分 - ` : ''}${origCase.name}: ${origCase.description}`, origCase.message);
+                            }
+                        }
+                    }
+                    return report;
+                }
+            }
+            isOClintPass(violations) {
+                return (violations.reduce((count, cur) => count + Number(cur.priority < 3), 0) ===
+                    0);
+            }
+            refactorOClintReport(oclintoutput) {
+                oclintoutput.forEach(report => {
+                    [report.path = report.path] = /[^\/ ]+$/.exec(report.path) || [];
+                });
+                // 排序优先级：priority > path > startLine > startColumn
+                oclintoutput.sort((a, b) => {
+                    if (a.priority < b.priority) {
+                        return -1;
+                    }
+                    else if (a.priority > b.priority) {
+                        return 1;
+                    }
+                    else if (a.path < b.path) {
+                        return -1;
+                    }
+                    else if (a.path > b.path) {
+                        return 1;
+                    }
+                    else if (a.startLine < b.startLine) {
+                        return -1;
+                    }
+                    else if (a.startLine > b.startLine) {
+                        return 1;
+                    }
+                    else if (a.startColumn < b.startColumn) {
+                        return -1;
+                    }
+                    else if (a.startColumn > b.startColumn) {
+                        return 1;
+                    }
+                    return 0;
+                });
+            }
+            refactorMemErrs(rawMemErrs) {
+                return rawMemErrs.map(oneErr => {
+                    let { kind, what: behavior, auxwhat } = oneErr;
+                    const xwhat = oneErr.xwhat ? oneErr.xwhat.text : '';
+                    if (!behavior) {
+                        if (Refactor.leak2Text.has(kind)) {
+                            behavior = `${Refactor.leak2Text.get(kind)}${xwhat ? `: ${xwhat}` : ''}`;
+                        }
+                        else {
+                            kind = '?';
+                            behavior = 'Bad operation on memory or Memory leak';
+                        }
+                        auxwhat = xwhat;
+                    }
+                    auxwhat = [behavior, ...toArray(auxwhat)];
+                    const stacks = toArray(oneErr.stack).map((stack, i) => {
+                        const what = auxwhat[i];
+                        const frames = toArray(stack.frame).map(({ fn, file, line, obj }) => ({
+                            fn,
+                            file,
+                            line,
+                            obj
+                        }));
+                        return { what, frames };
+                    });
+                    return { kind, stacks };
+                });
+            }
+        }
+        Refactor.leak2Text = new Map(Object.entries({
+            Leak_DefinitelyLost: 'Memory leak',
+            Leak_IndirectlyLost: 'Indirect memory leak',
+            Leak_PossiblyLost: 'Possible memory leak',
+            Leak_StillReachable: 'Still reachable memory'
+        }));
+        Refactor.valgrindKind2Text = new Map(Object.entries({
+            CoreMemError: '包含无法寻址的字节',
+            UninitValue: '使用未初始化的值',
+            UninitCondition: '根据未初始化的值进行条件跳转',
+            SyscallParam: '系统调用时传入的参数未初始化',
+            InvalidFree: '非法释放内存',
+            MismatchedFree: '释放内存用的方式和申请内存时不匹配',
+            InvalidRead: '非法读取内存',
+            InvalidWrite: '非法写入内存',
+            InvalidJump: '非法跳转',
+            Overlap: '源空间和目标空间重叠',
+            InvalidMemPool: '非法内存池地址',
+            FishyValue: '函数参数传入可疑的值',
+            Leak_DefinitelyLost: '内存泄漏',
+            Leak_IndirectlyLost: '间接的内存泄漏',
+            Leak_PossiblyLost: '可能的内存泄漏',
+            Leak_StillReachable: '程序结束时存在仍然可达的内存空间'
+        }));
+        function buildCheck(full_grade, { grade = 0 } = {}, checked = false) {
+            return { grade: Math.round(grade), full_grade, checked, pass: false };
+        }
+        class RefactorV1 extends Refactor {
+            shouldGetFurtherProcess(STAGE, check,
+                // for type guard
+                report) {
+                if (!this.grading) {
+                    return false;
+                }
+                const full_grade = this.grading[check];
+                const checked = Boolean(this.rawReport[STAGE]);
+                this.report[check] = buildCheck(full_grade, this.rawReport[STAGE], checked);
+                if (!checked) {
+                    return false;
+                }
+                return true;
+            }
+            refactorCompileCheck() {
+                const STAGE = 'compile check';
+                const full_grade = this.grading.CompileCheck;
+                const checked = Boolean(this.rawReport[STAGE]);
+                this.report.CompileCheck = buildCheck(full_grade, this.rawReport[STAGE], checked);
+                const { CompileCheck } = this.report;
+                const globalResult = this.rawReport[STAGE].result;
+                const errorMsg = this.rawReport[STAGE].message;
+                CompileCheck.report = this.rawReport[STAGE][STAGE] || [
+                    { result: globalResult, message: errorMsg }
+                ];
+                if (typeof CompileCheck.report !== 'string') {
+                    CompileCheck.error = { message: '解析评测报告失败' };
+                    return;
+                }
+                // v1 中信息为 pass 即为编译通过
+                CompileCheck.pass = CompileCheck.report === 'pass';
+                if (CompileCheck.pass) {
+                    CompileCheck.report = '';
+                }
+            }
+            refactorStaticCheck() {
+                const STAGE = 'static check';
+                if (!this.shouldGetFurtherProcess(STAGE, CheckName.StaticCheck, this.report)) {
+                    return;
+                }
+                const { StaticCheck } = this.report;
+                const globalResult = this.rawReport[STAGE].result;
+                const errorMsg = this.rawReport[STAGE].message;
+                const rawCheck = this.rawReport[STAGE][STAGE] || [
+                    { result: globalResult, message: errorMsg }
+                ];
+                if (typeof rawCheck === 'string') {
+                    StaticCheck.error = { message: rawCheck || ' ' };
+                    return;
+                }
+                const oclintoutput = (rawCheck || {}).violation || [];
+                this.refactorOClintReport(oclintoutput);
+                StaticCheck.pass = this.isOClintPass(oclintoutput);
+                StaticCheck.report = { oclintoutput };
+            }
+            refactorStandardCheck() {
+                const STAGE = 'standard tests';
+                if (!this.shouldGetFurtherProcess(STAGE, CheckName.StandardCheck, this.report)) {
+                    return;
+                }
+                this.report.StandardCheck = Object.assign(Object.assign({}, this.report.StandardCheck), this.refactorStdOrRandCheck(STAGE));
+            }
+            refactorRandomCheck() {
+                const STAGE = 'random tests';
+                if (!this.shouldGetFurtherProcess(STAGE, CheckName.RandomCheck, this.report)) {
+                    return;
+                }
+                this.report.RandomCheck = Object.assign(Object.assign({}, this.report.RandomCheck), this.refactorStdOrRandCheck(STAGE));
+            }
+            refactorStdOrRandCheck(STAGE) {
+                const globalResult = this.rawReport[STAGE].result;
+                const errorMsg = this.rawReport[STAGE].message;
+                const rawCheck = (this.rawReport[STAGE][STAGE] || [
+                    { result: globalResult, message: errorMsg }
+                ]);
+                const report = rawCheck
+                    .filter(oneTest => oneTest.result !== 'CR' && oneTest.result !== 'OK')
+                    .slice(0, MAX_TEST_CASE)
+                    .map(oneTest => {
+                        let { error } = oneTest;
+                        if (!error && oneTest.message) {
+                            error = oneTest.message;
+                        }
+                        const { result } = oneTest;
+                        const input = cutString(oneTest.stdin);
+                        if (error) {
+                            return { result: result || 'IE', input, error };
+                        }
+                        return {
+                            result,
+                            input,
+                            output: cutString(oneTest.stdout),
+                            std_output: cutString(oneTest.standard_stdout)
+                        };
+                    });
+                return {
+                    total_cases: null,
+                    pass_cases: null,
+                    pass: report.length === 0,
+                    report
+                };
+            }
+            refactorMemoryCheck() {
+                const STAGE = 'memory check';
+                if (!this.shouldGetFurtherProcess(STAGE, CheckName.MemoryCheck, this.report)) {
+                    return;
+                }
+                const { MemoryCheck } = this.report;
+                const globalResult = this.rawReport[STAGE].result;
+                const errorMsg = this.rawReport[STAGE].message;
+                const rawCheck = (this.rawReport[STAGE][STAGE] || [
+                    { result: globalResult, message: errorMsg }
+                ]);
+                MemoryCheck.report = rawCheck
+                    .filter(t => t.error || t.message || t.valgrindoutput.error)
+                    .slice(0, MAX_TEST_CASE)
+                    .map(oneTest => {
+                        let { error } = oneTest;
+                        if (!error && oneTest.message) {
+                            error = oneTest.message;
+                        }
+                        const stdin = cutString(oneTest.stdin);
+                        const input = stdin;
+                        if (error) {
+                            return { stdin, input, error };
+                        }
+                        const memErrs = this.refactorMemErrs(toArray(oneTest.valgrindoutput.error));
+                        return { stdin, input, memErrs };
+                    });
+                MemoryCheck.total_cases = null;
+                MemoryCheck.pass_cases = null;
+                MemoryCheck.pass = MemoryCheck.report.length === 0;
+            }
+            refactorGTestCheck() {
+                const STAGE = 'google tests';
+                if (!this.shouldGetFurtherProcess(STAGE, CheckName.GTestCheck, this.report)) {
+                    return;
+                }
+                const globalResult = this.rawReport[STAGE].result;
+                const errorMsg = this.rawReport[STAGE].message;
+                this.rawReport[STAGE][STAGE] = this.rawReport[STAGE][STAGE] || [
+                    { result: globalResult, message: errorMsg }
+                ];
+                const { GTestCheck } = this.report;
+                try {
+                    const _ = this.rawReport[STAGE][STAGE][0].gtest;
+                }
+                catch (e) {
+                    GTestCheck.error = { message: '解析评测报告失败' };
+                    return;
+                }
+                let rawCheck = this.rawReport[STAGE][STAGE][0];
+                if (typeof rawCheck.message === 'string') {
+                    GTestCheck.error = { message: rawCheck.message || ' ' };
+                    return;
+                }
+                rawCheck = rawCheck.gtest;
+                GTestCheck.result = 'OK';
+                const failure = rawCheck.failure;
+                const testMap = {};
+                const googletest = Object.keys(this.grading.GTestDetail).map(name => {
+                    const oneReport = Object.assign({ pass: true, name }, this.grading.GTestDetail[name]);
+                    testMap[name] = oneReport;
+                    return oneReport;
+                });
+                if (failure) {
+                    if (failure.length === 1 && typeof failure[0].error === 'string') {
+                        // 替换评测系统的 message
+                        const message = failure[0].error;
+                        // 默认是 IE
+                        GTestCheck.result = 'IE';
+                        const report = {
+                            pass: false,
+                            full_grade: 0,
+                            name: 'Unknown Error',
+                            description: '',
+                            message
+                        };
+                        // 如果 message 中了 GTestErrorToResultMap
+                        if (RefactorV1.GTestErrorToResultMap.has(message)) {
+                            const result = RefactorV1.GTestErrorToResultMap.get(message);
+                            GTestCheck.result = result;
+                            // StdTestResText 里包含了所有 StdTestResult 的映射，所以可以加 !
+                            const [betterName, betterMsg] = StdTestResText.get(result);
+                            report.name = betterName;
+                            report.message = betterMsg;
+                        }
+                        googletest.splice(0, googletest.length, report);
+                    }
+                    else {
+                        failure.forEach(oneFailure => Object.keys(oneFailure).forEach(name => {
+                            if (testMap[name]) {
+                                testMap[name].pass = false;
+                                return;
+                            }
+                            googletest.push({
+                                pass: false,
+                                name,
+                                full_grade: 0,
+                                description: name
+                            });
+                        }));
+                    }
+                }
+                else {
+                    GTestCheck.pass = true;
+                }
+                GTestCheck.total_cases = googletest.length;
+                GTestCheck.pass_cases = googletest.reduce((acc, cur) => acc + Number(cur.pass), 0);
+                GTestCheck.error_cases = GTestCheck.total_cases - GTestCheck.pass_cases;
+                GTestCheck.disabled_cases = 0;
+                GTestCheck.time = null;
+                GTestCheck.report = { googletest, crun: null };
+            }
+        }
+        // tslint:disable-next-line
+        // https://gitlab.vmatrix.org.cn/tommy/judge-system/blob/6e9117c1c6ca4a43d9836631e0d35fe9f8ab1692/judge-system-server/src/MatrixUtils.cpp#L296
+        RefactorV1.GTestErrorToResultMap = new Map(Object.entries({
+            ['Memery out of limit']: 'ML',
+            ['Run time error']: 'RE',
+            ['Time out of limit']: 'TL'
+        }));
+        class RefactorV2 extends Refactor {
+            refactorCompileCheck() {
+                const checked = Boolean(this.rawReport.CompileCheck);
+                this.report.CompileCheck = Object.assign(Object.assign({ pass: false }, this.rawReport.CompileCheck), { checked });
+            }
+            refactorStaticCheck() {
+                const checked = Boolean(this.rawReport.StaticCheck);
+                this.report.StaticCheck = Object.assign(Object.assign({}, this.rawReport.StaticCheck), { checked, pass: false });
+                if (!checked) {
+                    return;
+                }
+                // 因为前面 this.report.StaticCheck = { ... }，所以可以加 !
+                const StaticCheck = this.report.StaticCheck;
+                // 因为相信 ...this.rawReport.StaticCheck 会包含 report，所以可以加 !
+                this.refactorOClintReport(StaticCheck.report.oclintoutput);
+                StaticCheck.pass = this.isOClintPass(StaticCheck.report.oclintoutput);
+            }
+            refactorStandardCheck() {
+                const checked = Boolean(this.rawReport.StandardCheck);
+                this.report.StandardCheck = Object.assign(Object.assign({}, this.rawReport.StandardCheck), { checked, pass: false });
+                if (!checked) {
+                    return;
+                }
+                this.refactorStdOrRandCheck(this.report.StandardCheck);
+            }
+            refactorRandomCheck() {
+                const checked = Boolean(this.rawReport.RandomCheck);
+                this.report.RandomCheck = Object.assign(Object.assign({}, this.rawReport.RandomCheck), { checked, pass: false });
+                if (!checked) {
+                    return;
+                }
+                this.refactorStdOrRandCheck(this.report.RandomCheck);
+            }
+            refactorStdOrRandCheck(check) {
+                check.report = check.report ? toArray(check.report) : [];
+                if (check.error) {
+                    check.report.push({
+                        result: 'IE',
+                        error: check.error.message,
+                        input: ''
+                    });
+                }
+                check.pass = !check.error && check.pass_cases === check.total_cases;
+            }
+            refactorMemoryCheck() {
+                const checked = Boolean(this.rawReport.MemoryCheck);
+                this.report.MemoryCheck = Object.assign(Object.assign({}, this.rawReport.MemoryCheck), { checked, pass: false });
+                if (!checked) {
+                    return;
+                }
+                const MemoryCheck = this.report.MemoryCheck;
+                MemoryCheck.report = MemoryCheck.report ? toArray(MemoryCheck.report) : [];
+                MemoryCheck.report.forEach(one => {
+                    one.input = one.stdin;
+                    one.memErrs = this.refactorMemErrs(one.valgrindoutput);
+                    delete one.valgrindoutput;
+                });
+                if (MemoryCheck.error) {
+                    MemoryCheck.report.push({
+                        error: MemoryCheck.error.message,
+                        input: '',
+                        stdin: ''
+                    });
+                }
+                MemoryCheck.pass =
+                    !MemoryCheck.error && MemoryCheck.pass_cases === MemoryCheck.total_cases;
+            }
+            refactorGTestCheck() {
+                const checked = Boolean(this.rawReport.GTestCheck);
+                this.report.GTestCheck = Object.assign(Object.assign({}, this.rawReport.GTestCheck), { checked, pass: false });
+                if (!checked) {
+                    return;
+                }
+                const GTestCheck = this.report.GTestCheck;
+                const googletest = GTestCheck.report.googletest;
+                const testMap = {};
+                googletest.forEach(one => {
+                    testMap[one.name] = one;
+                });
+                GTestCheck.report.googletest = Object.keys(this.grading.GTestDetail).map(name => (Object.assign(Object.assign({ pass: Boolean(testMap[name]), name }, this.grading.GTestDetail[name]), testMap[name] // name, message, param
+                )));
+                GTestCheck.pass =
+                    !GTestCheck.error && GTestCheck.pass_cases === GTestCheck.total_cases;
+            }
+        }
+        function refactorReportFromUWP(rawReportStr, configStr) {
+            return JSON.stringify(refactorReport(JSON.parse(rawReportStr), JSON.parse(configStr)));
+        }
+        function refactorReport(rawReport, config) {
+            if (!rawReport || !config || !config.grading) {
+                return new ProgrammingReportV3('评测报告解析出错：报告或配置丢失');
+            }
+            const { error } = rawReport;
+            if (rawReport.error) {
+                return new ProgrammingReportV3(error || ' ');
+            }
+            try {
+                const grading = refactorGrading(config);
+                const isV3 = Boolean(rawReport.stages);
+                if (isV3) {
+                    rawReport._version = 3;
+                    return rawReport;
+                }
+                const isV2 = Boolean(rawReport.CompileCheck);
+                const refactor = isV2 ? new RefactorV2() : new RefactorV1();
+                return Object.assign(Object.assign({}, refactor.from(rawReport, grading)), { _version: isV2 ? 2 : 1 });
+            }
+            catch (e) {
+                Promise.reject(e);
+                return new ProgrammingReportV3('评测报告解析出错');
+            }
+        }
+        function refactorGrading(config) {
+            const { grading } = config;
+            let GTestDetail = config['google tests info'];
+            if (grading['google tests detail'] && GTestDetail) {
+                GTestDetail = Object.assign({}, ...Object.keys(GTestDetail).map(name => ({
+                    [name]: {
+                        full_grade: grading['google tests detail'][name] || 0,
+                        description: GTestDetail[name] || name
+                    }
+                })));
+            }
+            else {
+                GTestDetail = {};
+            }
+            // v2
+            if (grading.CompileCheck) {
+                return Object.assign(Object.assign({}, grading), { GTestDetail });
+            }
+            function getProp(prop, fallback) {
+                return grading.hasOwnProperty(prop) ? grading[prop] : fallback;
+            }
+            // v1
+            return {
+                CompileCheck: getProp('compile check', 0),
+                StaticCheck: getProp('static check', 0),
+                StandardCheck: getProp('standard tests', 0),
+                RandomCheck: getProp('random tests', 0),
+                MemoryCheck: getProp('memory check', 0),
+                GTestCheck: getProp('google tests', 0),
+                GTestDetail
+            };
+        }
+
+    </script>
+</body>
+</html>

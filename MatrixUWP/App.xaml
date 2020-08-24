@@ -25,6 +25,7 @@
             <cvt:NumberCalculator x:Key="NumberCalculator"/>
             <cvt:NumberLetterConverter x:Key="NumberLetterConverter" />
             <cvt:IndexOffsetConverter x:Key="IndexOffsetConverter" />
+            <cvt:EmptyVisibilityConverter x:Key="EmptyVisibilityConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

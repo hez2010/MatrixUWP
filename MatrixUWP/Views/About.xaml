@@ -5,7 +5,8 @@
     xmlns:local="using:MatrixUWP.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
+    mc:Ignorable="d"
+    xmlns:system="using:System">
 
     <StackPanel Margin="24,16">
         <TextBlock FontSize="20" Text="隐私策略"></TextBlock>
@@ -16,6 +17,10 @@
             <TextBlock Text="Matrix UWP"></TextBlock>
             <TextBlock Margin="4,0,0,0" Text="{x:Bind Version}"></TextBlock>
         </StackPanel>
-        <TextBlock Text="2015-2021 保留所有权利"></TextBlock>
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Text="2015-"></TextBlock>
+            <TextBlock Text="{x:Bind system:DateTime.Now.Year}"></TextBlock>
+            <TextBlock Margin="4,0,0,0" Text="保留所有权利"></TextBlock>
+        </StackPanel>
     </StackPanel>
 </Page>
