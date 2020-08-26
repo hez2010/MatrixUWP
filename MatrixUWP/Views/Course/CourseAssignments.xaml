@@ -145,7 +145,7 @@
                                                                             <muxc:ItemsRepeater ItemsSource="{x:Bind Cases}" Margin="16,0,0,0" Visibility="{x:Bind Pass, Converter={StaticResource NotVisibilityConverter}}">
                                                                                 <muxc:ItemsRepeater.ItemTemplate>
                                                                                     <DataTemplate x:DataType="programming:ProgrammingSubmissionReportCaseModel">
-                                                                                        <StackPanel Margin="0,0,0,4">
+                                                                                        <StackPanel Margin="0,0,0,4" AllowFocusOnInteraction="True">
                                                                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                                                                                                 <TextBlock Text="{x:Bind Name}" />
                                                                                                 <TextBlock Text=":" />

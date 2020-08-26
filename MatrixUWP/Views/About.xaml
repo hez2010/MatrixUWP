@@ -9,9 +9,16 @@
     xmlns:system="using:System">
 
     <StackPanel Margin="24,16">
-        <TextBlock FontSize="20" Text="隐私策略"></TextBlock>
+        <TextBlock FontSize="20" Text="隐私政策"></TextBlock>
         <TextBlock Margin="0,8,0,0" Text="Matrix UWP 将收集您的设备 ID 和 Matrix 账户信息用于识别身份。"></TextBlock>
         <TextBlock Text="这些信息仅用于提供 Matrix 服务，不会以任何形式将这些信息提供给第三方服务。"></TextBlock>
+        <TextBlock Margin="0,24,0,0" FontSize="20" Text="更新内容"></TextBlock>
+        <TextBlock Margin="0,8,0,0" Text="{x:Bind local:About.ReleaseNotes}"></TextBlock>
+        <TextBlock Margin="0,24,0,0" FontSize="20" Text="评价反馈"></TextBlock>
+        <StackPanel Margin="0,8,0,0" Orientation="Horizontal">
+            <Button Content="评价应用" Click="Rate_Click" ToolTipService.ToolTip="期待你的五星好评" />
+            <Button Margin="8,0,0,0" Content="意见反馈" Click="Feedback_Click" ToolTipService.ToolTip="反馈使用过程中遇到的问题或提出改进建议" />
+        </StackPanel>
         <TextBlock Margin="0,24,0,0" Text="中山大学 Matrix 团队"></TextBlock>
         <StackPanel Orientation="Horizontal">
             <TextBlock Text="Matrix UWP"></TextBlock>
