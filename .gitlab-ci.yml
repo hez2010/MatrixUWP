@@ -13,7 +13,7 @@ build-debug:
     only:
         - develop
     before_script:
-        - powershell -Command "Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process; ./install-windows-sdk.ps1 -buildNumber 20175"
+        - powershell -Command "Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process; ./install-windows-sdk.ps1 -buildNumber 19041"
     script:
         - msbuild MatrixUWP/MatrixUWP.csproj /t:restore /m /verbosity:m
         - msbuild MatrixUWP/MatrixUWP.csproj /p:Configuration=Debug /p:AppxBundlePlatforms="x86|x64|ARM" /p:AppxPackageDir=AppxPackages /p:AppxBundle=Always /p:UapAppxPackageBuildMode=StoreUpload /p:DefineConstants="TRACE DEBUG NETFX_CORE WINDOWS_UWP" /m /verbosity:m
@@ -27,7 +27,7 @@ build-release:
     only:
         - master
     before_script:
-        - powershell -Command "Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process; ./install-windows-sdk.ps1 -buildNumber 20175"
+        - powershell -Command "Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process; ./install-windows-sdk.ps1 -buildNumber 19041"
     script:
         - msbuild MatrixUWP/MatrixUWP.csproj /t:restore /m /verbosity:m
         - msbuild MatrixUWP/MatrixUWP.csproj /p:Configuration=Release /p:AppxBundlePlatforms="x86|x64|ARM|ARM64" /p:AppxPackageDir=AppxPackages /p:AppxBundle=Always /p:UapAppxPackageBuildMode=StoreUpload /m /verbosity:m

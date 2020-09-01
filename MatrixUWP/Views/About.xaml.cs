@@ -32,7 +32,7 @@ namespace MatrixUWP.Views
 
         private async void Feedback_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
-            await Windows.System.Launcher.LaunchUriAsync(new Uri("https://feedback.vmatrix.org.cn"));
+            await Windows.System.Launcher.LaunchUriAsync(new Uri("https://matrix.sysu.edu.cn/feedback"));
         }
     }
 }

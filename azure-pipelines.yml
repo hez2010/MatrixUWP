@@ -20,7 +20,7 @@ steps:
 - task: Powershell@2
   inputs:
     filePath: 'install-windows-sdk.ps1'
-    arguments: 18362
+    arguments: 19041
 
 - task: NuGetToolInstaller@0
 
