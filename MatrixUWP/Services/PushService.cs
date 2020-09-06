@@ -11,12 +11,13 @@ namespace MatrixUWP.Services
 {
     internal class PushService
     {
+        const string ActionTaskName = "ToastBackgroundTask";
         public static void UnregistTask()
         {
             try
             {
                 var tasks = BackgroundTaskRegistration.AllTasks
-                    .Where(i => i.Value.Name == nameof(PushServiceBackgroundTask))
+                    .Where(i => i.Value.Name == nameof(PushServiceBackgroundTask) || i.Value.Name == ActionTaskName)
                     .Select(i => i.Value)
                     .ToList();
                 foreach (var i in tasks) i.Unregister(true);
@@ -54,6 +55,15 @@ namespace MatrixUWP.Services
 
                 builder.SetTrigger(new PushNotificationTrigger());
                 builder.Register();
+
+                var actionBuilder = new BackgroundTaskBuilder
+                {
+                    Name = ActionTaskName,
+                    IsNetworkRequested = true
+                };
+
+                actionBuilder.SetTrigger(new ToastNotificationActionTrigger());
+                actionBuilder.Register();
             }
             catch (Exception ex)
             {
