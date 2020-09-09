@@ -1,5 +1,7 @@
 #nullable enable
 using MatrixUWP.Models.Course;
+using MatrixUWP.Models.User;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
@@ -9,6 +11,7 @@ namespace MatrixUWP.ViewModels
     {
         private bool loading;
         private CourseInfoModel? course;
+        private List<UserEssentialDataModel>? members;
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -18,6 +21,16 @@ namespace MatrixUWP.ViewModels
             set
             {
                 course = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public List<UserEssentialDataModel>? Members
+        {
+            get => members;
+            set
+            {
+                members = value;
                 OnPropertyChanged();
             }
         }

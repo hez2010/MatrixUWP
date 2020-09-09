@@ -9,72 +9,102 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:users="using:MatrixUWP.Models.User"
     mc:Ignorable="d"
     Loaded="Page_Loaded" SizeChanged="Page_SizeChanged">
 
-    <Grid>
-        <StackPanel x:Name="Container" Margin="24">
-            <RelativePanel>
-                <StackPanel Orientation="Horizontal" Margin="8">
-                    <TextBlock x:Name="TitleViewer" FontSize="24" Text="{x:Bind viewModel.Course.CourseName, Mode=OneWay}"></TextBlock>
-                    <StackPanel Margin="16,0" Orientation="Horizontal">
-                        <Ellipse VerticalAlignment="Bottom" Margin="0,2" Height="12" Width="12">
-                            <Ellipse.Fill>
-                                <SolidColorBrush Color="{x:Bind viewModel.Course.StatusColor, Mode=OneWay}" />
-                            </Ellipse.Fill>
-                        </Ellipse>
-                        <TextBlock VerticalAlignment="Bottom" Margin="8,0" FontSize="12" Text="{x:Bind viewModel.Course.Status, Mode=OneWay}"></TextBlock>
-                    </StackPanel>
-                </StackPanel>
-                <Button Padding="16,4" Visibility="{x:Bind viewModel.Loading, Mode=OneWay, Converter={StaticResource NotVisibilityConverter}}" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignRightWithPanel="True" HorizontalAlignment="Right" Content="查看作业" Click="ViewAssignment_Click"></Button>
-            </RelativePanel>
-            <StackPanel Orientation="Horizontal" Margin="8,0,0,0" RelativePanel.Below="CourseTitle">
-                <StackPanel Orientation="Horizontal">
-                    <Ellipse Margin="0,2" Height="18" Width="18">
+    <Grid x:Name="Container" Margin="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="1*" />
+        </Grid.RowDefinitions>
+        <RelativePanel Grid.Row="0">
+            <StackPanel Orientation="Horizontal" Margin="8">
+                <TextBlock x:Name="TitleViewer" FontSize="24" Text="{x:Bind viewModel.Course.CourseName, Mode=OneWay}"></TextBlock>
+                <StackPanel Margin="16,0" Orientation="Horizontal">
+                    <Ellipse VerticalAlignment="Bottom" Margin="0,2" Height="12" Width="12">
                         <Ellipse.Fill>
-                            <ImageBrush ImageSource="{x:Bind viewModel.Course.Creator.Avatar, Mode=OneWay}"/>
+                            <SolidColorBrush Color="{x:Bind viewModel.Course.StatusColor, Mode=OneWay}" />
                         </Ellipse.Fill>
                     </Ellipse>
-                    <TextBlock Margin="8,0" Text="{x:Bind viewModel.Course.Creator.RealName, Mode=OneWay}"></TextBlock>
+                    <TextBlock VerticalAlignment="Bottom" Margin="8,0" FontSize="12" Text="{x:Bind viewModel.Course.Status, Mode=OneWay}"></TextBlock>
                 </StackPanel>
-                <ToolTipService.ToolTip>
-                    <ToolTip>
-                        <StackPanel Margin="8">
-                            <StackPanel Margin="2" Orientation="Horizontal">
-                                <TextBlock>用户：</TextBlock>
-                                <TextBlock Text="{x:Bind viewModel.Course.Creator.UserName, Mode=OneWay}"></TextBlock>
-                            </StackPanel>
-                            <StackPanel Margin="2" Orientation="Horizontal">
-                                <TextBlock>姓名：</TextBlock>
-                                <TextBlock Text="{x:Bind viewModel.Course.Creator.RealName, Mode=OneWay}"></TextBlock>
-                            </StackPanel>
-                            <StackPanel Margin="2" Orientation="Horizontal">
-                                <TextBlock>邮箱：</TextBlock>
-                                <TextBlock Text="{x:Bind viewModel.Course.Creator.Email, Mode=OneWay}"></TextBlock>
-                            </StackPanel>
-                            <StackPanel Margin="2" Orientation="Horizontal">
-                                <TextBlock>电话：</TextBlock>
-                                <TextBlock Text="{x:Bind viewModel.Course.Creator.Phone, Mode=OneWay}"></TextBlock>
-                            </StackPanel>
-                            <StackPanel Margin="2" Orientation="Horizontal">
-                                <TextBlock>主页：</TextBlock>
-                                <TextBlock Text="{x:Bind viewModel.Course.Creator.HomePage, Mode=OneWay}"></TextBlock>
-                            </StackPanel>
-                        </StackPanel>
-                    </ToolTip>
-                </ToolTipService.ToolTip>
             </StackPanel>
-            <Line x:Name="BorderLine" StrokeThickness="1" Margin="0,8" Stroke="Gray" X1="0" X2="0"></Line>
-            <ScrollViewer x:Name="DescriptionViewer" Margin="8">
-                <controls:MarkdownTextBlock
+            <Button Padding="16,4" Visibility="{x:Bind viewModel.Loading, Mode=OneWay, Converter={StaticResource NotVisibilityConverter}}" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignRightWithPanel="True" HorizontalAlignment="Right" Content="查看作业" Click="ViewAssignment_Click"></Button>
+        </RelativePanel>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="8,0,0,0" RelativePanel.Below="CourseTitle">
+            <StackPanel Orientation="Horizontal">
+                <Ellipse Margin="0,2" Height="18" Width="18">
+                    <Ellipse.Fill>
+                        <ImageBrush ImageSource="{x:Bind viewModel.Course.Creator.Avatar, Mode=OneWay}"/>
+                    </Ellipse.Fill>
+                </Ellipse>
+                <TextBlock Margin="8,0" Text="{x:Bind viewModel.Course.Creator.RealName, Mode=OneWay}"></TextBlock>
+            </StackPanel>
+            <ToolTipService.ToolTip>
+                <ToolTip>
+                    <StackPanel Margin="8">
+                        <StackPanel Margin="2" Orientation="Horizontal">
+                            <TextBlock>用户：</TextBlock>
+                            <TextBlock Text="{x:Bind viewModel.Course.Creator.UserName, Mode=OneWay}"></TextBlock>
+                        </StackPanel>
+                        <StackPanel Margin="2" Orientation="Horizontal">
+                            <TextBlock>姓名：</TextBlock>
+                            <TextBlock Text="{x:Bind viewModel.Course.Creator.RealName, Mode=OneWay}"></TextBlock>
+                        </StackPanel>
+                        <StackPanel Margin="2" Orientation="Horizontal">
+                            <TextBlock>邮箱：</TextBlock>
+                            <TextBlock Text="{x:Bind viewModel.Course.Creator.Email, Mode=OneWay}"></TextBlock>
+                        </StackPanel>
+                        <StackPanel Margin="2" Orientation="Horizontal">
+                            <TextBlock>电话：</TextBlock>
+                            <TextBlock Text="{x:Bind viewModel.Course.Creator.Phone, Mode=OneWay}"></TextBlock>
+                        </StackPanel>
+                        <StackPanel Margin="2" Orientation="Horizontal">
+                            <TextBlock>主页：</TextBlock>
+                            <TextBlock Text="{x:Bind viewModel.Course.Creator.HomePage, Mode=OneWay}"></TextBlock>
+                        </StackPanel>
+                    </StackPanel>
+                </ToolTip>
+            </ToolTipService.ToolTip>
+        </StackPanel>
+        <Line Grid.Row="2" x:Name="BorderLine" StrokeThickness="1" Margin="0,8" Stroke="Gray" X1="0" X2="0"></Line>
+        <ScrollViewer Grid.Row="3" x:Name="DescriptionViewer" Margin="8">
+            <controls:MarkdownTextBlock
                     LinkClicked="MarkdownTextBlock_LinkClicked"
                     ImageClicked="MarkdownTextBlock_ImageClicked"
                     Background="Transparent"
                     UriPrefix="{x:Bind utils:HttpUtils.MatrixHttpClient.BaseUri.AbsoluteUri}"
                     Text="{x:Bind viewModel.Course.Description, Mode=OneWay}">
-                </controls:MarkdownTextBlock>
-            </ScrollViewer>
-        </StackPanel>
-        <muxc:ProgressRing Margin="0,-60,0,0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="60" Height="60" IsActive="{x:Bind viewModel.Loading, Mode=OneWay}"></muxc:ProgressRing>
+            </controls:MarkdownTextBlock>
+        </ScrollViewer>
+        <TextBlock Grid.Row="4" FontSize="20" Margin="0,8" Text="课程成员" />
+        <ScrollViewer Grid.Row="5" Margin="8">
+            <ListView ItemsSource="{x:Bind viewModel.Members, Mode=OneWay}">
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <controls:WrapPanel Padding="0" VerticalSpacing="8" HorizontalSpacing="8" />
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="users:UserEssentialDataModel">
+                        <StackPanel HorizontalAlignment="Center">
+                            <Ellipse Height="48" Width="48">
+                                <Ellipse.Fill>
+                                    <ImageBrush ImageSource="{x:Bind Avatar}" />
+                                </Ellipse.Fill>
+                            </Ellipse>
+                            <TextBlock HorizontalAlignment="Center" Text="{x:Bind RealName}" />
+                            <TextBlock HorizontalAlignment="Center" Text="{x:Bind RoleText}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </ScrollViewer>
+        <muxc:ProgressRing Grid.RowSpan="6" Margin="0,-60,0,0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="60" Height="60" IsActive="{x:Bind viewModel.Loading, Mode=OneWay}"></muxc:ProgressRing>
     </Grid>
 </Page>

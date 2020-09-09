@@ -6,6 +6,8 @@ using MatrixUWP.Shared.Models;
 using MatrixUWP.ViewModels;
 using System;
 using System.Diagnostics;
+using System.Linq;
+using Windows.Media.ContentRestrictions;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
@@ -54,13 +56,28 @@ namespace MatrixUWP.Views.Course
 
             try
             {
-                var response = await CourseModel.FetchCourseAsync(parameters?.CourseId ?? 0);
-                if (response?.Status != StatusCode.OK)
+                var cres = await CourseModel.FetchCourseAsync(parameters?.CourseId ?? 0);
+                if (cres?.Status != StatusCode.OK)
                 {
-                    AppModel.ShowMessage?.Invoke(response?.Message ?? "课程获取失败");
+                    AppModel.ShowMessage?.Invoke(cres?.Message ?? "课程获取失败");
                     return;
                 }
-                viewModel.Course = response.Data;
+                viewModel.Course = cres.Data;
+
+                var mres = await CourseModel.FetchCourseMembersAsync(parameters?.CourseId ?? 0);
+                if (mres?.Status != StatusCode.OK)
+                {
+                    AppModel.ShowMessage?.Invoke(cres?.Message ?? "课程成员获取失败");
+                    return;
+                }
+                mres.Data.Sort((i, j) => i.Role == j.Role ? 0 : (i.Role, j.Role) switch
+                {
+                    ("teacher", _) => -1,
+                    ("TA", "teacher") => 1,
+                    ("TA", _) => -1,
+                    _ => 1
+                });
+                viewModel.Members = mres.Data;
             }
             catch (Exception ex)
             {

@@ -33,7 +33,13 @@ namespace MatrixUWP.Views.Course
             try
             {
                 var coursesResponse = await CourseModel.FetchCourseListAsync();
-                if (coursesResponse?.Status == StatusCode.OK) viewModel.Courses = coursesResponse.Data;
+                if (coursesResponse?.Status == StatusCode.OK)
+                {
+                    viewModel.Courses = coursesResponse.Data
+                        .OrderBy(i => i.Status)
+                        .ThenByDescending(i => i.UnfinishedNum)
+                        .ToList();
+                }
                 else AppModel.ShowMessage?.Invoke(coursesResponse?.Message ?? "课程列表获取失败");
             }
             catch (Exception ex)

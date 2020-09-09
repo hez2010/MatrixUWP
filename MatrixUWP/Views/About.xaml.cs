@@ -13,7 +13,7 @@ namespace MatrixUWP.Views
     public sealed partial class About : Page
     {
         private string Version { get; } = GetAppVersion();
-        public static string ReleaseNotes = $"2020/09/01 {GetAppVersion()}\n1. 完善成绩报告解析\n2. 允许复制评测日志\n3. 添加评价和反馈入口";
+        public static string ReleaseNotes = $"2020/09/09 {GetAppVersion()}\n1. 课程按时间排序";
 
         public About()
         {

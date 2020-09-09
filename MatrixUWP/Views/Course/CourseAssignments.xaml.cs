@@ -50,11 +50,9 @@ namespace MatrixUWP.Views.Course
         {
             NullValueHandling = NullValueHandling.Ignore
         };
-        public static int LastCourseId = -1;
 
         public CourseAssignments()
         {
-            NavigationCacheMode = NavigationCacheMode.Required;
             InitializeComponent();
             var tcs = new TaskCompletionSource<bool>();
             RefactorWebView.NavigationCompleted += (sender, args) => tcs.SetResult(true);
@@ -65,7 +63,6 @@ namespace MatrixUWP.Views.Course
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
             base.OnNavigatingFrom(e);
-            LastCourseId = parameters?.CourseId ?? -1;
 
             if (e.SourcePageType == typeof(CourseDetails))
             {
@@ -115,11 +112,6 @@ namespace MatrixUWP.Views.Course
             if (parameters is null)
             {
                 viewModel.Assignments = null;
-                return;
-            }
-            if (LastCourseId == parameters.CourseId)
-            {
-                TryJumpToAssignment();
                 return;
             }
             viewModel.Assignments = null;

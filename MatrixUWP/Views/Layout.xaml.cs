@@ -45,7 +45,6 @@ namespace MatrixUWP.Views
             lastSelectedItem = null;
             NavigateToPage(typeof(Home), null, 0);
             NaviContent.BackStack.Clear();
-            Course.CourseAssignments.LastCourseId = -1;
         }
 
         /// <summary>

@@ -1,4 +1,4 @@
-#nullable enable
+﻿#nullable enable
 using MatrixUWP.Shared.Utils;
 using Newtonsoft.Json;
 using System;
@@ -16,8 +16,29 @@ namespace MatrixUWP.Models.User
         private string phone = "";
         private string email = "";
         private string homePage = "";
+        private string role = "";
 
         public event PropertyChangedEventHandler? PropertyChanged;
+
+        public string RoleText => role switch
+        {
+            "teacher" => "教师",
+            "TA" => "助教",
+            "student" => "学生",
+            _ => "未知"
+        };
+
+        [JsonProperty("role")]
+        public string Role
+        {
+            get => role;
+            set
+            {
+                role = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(RoleText));
+            }
+        }
 
         [JsonProperty("realname")]
         public string RealName
