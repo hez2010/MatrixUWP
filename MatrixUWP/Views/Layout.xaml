@@ -11,7 +11,8 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     RequestedTheme="{x:Bind models:AppModel.AppConfiguration.AppTheme, Mode=OneWay}"
-    Unloaded="Page_Unloaded" Loaded="Page_Loaded">
+    Unloaded="Page_Unloaded" Loaded="Page_Loaded"
+    muxc:BackdropMaterial.ApplyToRootOrPageBackground="True">
 
     <Grid>
         <VisualStateManager.VisualStateGroups>

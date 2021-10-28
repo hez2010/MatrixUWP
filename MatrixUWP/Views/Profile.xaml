@@ -92,7 +92,7 @@
             </StackPanel>
         </StackPanel>
         <StackPanel Orientation="Horizontal" Margin="48" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-            <Button Margin="8,0,8,0" IsEnabled="{x:Bind viewModel.Loading, Mode=OneWay, Converter={StaticResource NotConverter}}" Style="{ThemeResource ButtonRevealStyle}" Width="100" Click="SaveProfiles_Click">
+            <Button Margin="8,0,8,0" IsEnabled="{x:Bind viewModel.Loading, Mode=OneWay, Converter={StaticResource NotConverter}}" Width="100" Click="SaveProfiles_Click">
                 <Grid>
                     <TextBlock Text="保存" />
                     <muxc:ProgressRing Width="20" Height="20" Visibility="{x:Bind viewModel.Loading, Mode=OneWay}" IsActive="True"/>

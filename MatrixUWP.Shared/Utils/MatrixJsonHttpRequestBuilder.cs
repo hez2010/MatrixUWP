@@ -10,7 +10,7 @@ namespace MatrixUWP.Shared.Utils
     {
         private readonly HttpClient httpClient;
 #if DEBUG
-        private static readonly Uri baseUri = new Uri("https://test.vmatrix.org.cn/");
+        private static readonly Uri baseUri = new Uri("https://staging.matrix.moe/");
 #else
         private static readonly Uri baseUri = new Uri("https://matrix.sysu.edu.cn/");
 #endif

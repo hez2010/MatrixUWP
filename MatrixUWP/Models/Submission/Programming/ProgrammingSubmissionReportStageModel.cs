@@ -12,9 +12,9 @@ namespace MatrixUWP.Models.Submission.Programming
         [JsonProperty("name")]
         public string Name { get; set; } = default!;
         [JsonProperty("score")]
-        public int Score { get; set; }
+        public float Score { get; set; }
         [JsonProperty("full_score")]
-        public int FullScore { get; set; }
+        public float FullScore { get; set; }
         [JsonProperty("cases")]
         public List<ProgrammingSubmissionReportCaseModel> Cases { get; set; } = new List<ProgrammingSubmissionReportCaseModel>();
         [JsonProperty("status")]

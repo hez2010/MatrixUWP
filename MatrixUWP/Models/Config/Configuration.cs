@@ -56,7 +56,7 @@ namespace MatrixUWP.Models.Config
             if (value is null) return defaultValue;
             try
             {
-                return JsonConvert.DeserializeObject<T>(value.ToString());
+                return JsonConvert.DeserializeObject<T>(value.ToString()) ?? defaultValue;
             }
             catch
             {

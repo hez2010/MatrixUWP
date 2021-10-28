@@ -16,13 +16,13 @@
 
     <Grid Margin="16,0,0,0">
         <TextBlock x:Name="TitleViewer" VerticalAlignment="Top" Margin="12,8,0,0" FontSize="22" Text="{x:Bind viewModel.Title, Mode=OneWay}"></TextBlock>
-        <controls:MasterDetailsView
+        <controls:ListDetailsView
             Margin="0,48,0,0"
             BackButtonBehavior="Manual"
             ItemsSource="{x:Bind viewModel.Assignments, Mode=OneWay}"
             CompactModeThresholdWidth="720"
             x:Name="AssignmentView" SelectionChanged="AssignmentView_SelectionChanged">
-            <controls:MasterDetailsView.NoSelectionContent>
+            <controls:ListDetailsView.NoSelectionContent>
                 <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                     <SymbolIcon Symbol="Document" RenderTransformOrigin=".5,.5">
                         <SymbolIcon.RenderTransform>
@@ -33,8 +33,8 @@
                     </SymbolIcon>
                     <TextBlock Margin="16" FontSize="18" Text="请选择一项作业"></TextBlock>
                 </StackPanel>
-            </controls:MasterDetailsView.NoSelectionContent>
-            <controls:MasterDetailsView.ItemTemplate>
+            </controls:ListDetailsView.NoSelectionContent>
+            <controls:ListDetailsView.ItemTemplate>
                 <DataTemplate x:DataType="models:CourseAssignmentDetailsModel">
                     <StackPanel Margin="0,8">
                         <TextBlock Visibility="{x:Bind root:Layout.BindingOrToVisibility(Finished,Expired)}" Foreground="{ThemeResource SystemControlBackgroundBaseMediumBrush}" FontSize="18" Text="{x:Bind Title}"></TextBlock>
@@ -55,13 +55,13 @@
                         </StackPanel>
                     </StackPanel>
                 </DataTemplate>
-            </controls:MasterDetailsView.ItemTemplate>
-            <controls:MasterDetailsView.DetailsHeaderTemplate>
+            </controls:ListDetailsView.ItemTemplate>
+            <controls:ListDetailsView.DetailsHeaderTemplate>
                 <DataTemplate>
                     <TextBlock x:Name="TitleViewer" Margin="8" FontSize="22" Text="{Binding ElementName=AssignmentView, Path=SelectedItem.Title, Mode=OneWay}"></TextBlock>
                 </DataTemplate>
-            </controls:MasterDetailsView.DetailsHeaderTemplate>
-            <controls:MasterDetailsView.DetailsTemplate>
+            </controls:ListDetailsView.DetailsHeaderTemplate>
+            <controls:ListDetailsView.DetailsTemplate>
                 <DataTemplate x:DataType="models:CourseAssignmentDetailsModel">
                     <Grid Margin="8">
                         <ScrollViewer x:Name="DescriptionViewer">
@@ -75,8 +75,8 @@
                         <muxc:ProgressRing Margin="0,-60,0,0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="60" Height="60" IsActive="True" Visibility="{x:Bind Loading, Mode=OneWay}"></muxc:ProgressRing>
                     </Grid>
                 </DataTemplate>
-            </controls:MasterDetailsView.DetailsTemplate>
-            <controls:MasterDetailsView.DetailsCommandBar>
+            </controls:ListDetailsView.DetailsTemplate>
+            <controls:ListDetailsView.DetailsCommandBar>
                 <CommandBar DefaultLabelPosition="Right">
                     <AppBarButton Icon="Up" Label="提交" Click="Submit_Clicked"></AppBarButton>
                     <AppBarButton Icon="Page2" Label="成绩">
@@ -85,14 +85,14 @@
                                 <Grid Width="400" Height="300">
                                     <muxc:ProgressRing HorizontalAlignment="Center" VerticalAlignment="Center" Width="60" Height="60" IsActive="True" Visibility="{x:Bind viewModel.LoadingSubmission, Mode=OneWay}"></muxc:ProgressRing>
                                     <WebView x:Name="RefactorWebView" Visibility="Collapsed" />
-                                    <controls:MasterDetailsView
+                                    <controls:ListDetailsView
                                         BackButtonBehavior="Inline"
                                         Background="Transparent"
                                         x:Name="ReportView"
                                         ItemsSource="{x:Bind viewModel.SubmissionInfo, Mode=OneWay}"
                                         SelectionChanged="ReportView_SelectionChanged"
                                         Visibility="{x:Bind viewModel.LoadingSubmission, Mode=OneWay, Converter={StaticResource NotVisibilityConverter}}">
-                                        <controls:MasterDetailsView.ItemTemplate>
+                                        <controls:ListDetailsView.ItemTemplate>
                                             <DataTemplate x:DataType="submission:CourseSubmissionInfoModel">
                                                 <StackPanel Margin="8">
                                                     <StackPanel Orientation="Horizontal">
@@ -111,16 +111,16 @@
                                                     </StackPanel>
                                                 </StackPanel>
                                             </DataTemplate>
-                                        </controls:MasterDetailsView.ItemTemplate>
-                                        <controls:MasterDetailsView.DetailsHeaderTemplate>
+                                        </controls:ListDetailsView.ItemTemplate>
+                                        <controls:ListDetailsView.DetailsHeaderTemplate>
                                             <DataTemplate>
                                                 <StackPanel Orientation="Horizontal" Margin="8">
                                                     <TextBlock FontSize="22" Text="#"></TextBlock>
                                                     <TextBlock x:Name="TitleViewer" FontSize="22" Text="{Binding ElementName=ReportView, Path=SelectedItem.SubmissionId, Mode=OneWay}"></TextBlock>
                                                 </StackPanel>
                                             </DataTemplate>
-                                        </controls:MasterDetailsView.DetailsHeaderTemplate>
-                                        <controls:MasterDetailsView.DetailsTemplate>
+                                        </controls:ListDetailsView.DetailsHeaderTemplate>
+                                        <controls:ListDetailsView.DetailsTemplate>
                                             <DataTemplate x:DataType="submission:CourseSubmissionInfoModel">
                                                 <Grid>
                                                     <muxc:ProgressRing HorizontalAlignment="Center" VerticalAlignment="Center" Width="60" Height="60" Visibility="{x:Bind LoadingReport, Mode=OneWay}" IsActive="True"></muxc:ProgressRing>
@@ -194,8 +194,8 @@
                                                     </ScrollViewer>
                                                 </Grid>
                                             </DataTemplate>
-                                        </controls:MasterDetailsView.DetailsTemplate>
-                                    </controls:MasterDetailsView>
+                                        </controls:ListDetailsView.DetailsTemplate>
+                                    </controls:ListDetailsView>
                                 </Grid>
                             </Flyout>
                         </AppBarButton.Flyout>
@@ -263,8 +263,8 @@
                         </AppBarButton.Flyout>
                     </AppBarButton>
                 </CommandBar>
-            </controls:MasterDetailsView.DetailsCommandBar>
-        </controls:MasterDetailsView>
+            </controls:ListDetailsView.DetailsCommandBar>
+        </controls:ListDetailsView>
         <muxc:ProgressRing Margin="0,-60,0,0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="60" Height="60" IsActive="True" Visibility="{x:Bind viewModel.Loading, Mode=OneWay}"></muxc:ProgressRing>
     </Grid>
 </Page>

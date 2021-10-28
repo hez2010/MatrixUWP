@@ -13,13 +13,13 @@
     Unloaded="Page_Unloaded">
 
     <Grid>
-        <controls:MasterDetailsView
+        <controls:ListDetailsView
             x:Name="MessageView"
             CompactModeThresholdWidth="720"
             BackButtonBehavior="Manual"
             Margin="16"
             ItemsSource="{x:Bind viewModel.Messages.Keys, Mode=OneWay}">
-            <controls:MasterDetailsView.NoSelectionContent>
+            <controls:ListDetailsView.NoSelectionContent>
                 <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                     <SymbolIcon Symbol="Mail" RenderTransformOrigin=".5,.5">
                         <SymbolIcon.RenderTransform>
@@ -30,8 +30,8 @@
                     </SymbolIcon>
                     <TextBlock Margin="16" FontSize="18" Text="请选择一组消息"></TextBlock>
                 </StackPanel>
-            </controls:MasterDetailsView.NoSelectionContent>
-            <controls:MasterDetailsView.ItemTemplate>
+            </controls:ListDetailsView.NoSelectionContent>
+            <controls:ListDetailsView.ItemTemplate>
                 <DataTemplate x:DataType="models:MessageSender">
                     <Grid Margin="0,8,8,8">
                         <Grid.RowDefinitions>
@@ -57,13 +57,13 @@
                                    Style="{ThemeResource BodyTextBlockStyle}" />
                     </Grid>
                 </DataTemplate>
-            </controls:MasterDetailsView.ItemTemplate>
-            <controls:MasterDetailsView.DetailsHeaderTemplate>
+            </controls:ListDetailsView.ItemTemplate>
+            <controls:ListDetailsView.DetailsHeaderTemplate>
                 <DataTemplate>
                     <TextBlock x:Name="TitleViewer" Margin="8" FontSize="22" Text="{Binding ElementName=MessageView, Path=SelectedItem.DisplayName, Mode=OneWay}"></TextBlock>
                 </DataTemplate>
-            </controls:MasterDetailsView.DetailsHeaderTemplate>
-            <controls:MasterDetailsView.DetailsTemplate>
+            </controls:ListDetailsView.DetailsHeaderTemplate>
+            <controls:ListDetailsView.DetailsTemplate>
                 <DataTemplate x:DataType="models:MessageSender">
                     <Grid Margin="8">
                         <ListView ItemsSource="{x:Bind Messages, Mode=OneWay}" SelectionMode="None">
@@ -83,8 +83,8 @@
                         </ListView>
                     </Grid>
                 </DataTemplate>
-            </controls:MasterDetailsView.DetailsTemplate>
-        </controls:MasterDetailsView>
+            </controls:ListDetailsView.DetailsTemplate>
+        </controls:ListDetailsView>
         <muxc:ProgressRing Margin="0,-60,0,0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="60" Height="60" IsActive="True" Visibility="{x:Bind viewModel.Loading, Mode=OneWay}"></muxc:ProgressRing>
     </Grid>
 </Page>

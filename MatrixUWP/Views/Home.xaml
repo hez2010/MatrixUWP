@@ -30,7 +30,7 @@
                             <Image Width="100" Height="30" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stretch="Uniform" x:Name="CaptchaImage" Source="{x:Bind viewModel.CaptchaData, Mode=OneWay}"/>
                         </Border>
                     </StackPanel>
-                    <Button IsEnabled="{x:Bind viewModel.SignInButtonEnabled, Mode=OneWay}" HorizontalAlignment="Stretch" Margin="48,8,48,48" Style="{ThemeResource ButtonRevealStyle}" Click="SignIn_Click" x:Name="SignInButton">
+                    <Button IsEnabled="{x:Bind viewModel.SignInButtonEnabled, Mode=OneWay}" HorizontalAlignment="Stretch" Margin="48,8,48,48" Click="SignIn_Click" x:Name="SignInButton">
                         <Grid>
                             <TextBlock Text="登录"/>
                             <muxc:ProgressRing Width="20" Height="20" Visibility="{x:Bind viewModel.Signining, Mode=OneWay}" IsActive="True"/>
