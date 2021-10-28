@@ -11,7 +11,7 @@
   <Identity
     Name="41790vmatrix.MatrixUWP"
     Publisher="CN=CB744060-7B89-4630-9B34-944A7035EC99"
-    Version="1.0.0.0" />
+    Version="1.1.0.0" />
 
   <mp:PhoneIdentity PhoneProductId="d26bd318-5f06-4942-84c3-a14c654deb55" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
